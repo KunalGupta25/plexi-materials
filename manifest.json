@@ -1,12 +1,22 @@
 {
-    "Semester 5":  {
-                       "Data Structures":  {
-                                               "Notes":  [
-                                                             {
-                                                                 "download_url":  "https://github.com/KunalGupta25/plexi-materials/releases/download/sem-5/test-notes.txt",
-                                                                 "name":  "test-notes.txt"
-                                                             }
-                                                         ]
-                                           }
-                   }
+  "Semester 5": {
+    "Data Structures": {
+      "Notes": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/sem-5/test-notes.txt",
+          "name": "test-notes.txt"
+        }
+      ]
+    }
+  },
+  "Semester 6": {
+    "HPC": {
+      "Question Papers": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/303105355_75067_Question_Paper.2.pdf",
+          "name": "303105355_75067_Question_Paper.2.pdf"
+        }
+      ]
+    }
+  }
 }
