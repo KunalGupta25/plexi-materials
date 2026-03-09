@@ -1,0 +1,166 @@
+"""Process a GitHub issue created via the upload-material template.
+
+Parses the issue body for semester, subject, type, and file attachment URL.
+Uploads the file as a GitHub Release asset and updates manifest.json.
+"""
+
+import json
+import os
+import re
+import subprocess
+import sys
+import urllib.request
+
+
+def parse_issue_body(body):
+    """Extract form fields from the GitHub issue forms body."""
+    fields = {}
+    current_heading = None
+
+    for line in body.splitlines():
+        line = line.strip()
+        if line.startswith("### "):
+            current_heading = line[4:].strip()
+        elif current_heading and line and line != "_No response_":
+            if current_heading not in fields:
+                fields[current_heading] = line
+            else:
+                fields[current_heading] += "\n" + line
+
+    return fields
+
+
+def extract_attachment_url(text):
+    """Extract the first file attachment URL from text."""
+    pattern = r"https://github\.com/[^\s\)]+/(?:files|assets)/[^\s\)]+"
+    match = re.search(pattern, text)
+    return match.group(0) if match else None
+
+
+def gh(*args, input_data=None):
+    """Run a gh CLI command and return output."""
+    cmd = ["gh"] + list(args)
+    result = subprocess.run(cmd, capture_output=True, text=True, input=input_data)
+    if result.returncode != 0:
+        print(f"gh command failed: {' '.join(cmd)}")
+        print(f"stderr: {result.stderr}")
+        sys.exit(1)
+    return result.stdout.strip()
+
+
+def ensure_release(tag, repo):
+    """Create a release if it doesn't exist, return the tag."""
+    result = subprocess.run(
+        ["gh", "release", "view", tag, "--repo", repo],
+        capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        gh("release", "create", tag, "--repo", repo,
+           "--title", tag, "--notes", f"Study materials for {tag}")
+    return tag
+
+
+def sanitize_filename(name):
+    """Sanitize a filename for use as a release asset name."""
+    return re.sub(r"[^\w.\-]", "_", name)
+
+
+def main():
+    body = os.environ["ISSUE_BODY"]
+    issue_number = os.environ["ISSUE_NUMBER"]
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+
+    fields = parse_issue_body(body)
+
+    semester = fields.get("Semester", "").strip()
+    subject = fields.get("Subject", "").strip()
+    file_type = fields.get("Material Type", "").strip()
+    file_text = fields.get("File", "")
+    notes = fields.get("Additional Notes (optional)", "").strip()
+
+    if not all([semester, subject, file_type, file_text]):
+        gh("issue", "comment", str(issue_number), "--repo", repo,
+           "--body", "Could not parse all required fields from the issue. "
+                     "Please ensure semester, subject, material type, and file are provided.")
+        sys.exit(1)
+
+    attachment_url = extract_attachment_url(file_text)
+    if not attachment_url:
+        gh("issue", "comment", str(issue_number), "--repo", repo,
+           "--body", "No file attachment found. Please drag-and-drop a file into the File field.")
+        sys.exit(1)
+
+    # Derive the original filename from the attachment URL
+    original_name = attachment_url.split("/")[-1]
+    # URL-decode common patterns
+    original_name = urllib.request.url2pathname(original_name.split("?")[0])
+    original_name = os.path.basename(original_name)
+
+    # Download the attachment
+    print(f"Downloading: {attachment_url}")
+    req = urllib.request.Request(attachment_url)
+    with urllib.request.urlopen(req) as resp:
+        file_bytes = resp.read()
+
+    local_path = f"/tmp/{original_name}"
+    with open(local_path, "wb") as f:
+        f.write(file_bytes)
+
+    # Create release tag from semester (e.g., "Semester 5" -> "sem-5")
+    tag = semester.lower().replace(" ", "-")
+    ensure_release(tag, repo)
+
+    # Upload as release asset with a prefixed name to avoid collisions
+    asset_prefix = f"{sanitize_filename(subject)}_{sanitize_filename(file_type)}_"
+    asset_name = asset_prefix + sanitize_filename(original_name)
+
+    print(f"Uploading {asset_name} to release {tag}...")
+    gh("release", "upload", tag, local_path,
+       "--repo", repo, "--clobber")
+
+    # Build download URL
+    download_url = f"https://github.com/{repo}/releases/download/{tag}/{original_name}"
+
+    # Update manifest.json
+    manifest_path = "manifest.json"
+    if os.path.exists(manifest_path):
+        with open(manifest_path, "r") as f:
+            manifest = json.load(f)
+    else:
+        manifest = {}
+
+    manifest.setdefault(semester, {})
+    manifest[semester].setdefault(subject, {})
+    manifest[semester][subject].setdefault(file_type, [])
+
+    # Check if file already exists in manifest
+    existing_names = [e["name"] for e in manifest[semester][subject][file_type]]
+    if original_name not in existing_names:
+        manifest[semester][subject][file_type].append({
+            "name": original_name,
+            "download_url": download_url,
+        })
+
+    with open(manifest_path, "w") as f:
+        json.dump(manifest, f, indent=2, sort_keys=True)
+
+    # Close issue with success comment
+    comment = (
+        f"**File uploaded successfully!**\n\n"
+        f"- **Semester:** {semester}\n"
+        f"- **Subject:** {subject}\n"
+        f"- **Type:** {file_type}\n"
+        f"- **File:** `{original_name}`\n"
+    )
+    if notes:
+        comment += f"- **Notes:** {notes}\n"
+    comment += f"\nThe manifest has been updated and the file is now available in the Study Materials Hub."
+
+    gh("issue", "comment", str(issue_number), "--repo", repo, "--body", comment)
+    gh("issue", "close", str(issue_number), "--repo", repo)
+
+    print("Done!")
+
+
+if __name__ == "__main__":
+    main()

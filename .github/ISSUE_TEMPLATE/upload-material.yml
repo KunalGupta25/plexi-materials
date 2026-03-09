@@ -1,0 +1,64 @@
+name: 📤 Upload Study Material
+description: Submit a study material file to be added to the repository.
+title: "[Upload] "
+labels: ["upload-material"]
+body:
+  - type: dropdown
+    id: semester
+    attributes:
+      label: Semester
+      description: Which semester does this material belong to?
+      options:
+        - Semester 1
+        - Semester 2
+        - Semester 3
+        - Semester 4
+        - Semester 5
+        - Semester 6
+        - Semester 7
+        - Semester 8
+    validations:
+      required: true
+
+  - type: input
+    id: subject
+    attributes:
+      label: Subject
+      description: "The subject name (e.g., Data Structures, Operating Systems)"
+      placeholder: "Data Structures"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: file_type
+    attributes:
+      label: Material Type
+      description: What type of material is this?
+      options:
+        - PDFs
+        - PPTs
+        - Notes
+        - Question Papers
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: file_upload
+    attributes:
+      label: File
+      description: |
+        Drag and drop (or paste) your file here. GitHub supports up to 25 MB per attachment.
+        Accepted formats: PDF, PPT, PPTX, TXT, DOCX
+      placeholder: "Drag and drop your file here..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes (optional)
+      description: Any extra info about this material (chapter number, topic, etc.)
+      placeholder: "Chapter 3 — Linked Lists"
+    validations:
+      required: false
