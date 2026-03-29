@@ -73,6 +73,8 @@ def main():
 
     semester = fields.get("Semester", "").strip()
     subject = fields.get("Subject", "").strip()
+    # Strip semester prefix (e.g. "[Sem 3] Database Management Systems" -> "Database Management Systems")
+    subject = re.sub(r"^\[Sem \d+\]\s*", "", subject)
     file_type = fields.get("Material Type", "").strip()
     file_text = fields.get("File", "")
     notes = fields.get("Additional Notes (optional)", "").strip()
