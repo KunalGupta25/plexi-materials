@@ -2,7 +2,7 @@ name: Process Material Upload
 
 on:
   issues:
-    types: [opened]
+    types: [labeled]
 
 permissions:
   contents: write
@@ -10,7 +10,9 @@ permissions:
 
 jobs:
   process-upload:
-    if: contains(github.event.issue.labels.*.name, 'upload-material')
+    if: |
+      github.event.label.name == 'approved' &&
+      contains(github.event.issue.labels.*.name, 'upload-material')
     runs-on: ubuntu-latest
 
     steps:

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Study Material — Plexi Materials</title>
+  <meta name="description" content="Submit study materials to the Plexi Materials repository. Organized by semester and subject." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0b0e14;
+      --surface: #12161f;
+      --surface-hover: #181d29;
+      --border: #1e2533;
+      --border-focus: #4f7dff;
+      --text: #e2e8f0;
+      --text-muted: #8892a6;
+      --accent: #4f7dff;
+      --accent-hover: #6b91ff;
+      --accent-glow: rgba(79, 125, 255, 0.15);
+      --danger: #ff5f5f;
+      --success: #34d399;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -40%;
+      left: -20%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(79, 125, 255, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -30%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 32px rgba(79, 125, 255, 0.25);
+    }
+
+    .header h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(135deg, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .form-group:last-of-type {
+      margin-bottom: 1.8rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.01em;
+    }
+
+    label .required {
+      color: var(--danger);
+      margin-left: 2px;
+    }
+
+    label .hint {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      margin-left: 0.4rem;
+    }
+
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+    }
+
+    select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M4.47 5.97a.75.75 0 0 1 1.06 0L8 8.44l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2.2rem;
+    }
+
+    select:focus,
+    textarea:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    select:hover,
+    textarea:hover {
+      border-color: #2a3347;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    select option {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    /* Disabled state */
+    select:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%;
+      padding: 0.8rem 1.2rem;
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(79, 125, 255, 0.3);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-submit svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Info banner */
+    .info-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      background: var(--accent-glow);
+      border: 1px solid rgba(79, 125, 255, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.6rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .info-banner svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      fill: var(--accent);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer a:hover {
+      color: var(--accent-hover);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.4rem;
+      }
+
+      .header h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-icon">📤</div>
+      <h1>Upload Study Material</h1>
+      <p>Submit a file to the Plexi Materials repository.<br />It will be reviewed before being published.</p>
+    </div>
+
+    <div class="card">
+      <div class="info-banner">
+        <svg viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.75 5a.75.75 0 00-1.5 0v1a.75.75 0 001.5 0V7zm-.75 3a.75.75 0 00-.75.75v3.5a.75.75 0 001.5 0v-3.5A.75.75 0 0010 10z"/></svg>
+        <span>You'll be redirected to GitHub to attach your file. All uploads require maintainer approval.</span>
+      </div>
+
+      <form id="uploadForm">
+        <div class="form-group">
+          <label for="semester">Semester <span class="required">*</span></label>
+          <select id="semester" required>
+            <option value="" disabled selected>Select Semester</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Subject <span class="required">*</span></label>
+          <select id="subject" required disabled>
+            <option value="" disabled selected>Select a semester first</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fileType">Material Type <span class="required">*</span></label>
+          <select id="fileType" required>
+            <option value="" disabled selected>Select Type</option>
+            <option value="PDFs">PDFs</option>
+            <option value="PPTs">PPTs</option>
+            <option value="Notes">Notes</option>
+            <option value="Question Papers">Question Papers</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Additional Notes <span class="hint">(optional)</span></label>
+          <textarea id="notes" rows="3" placeholder="e.g. Chapter 3 — Linked Lists"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z" clip-rule="evenodd" /></svg>
+          Continue on GitHub
+        </button>
+      </form>
+    </div>
+
+    <div class="footer">
+      Powered by <a href="https://github.com/KunalGupta25/plexi-materials" target="_blank" rel="noopener">Plexi Materials</a>
+    </div>
+  </div>
+
+  <script>
+    // ── Semester → Subjects mapping ──────────────────────────────────
+    const SUBJECTS = {
+      "Semester 1": [
+        "OSS",
+        "Maths-1",
+        "CTSD-1",
+        "EEE"
+      ],
+      "Semester 2": [
+        "CTSD-2",
+        "Maths-2",
+        "E-Physics",
+        "GCF",
+        "DT",
+        "ICT"
+      ],
+      "Semester 3": [
+        "Object Oriented Programming with Java",
+        "Design of Data Structures",
+        "Database Management Systems",
+        "Discrete Mathematics",
+        "Digital Electronics"
+      ],
+      "Semester 4": [
+        "Operating System",
+        "Computer Organization and Microprocessor",
+        "Computer Network",
+        "Programming in Python with Full Stack",
+        "Probability, Statistics and Numerical Methods",
+        "Competitive Coding",
+        "Software Engineering"
+      ],
+      "Semester 5": [
+        "Enterprise Programming",
+        "Data Analytics and Data Visualization",
+        "Theory of Computation",
+        "Design and Analysis of Algorithms",
+        "Software Engineering",
+        "AWS Fundamentals",
+        "Professionalism and Corporate Ethics",
+        "Artificial Intelligence",
+        "Circulars and Time tables"
+      ],
+      "Semester 6": [
+        "Quant and Reasoning",
+        "Compiler Design",
+        "Mobile App Development",
+        "MEAN Stack Web Development",
+        "Machine Learning",
+        "High Performance Computing",
+        "Employability Skills"
+      ]
+    };
+
+    const REPO = "KunalGupta25/plexi-materials";
+
+    // ── DOM refs ─────────────────────────────────────────────────────
+    const semesterSelect = document.getElementById("semester");
+    const subjectSelect  = document.getElementById("subject");
+    const fileTypeSelect = document.getElementById("fileType");
+    const notesInput     = document.getElementById("notes");
+    const form           = document.getElementById("uploadForm");
+    const submitBtn      = document.getElementById("submitBtn");
+
+    // ── Populate semesters ───────────────────────────────────────────
+    Object.keys(SUBJECTS).forEach(sem => {
+      const opt = document.createElement("option");
+      opt.value = sem;
+      opt.textContent = sem;
+      semesterSelect.appendChild(opt);
+    });
+
+    // ── Dynamic subject population ───────────────────────────────────
+    semesterSelect.addEventListener("change", () => {
+      const sem = semesterSelect.value;
+      subjectSelect.innerHTML = "";
+
+      if (sem && SUBJECTS[sem]) {
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        placeholder.textContent = "Select Subject";
+        subjectSelect.appendChild(placeholder);
+
+        SUBJECTS[sem].forEach(sub => {
+          const opt = document.createElement("option");
+          opt.value = sub;
+          opt.textContent = sub;
+          subjectSelect.appendChild(opt);
+        });
+
+        subjectSelect.disabled = false;
+      } else {
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        placeholder.textContent = "Select a semester first";
+        subjectSelect.appendChild(placeholder);
+        subjectSelect.disabled = true;
+      }
+
+      validateForm();
+    });
+
+    // ── Form validation ──────────────────────────────────────────────
+    function validateForm() {
+      const valid =
+        semesterSelect.value &&
+        subjectSelect.value &&
+        fileTypeSelect.value;
+      submitBtn.disabled = !valid;
+    }
+
+    semesterSelect.addEventListener("change", validateForm);
+    subjectSelect.addEventListener("change", validateForm);
+    fileTypeSelect.addEventListener("change", validateForm);
+
+    // ── Submit → redirect to GitHub ──────────────────────────────────
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const semester = semesterSelect.value;
+      const subject  = subjectSelect.value;
+      const fileType = fileTypeSelect.value;
+      const notes    = notesInput.value.trim();
+
+      const title = `[Upload] ${subject} — ${fileType}`;
+
+      let body = `### Semester\n\n${semester}\n\n`;
+      body += `### Subject\n\n${subject}\n\n`;
+      body += `### Material Type\n\n${fileType}\n\n`;
+      body += `### File\n\n_Drag and drop your file below:_\n\n\n\n`;
+
+      if (notes) {
+        body += `### Additional Notes (optional)\n\n${notes}\n`;
+      } else {
+        body += `### Additional Notes (optional)\n\n_No response_\n`;
+      }
+
+      const params = new URLSearchParams({
+        title,
+        body,
+        labels: "upload-material",
+      });
+
+      const url = `https://github.com/${REPO}/issues/new?${params.toString()}`;
+      window.open(url, "_blank");
+    });
+  </script>
+</body>
+</html>

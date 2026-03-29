@@ -20,12 +20,50 @@ body:
     validations:
       required: true
 
-  - type: input
+  - type: dropdown
     id: subject
     attributes:
       label: Subject
-      description: "The subject name (e.g., Data Structures, Operating Systems)"
-      placeholder: "Data Structures"
+      description: "The subject name"
+      options:
+        - "[Sem 1] OSS"
+        - "[Sem 1] Maths-1"
+        - "[Sem 1] CTSD-1"
+        - "[Sem 1] EEE"
+        - "[Sem 2] CTSD-2"
+        - "[Sem 2] Maths-2"
+        - "[Sem 2] E-Physics"
+        - "[Sem 2] GCF"
+        - "[Sem 2] DT"
+        - "[Sem 2] ICT"
+        - "[Sem 3] Object Oriented Programming with Java"
+        - "[Sem 3] Design of Data Structures"
+        - "[Sem 3] Database Management Systems"
+        - "[Sem 3] Discrete Mathematics"
+        - "[Sem 3] Digital Electronics"
+        - "[Sem 4] Operating System"
+        - "[Sem 4] Computer Organization and Microprocessor"
+        - "[Sem 4] Computer Network"
+        - "[Sem 4] Programming in Python with Full Stack"
+        - "[Sem 4] Probability, Statistics and Numerical Methods"
+        - "[Sem 4] Competitive Coding"
+        - "[Sem 4] Software Engineering"
+        - "[Sem 5] Enterprise Programming"
+        - "[Sem 5] Data Analytics and Data Visualization"
+        - "[Sem 5] Theory of Computation"
+        - "[Sem 5] Design and Analysis of Algorithms"
+        - "[Sem 5] Software Engineering"
+        - "[Sem 5] AWS Fundamentals"
+        - "[Sem 5] Professionalism and Corporate Ethics"
+        - "[Sem 5] Artificial Intelligence"
+        - "[Sem 5] Circulars and Time tables"
+        - "[Sem 6] Quant and Reasoning"
+        - "[Sem 6] Compiler Design"
+        - "[Sem 6] Mobile App Development"
+        - "[Sem 6] MEAN Stack Web Development"
+        - "[Sem 6] Machine Learning"
+        - "[Sem 6] High Performance Computing"
+        - "[Sem 6] Employability Skills"
     validations:
       required: true
 
