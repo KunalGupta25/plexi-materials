@@ -64,6 +64,7 @@ body:
         - "[Sem 6] Machine Learning"
         - "[Sem 6] High Performance Computing"
         - "[Sem 6] Employability Skills"
+        - "[Sem 6] Cyber Security"
     validations:
       required: true
 
@@ -87,7 +88,7 @@ body:
       label: File
       description: |
         Drag and drop (or paste) your file here. GitHub supports up to 25 MB per attachment.
-        Accepted formats: PDF, PPT, PPTX, TXT, DOCX
+        Accepted formats: (Topic name or Chaper number)PDF, PPT, PPTX, DOCX.
       placeholder: "Drag and drop your file here..."
     validations:
       required: true
