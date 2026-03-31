@@ -98,7 +98,7 @@ def main():
     # Load manifest
     manifest_path = "manifest.json"
     if os.path.exists(manifest_path):
-        with open(manifest_path, "r") as f:
+        with open(manifest_path, "r", encoding="utf-8") as f:
             manifest = json.load(f)
     else:
         manifest = {}
@@ -147,7 +147,7 @@ def main():
 
         uploaded_files.append(original_name)
 
-    with open(manifest_path, "w") as f:
+    with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2, sort_keys=True)
 
     # Close issue with success comment
