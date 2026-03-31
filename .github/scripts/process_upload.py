@@ -122,20 +122,20 @@ def main():
         with urllib.request.urlopen(req) as resp:
             file_bytes = resp.read()
 
-        local_path = f"/tmp/{original_name}"
-        with open(local_path, "wb") as f:
-            f.write(file_bytes)
-
         # Upload as release asset with a prefixed name to avoid collisions
         asset_prefix = f"{sanitize_filename(subject)}_{sanitize_filename(file_type)}_"
         asset_name = asset_prefix + sanitize_filename(original_name)
+
+        local_path = f"/tmp/{asset_name}"
+        with open(local_path, "wb") as f:
+            f.write(file_bytes)
 
         print(f"Uploading {asset_name} to release {tag}...")
         gh("release", "upload", tag, local_path,
            "--repo", repo, "--clobber")
 
         # Build download URL
-        download_url = f"https://github.com/{repo}/releases/download/{tag}/{original_name}"
+        download_url = f"https://github.com/{repo}/releases/download/{tag}/{asset_name}"
 
         # Add to manifest if not already present
         existing_names = [e["name"] for e in manifest[semester][subject][file_type]]
