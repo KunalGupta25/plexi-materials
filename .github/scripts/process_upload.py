@@ -61,12 +61,7 @@ def ensure_release(tag, repo):
 
 def sanitize_filename(name):
     """Sanitize a filename for use as a release asset name."""
-    base, ext = os.path.splitext(name)
-    # Replace spaces and dots in the base name with underscores
-    base = base.replace(" ", "_").replace(".", "_")
-    # Clean up any other non-word characters
-    base = re.sub(r"[^\w\-]", "_", base)
-    return base + ext
+    return re.sub(r"[^\w.\-]", "_", name)
 
 
 def main():
