@@ -118,6 +118,16 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Performance.Measures.pdf",
           "name": "Performance.Measures.pdf"
         }
+      ],
+      "Question Papers": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Question_Papers_HPC_PYQ_2024.pdf",
+          "name": "HPC_PYQ_2024.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Question_Papers_HPC_PYQ_2023.pdf",
+          "name": "HPC_PYQ_2023.pdf"
+        }
       ]
     },
     "Machine Learning": {
