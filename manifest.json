@@ -1,5 +1,41 @@
 {
   "Semester 6": {
+    "Compiler Design": {
+      "Notes": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Notes_Overview_of_compilation.pdf",
+          "name": "Overview_of_compilation.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Notes_Introduction_to_syntax_analysis_1.pdf",
+          "name": "Introduction_to_syntax_analysis_1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Notes_Introduction_to_syntax_analysis_2.pdf",
+          "name": "Introduction_to_syntax_analysis_2.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Notes_Introduction_to_syntax_analysis_4.pdf",
+          "name": "Introduction_to_syntax_analysis_4.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Notes_Introduction_to_syntax_analysis_5.pdf",
+          "name": "Introduction_to_syntax_analysis_5.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Notes_semantic_analysis.pdf",
+          "name": "semantic_analysis.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Notes_Semantic_analysis_of_expressions_and_Statement.pdf",
+          "name": "Semantic_analysis_of_expressions_and_Statement.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Notes_semantic_error_recovery.pdf",
+          "name": "semantic_error_recovery.pdf"
+        }
+      ]
+    },
     "Cyber Security": {
       "PPTs": [
         {
