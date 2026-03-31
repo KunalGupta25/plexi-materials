@@ -60,6 +60,38 @@
         }
       ]
     },
+    "Employability Skills": {
+      "PPTs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Group_Discussion.pptx",
+          "name": "Group_Discussion.pptx"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Personal_Interview.pptx",
+          "name": "Personal_Interview.pptx"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Listening.pptx",
+          "name": "IELTS_Listening.pptx"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Reading.pptx",
+          "name": "IELTS_Reading.pptx"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Speaking.pptx",
+          "name": "IELTS_Speaking.pptx"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Writing.pptx",
+          "name": "IELTS_Writing.pptx"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Resume.Building.pptx",
+          "name": "Resume.Building.pptx"
+        }
+      ]
+    },
     "High Performance Computing": {
       "PPTs": [
         {
