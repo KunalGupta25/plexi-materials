@@ -93,6 +93,12 @@
       ]
     },
     "High Performance Computing": {
+      "Other": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Other_HPC_Question_Bank.pdf",
+          "name": "HPC_Question_Bank.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Introduction_to_HPC.pdf",
