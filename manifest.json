@@ -59,6 +59,34 @@
           "name": "Cyber_Security.pdf"
         }
       ]
+    },
+    "High Performance Computing": {
+      "PPTs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Introduction_to_HPC.pdf",
+          "name": "Introduction_to_HPC.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Parallel_Programming.pdf",
+          "name": "Parallel_Programming.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Fundamental_design_issues_in_HPC.pdf",
+          "name": "Fundamental_design_issues_in_HPC.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Unit-4_HPC.pdf",
+          "name": "Unit-4_HPC.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Parallel_programming_using_GPU.pdf",
+          "name": "Parallel_programming_using_GPU.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Performance.Measures.pdf",
+          "name": "Performance.Measures.pdf"
+        }
+      ]
     }
   }
 }
