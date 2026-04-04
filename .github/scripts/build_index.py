@@ -21,11 +21,18 @@ from pathlib import Path
 import PyPDF2
 import pypdfium2 as pdfium
 import pytesseract
-from llama_index.core import Document, Settings, VectorStoreIndex
+from llama_index.core import (
+    Document,
+    Settings,
+    VectorStoreIndex,
+    StorageContext,
+    load_index_from_storage,
+)
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 MANIFEST_PATH = "manifest.json"
 INDEX_DIR = "index"
+INDEX_CACHE_PATH = "indexed_files.json"
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 MIN_DIRECT_TEXT_CHARS = 120
 OCR_RENDER_SCALE = 2
@@ -265,14 +272,28 @@ def main():
         print("Manifest is empty. Nothing to index.")
         return
 
+    indexed_urls = []
+    if os.path.exists(INDEX_CACHE_PATH):
+        try:
+            with open(INDEX_CACHE_PATH, "r") as f:
+                indexed_urls = json.load(f)
+        except Exception as e:
+            print(f"Warning: could not read cache: {e}")
+
     # Collect all files from manifest
     documents = []
+    newly_indexed_urls = []
     for semester, subjects in manifest.items():
         for subject, types in subjects.items():
             for file_type, file_list in types.items():
                 for file_entry in file_list:
                     name = file_entry["name"]
                     url = file_entry["download_url"]
+
+                    if url in indexed_urls:
+                        print(f"Skipping already indexed file: {name}")
+                        continue
+
                     mime = get_mime_type(name)
 
                     if not is_supported_file(name, mime):
@@ -281,6 +302,7 @@ def main():
 
                     print(f"Processing: {name}")
                     try:
+                        prev_doc_count = len(documents)
                         content = download_file(url)
                         if not content:
                             continue
@@ -318,20 +340,37 @@ def main():
                             else:
                                 print(f"  No text extracted after conversion: {name}")
 
+                        if len(documents) > prev_doc_count:
+                            newly_indexed_urls.append(url)
+
                     except Exception as e:
                         print(f"  Error processing {name}: {e}")
 
     if not documents:
-        print("No documents to index.")
+        print("No new documents to index.")
         return
 
-    print(f"\nBuilding index from {len(documents)} documents...")
+    print(f"\nBuilding/Updating index with {len(documents)} new documents...")
     embed_model = HuggingFaceEmbedding(model_name=EMBED_MODEL)
     Settings.embed_model = embed_model
 
-    index = VectorStoreIndex.from_documents(documents, embed_model=embed_model)
+    if os.path.exists(INDEX_DIR) and len(os.listdir(INDEX_DIR)) > 0:
+        print("Loading existing index from storage...")
+        storage_context = StorageContext.from_defaults(persist_dir=INDEX_DIR)
+        index = load_index_from_storage(storage_context, embed_model=embed_model)
+        for doc in documents:
+            index.insert(doc)
+    else:
+        print("Creating new index...")
+        index = VectorStoreIndex.from_documents(documents, embed_model=embed_model)
+
     index.storage_context.persist(persist_dir=INDEX_DIR)
     print(f"Index persisted to {INDEX_DIR}/")
+
+    all_indexed = list(set(indexed_urls + newly_indexed_urls))
+    with open(INDEX_CACHE_PATH, "w") as f:
+        json.dump(all_indexed, f, indent=2)
+    print(f"Cache updated with {len(newly_indexed_urls)} new URLs.")
 
 
 if __name__ == "__main__":
