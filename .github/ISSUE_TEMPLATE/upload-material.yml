@@ -78,6 +78,7 @@ body:
         - PPTs
         - Notes
         - Question Papers
+        - Syllabus
         - Other
     validations:
       required: true
