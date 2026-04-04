@@ -1,4 +1,42 @@
 {
+  "Semester 4": {
+    "Operating System": {
+      "PPTs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-3-Inter-process-communication.pdf",
+          "name": "Unit-3-Inter-process-communication.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-4-deadlocks.pdf",
+          "name": "Unit-4-deadlocks.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-6-Virtual-memory.pdf",
+          "name": "Unit-6-Virtual-memory.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-5-Memory.Management.pdf",
+          "name": "Unit-5-Memory.Management.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-8-I_O.system.file.disk.management.pdf",
+          "name": "Unit-8-I_O.system.file.disk.management.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-7-OS-I_O-System.pdf",
+          "name": "Unit-7-OS-I_O-System.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-1-OS-introduction.pdf",
+          "name": "Unit-1-OS-introduction.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-2-thread-and-process-scheduling.pdf",
+          "name": "Unit-2-thread-and-process-scheduling.pdf"
+        }
+      ]
+    }
+  },
   "Semester 6": {
     "Compiler Design": {
       "Notes": [
