@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -59,14 +61,30 @@ jobs:
           git commit -m "Add material from issue #${{ github.event.issue.number }} and update index"
 
           # Bring local branch up to date, then push. Retry once to handle concurrent runs.
-          for i in 1 2; do
+          for i in 1 2 3; do
             git fetch origin main
-            git rebase origin/main || { git rebase --abort; exit 1; }
-            if git push; then
-              exit 0
+            
+            if git rebase origin/main; then
+              if git push; then
+                exit 0
+              fi
+            else
+              echo "Rebase failed due to concurrent index build. Re-building incrementally!"
+              git rebase --abort
+              
+              # Revert to the remote's latest state
+              git reset --hard origin/main
+              
+              # Re-run the indexer (it will pull the new remote cache and incrementally insert our file)
+              python .github/scripts/build_index.py
+              
+              # Stage our newly compiled index
+              git add index/ indexed_files.json
+              git diff --cached --quiet || git commit -m "Add material from issue #${{ github.event.issue.number }} and update index"
             fi
-            echo "Push failed (attempt $i). Retrying..."
-            sleep $((i * 2))
+            
+            echo "Push or rebase failed (attempt $i). Retrying after sleep..."
+            sleep $((i * 3))
           done
 
           echo "Push failed after retries."
