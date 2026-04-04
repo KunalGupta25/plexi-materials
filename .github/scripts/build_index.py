@@ -213,51 +213,147 @@ def is_supported_file(filename, mime):
     )
 
 
+def _pptx_to_pdf(file_bytes):
+    """Convert PPTX bytes to PDF bytes using python-pptx + fpdf2."""
+    from pptx import Presentation as PptxPresentation
+    from pptx.util import Emu
+    from fpdf import FPDF
+    import io
+
+    prs = PptxPresentation(io.BytesIO(file_bytes))
+
+    slide_w_mm = prs.slide_width / Emu(914400) * 25.4
+    slide_h_mm = prs.slide_height / Emu(914400) * 25.4
+
+    pdf = FPDF(orientation="L", unit="mm", format=(slide_h_mm, slide_w_mm))
+    pdf.set_auto_page_break(auto=True, margin=12)
+
+    TITLE_SIZE = 18
+    BODY_SIZE = 11
+    MARGIN = 14
+
+    for slide_idx, slide in enumerate(prs.slides, start=1):
+        pdf.add_page()
+        pdf.set_left_margin(MARGIN)
+        pdf.set_right_margin(MARGIN)
+        pdf.set_y(MARGIN)
+
+        pdf.set_font("Helvetica", "I", 8)
+        pdf.set_text_color(120, 120, 120)
+        pdf.cell(0, 5, f"Slide {slide_idx}", ln=True)
+        pdf.ln(2)
+
+        title_text = ""
+        body_parts = []
+
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                for para in shape.text_frame.paragraphs:
+                    text = para.text.strip()
+                    if not text:
+                        continue
+                    if not title_text and hasattr(shape, "placeholder_format"):
+                        ph = shape.placeholder_format
+                        if ph is not None and ph.idx in (0, 1):
+                            title_text = text
+                            continue
+                    body_parts.append(text)
+
+            if shape.shape_type == 13:
+                try:
+                    img_bytes = shape.image.blob
+                    img_stream = io.BytesIO(img_bytes)
+                    max_w = slide_w_mm - 2 * MARGIN
+                    pdf.image(img_stream, x=MARGIN, w=min(max_w, 120))
+                    pdf.ln(4)
+                except Exception:
+                    pass
+
+        if title_text:
+            pdf.set_font("Helvetica", "B", TITLE_SIZE)
+            pdf.set_text_color(22, 49, 44)
+            pdf.multi_cell(0, TITLE_SIZE * 0.5, title_text)
+            pdf.ln(4)
+
+        if body_parts:
+            pdf.set_font("Helvetica", "", BODY_SIZE)
+            pdf.set_text_color(50, 50, 50)
+            for part in body_parts:
+                pdf.multi_cell(0, BODY_SIZE * 0.45, part)
+                pdf.ln(2)
+
+    if len(prs.slides) == 0:
+        pdf.add_page()
+        pdf.set_font("Helvetica", "I", 12)
+        pdf.cell(0, 10, "This presentation has no slides.", ln=True)
+
+    return bytes(pdf.output())
+
+
+def _docx_to_pdf(file_bytes):
+    """Convert DOCX bytes to PDF bytes using python-docx + fpdf2."""
+    from docx import Document as DocxDocument
+    from fpdf import FPDF
+    import io
+
+    doc = DocxDocument(io.BytesIO(file_bytes))
+
+    pdf = FPDF(orientation="P", unit="mm", format="A4")
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+
+    MARGIN = 16
+    pdf.set_left_margin(MARGIN)
+    pdf.set_right_margin(MARGIN)
+
+    HEADING_SIZES = {"Heading 1": 20, "Heading 2": 16, "Heading 3": 14}
+    BODY_SIZE = 11
+
+    for para in doc.paragraphs:
+        text = para.text.strip()
+        if not text:
+            pdf.ln(3)
+            continue
+
+        style_name = para.style.name if para.style else ""
+
+        if style_name in HEADING_SIZES:
+            size = HEADING_SIZES[style_name]
+            pdf.set_font("Helvetica", "B", size)
+            pdf.set_text_color(22, 49, 44)
+            pdf.ln(4)
+            pdf.multi_cell(0, size * 0.5, text)
+            pdf.ln(3)
+        else:
+            is_bold = any(run.bold for run in para.runs if run.bold is not None)
+            pdf.set_font("Helvetica", "B" if is_bold else "", BODY_SIZE)
+            pdf.set_text_color(50, 50, 50)
+            pdf.multi_cell(0, BODY_SIZE * 0.45, text)
+            pdf.ln(1.5)
+
+    for rel in doc.part.rels.values():
+        if "image" in rel.reltype:
+            try:
+                img_stream = io.BytesIO(rel.target_part.blob)
+                pdf.image(img_stream, x=MARGIN, w=100)
+                pdf.ln(4)
+            except Exception:
+                pass
+
+    return bytes(pdf.output())
+
+
 def convert_office_to_pdf(file_bytes, filename):
-    """Convert Office files to PDF via LibreOffice headless."""
-    extension = get_extension(filename)
-    if extension not in OFFICE_EXTENSIONS:
-        return None
-
-    with tempfile.TemporaryDirectory(prefix="plexi_office_") as temp_dir:
-        input_path = os.path.join(temp_dir, f"source{extension}")
-        with open(input_path, "wb") as file_handle:
-            file_handle.write(file_bytes)
-
-        command = [
-            "soffice",
-            "--headless",
-            "--convert-to",
-            "pdf",
-            "--outdir",
-            temp_dir,
-            input_path,
-        ]
-        try:
-            result = subprocess.run(
-                command, capture_output=True, text=True, timeout=180
-            )
-        except Exception as e:
-            print(f"  LibreOffice conversion error: {e}")
-            return None
-
-        if result.returncode != 0:
-            stderr = (result.stderr or "").strip()
-            stdout = (result.stdout or "").strip()
-            detail = stderr or stdout or "unknown conversion failure"
-            print(f"  LibreOffice conversion failed: {detail}")
-            return None
-
-        output_path = os.path.splitext(input_path)[0] + ".pdf"
-        if not os.path.exists(output_path):
-            pdf_candidates = list(Path(temp_dir).glob("*.pdf"))
-            if not pdf_candidates:
-                print("  LibreOffice conversion did not produce a PDF.")
-                return None
-            output_path = str(pdf_candidates[0])
-
-        with open(output_path, "rb") as file_handle:
-            return file_handle.read()
+    """Convert an Office document to PDF bytes using pure Python."""
+    ext = get_extension(filename)
+    try:
+        if ext in (".pptx", ".ppt"):
+            return _pptx_to_pdf(file_bytes)
+        elif ext in (".docx", ".doc"):
+            return _docx_to_pdf(file_bytes)
+    except Exception as err:
+        print(f"  Office-to-PDF conversion error ({filename}): {err}")
+    return None
 
 
 def main():

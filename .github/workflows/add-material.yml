@@ -38,8 +38,8 @@ jobs:
       - name: Install indexing dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y tesseract-ocr libreoffice
-          pip install llama-index-core llama-index-embeddings-huggingface sentence-transformers PyPDF2 pytesseract pypdfium2 Pillow
+          sudo apt-get install -y tesseract-ocr
+          pip install llama-index-core llama-index-embeddings-huggingface sentence-transformers PyPDF2 pytesseract pypdfium2 Pillow python-pptx python-docx fpdf2
 
       - name: Rebuild vector index
         run: |
