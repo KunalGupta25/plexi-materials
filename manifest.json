@@ -52,6 +52,64 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-3-Timing.diagram.pdf",
           "name": "Unit-3-Timing.diagram.pdf"
         }
+      ],
+      "PPTs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-3-8085.Instructions.pdf",
+          "name": "Unit-3-8085.Instructions.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-3-Looping.counting.indexing.pdf",
+          "name": "Unit-3-Looping.counting.indexing.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-4-counterstimedelay.pdf",
+          "name": "Unit-4-counterstimedelay.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-4-Stack_Subroutines.pdf",
+          "name": "Unit-4-Stack_Subroutines.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-5-INTRUPPT.pdf",
+          "name": "Unit-5-INTRUPPT.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.1.pdf",
+          "name": "Unit6.1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.2.pdf",
+          "name": "Unit6.2.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.3.pdf",
+          "name": "Unit6.3.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.4.pdf",
+          "name": "Unit6.4.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.5.pdf",
+          "name": "Unit6.5.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-6-Basic.computer.design.pdf",
+          "name": "Unit-6-Basic.computer.design.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-6-Register.transfer.language.pdf",
+          "name": "Unit-6-Register.transfer.language.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-1-8085.Microprocessor.1.pdf",
+          "name": "Unit-1-8085.Microprocessor.1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-2-Microprocessor.pin.diagram_.pdf",
+          "name": "Unit-2-Microprocessor.pin.diagram_.pdf"
+        }
       ]
     },
     "Operating System": {
