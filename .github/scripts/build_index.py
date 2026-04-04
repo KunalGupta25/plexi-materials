@@ -2,39 +2,173 @@
 
 Run after process_upload.py to rebuild the index with all current materials.
 The index files are committed to the repo so the app can fetch them directly.
+
+This builder uses normal PDF text extraction first, then falls back to OCR for
+scanned pages and supplements low-text pages with sparse OCR labels. The sparse
+OCR pass helps recover text from flowcharts, ER diagrams, and other visual pages
+where the important signal is scattered around the page.
 """
 
 import io
 import json
 import mimetypes
 import os
+import subprocess
+import tempfile
 import urllib.request
+from pathlib import Path
 
 import PyPDF2
+import pypdfium2 as pdfium
+import pytesseract
 from llama_index.core import Document, Settings, VectorStoreIndex
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 MANIFEST_PATH = "manifest.json"
 INDEX_DIR = "index"
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+MIN_DIRECT_TEXT_CHARS = 120
+OCR_RENDER_SCALE = 2
+OCR_LANG = os.getenv("OCR_LANG", "eng")
+OCR_TIMEOUT_SECONDS = int(os.getenv("OCR_TIMEOUT_SECONDS", "90"))
+OFFICE_EXTENSIONS = {".doc", ".docx", ".ppt", ".pptx"}
+
+
+def normalize_text(text):
+    """Normalize text extracted from PDFs or OCR."""
+    if not text:
+        return ""
+    filtered = text.encode("utf-16", "surrogatepass").decode("utf-16", "ignore")
+    lines = [" ".join(line.split()) for line in filtered.splitlines()]
+    return "\n".join(line for line in lines if line).strip()
+
+
+def alpha_count(text):
+    """Return the count of alpha-numeric characters in text."""
+    return sum(1 for char in text if char.isalnum())
 
 
 def read_pdf_content_safe(pdf_bytes):
-    """Extract text from PDF bytes."""
-    text = []
+    """Extract direct text from PDF bytes via PyPDF2."""
+    pages = []
     try:
         reader = PyPDF2.PdfReader(io.BytesIO(pdf_bytes))
         for page in reader.pages:
             try:
-                page_text = page.extract_text()
-                if page_text:
-                    filtered = page_text.encode("utf-16", "surrogatepass").decode("utf-16", "ignore")
-                    text.append(filtered)
+                page_text = normalize_text(page.extract_text())
+                pages.append(page_text)
             except Exception as e:
                 print(f"  Page extraction warning: {e}")
+                pages.append("")
     except Exception as e:
         print(f"  PDF extraction error: {e}")
-    return "\n".join(text)
+    return pages
+
+
+def pil_image_from_pdf_page(page):
+    """Render a PDF page to a PIL image for OCR."""
+    bitmap = page.render(scale=OCR_RENDER_SCALE)
+    return bitmap.to_pil()
+
+
+def collect_sparse_ocr_lines(page_image):
+    """Collect sparse OCR labels from visually dense pages."""
+    data = pytesseract.image_to_data(
+        page_image,
+        lang=OCR_LANG,
+        config="--oem 3 --psm 11",
+        output_type=pytesseract.Output.DICT,
+        timeout=OCR_TIMEOUT_SECONDS,
+    )
+
+    rows = {}
+    count = len(data.get("text", []))
+    for index in range(count):
+        text = normalize_text(data["text"][index])
+        confidence = data["conf"][index]
+        if not text:
+            continue
+        try:
+            conf_value = float(confidence)
+        except (TypeError, ValueError):
+            conf_value = -1
+        if conf_value < 35:
+            continue
+
+        top = int(data["top"][index])
+        line_key = round(top / 20)
+        rows.setdefault(line_key, []).append((int(data["left"][index]), text))
+
+    lines = []
+    for _, words in sorted(rows.items()):
+        line = " ".join(word for _, word in sorted(words))
+        if line:
+            lines.append(line)
+
+    deduped = []
+    seen = set()
+    for line in lines:
+        key = line.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(line)
+    return deduped
+
+
+def ocr_pdf_pages(pdf_bytes, direct_pages):
+    """Run OCR on low-text pages and gather sparse labels for diagram pages."""
+    combined_pages = []
+    try:
+        pdf = pdfium.PdfDocument(io.BytesIO(pdf_bytes))
+    except Exception as e:
+        print(f"  PDF render error: {e}")
+        return "\n".join(page for page in direct_pages if page)
+
+    try:
+        for page_index in range(len(pdf)):
+            direct_text = (
+                direct_pages[page_index] if page_index < len(direct_pages) else ""
+            )
+            page = pdf[page_index]
+            try:
+                page_image = pil_image_from_pdf_page(page)
+                direct_length = alpha_count(direct_text)
+
+                parts = []
+                if direct_text:
+                    parts.append(direct_text)
+
+                if direct_length < MIN_DIRECT_TEXT_CHARS:
+                    ocr_text = normalize_text(
+                        pytesseract.image_to_string(
+                            page_image,
+                            lang=OCR_LANG,
+                            config="--oem 3 --psm 6",
+                            timeout=OCR_TIMEOUT_SECONDS,
+                        )
+                    )
+                    if ocr_text:
+                        parts.append("[OCR TEXT]")
+                        parts.append(ocr_text)
+
+                sparse_lines = collect_sparse_ocr_lines(page_image)
+                if sparse_lines:
+                    sparse_block = "\n".join(f"- {line}" for line in sparse_lines[:50])
+                    parts.append("[DIAGRAM LABELS]")
+                    parts.append(sparse_block)
+
+                page_text = "\n".join(part for part in parts if part).strip()
+                if page_text:
+                    combined_pages.append(f"[Page {page_index + 1}]\n{page_text}")
+            except Exception as e:
+                print(f"  OCR warning on page {page_index + 1}: {e}")
+                if direct_text:
+                    combined_pages.append(f"[Page {page_index + 1}]\n{direct_text}")
+    finally:
+        pdf.close()
+
+    return "\n\n".join(combined_pages).strip()
 
 
 def download_file(url, max_retries=3):
@@ -55,6 +189,68 @@ def get_mime_type(filename):
     """Guess MIME type from filename."""
     mime, _ = mimetypes.guess_type(filename)
     return mime or "application/octet-stream"
+
+
+def get_extension(filename):
+    """Return the lowercase file extension."""
+    return Path(filename).suffix.lower()
+
+
+def is_supported_file(filename, mime):
+    """Return True when a file can be indexed."""
+    extension = get_extension(filename)
+    return (
+        mime.startswith("text/")
+        or mime == "application/pdf"
+        or extension in OFFICE_EXTENSIONS
+    )
+
+
+def convert_office_to_pdf(file_bytes, filename):
+    """Convert Office files to PDF via LibreOffice headless."""
+    extension = get_extension(filename)
+    if extension not in OFFICE_EXTENSIONS:
+        return None
+
+    with tempfile.TemporaryDirectory(prefix="plexi_office_") as temp_dir:
+        input_path = os.path.join(temp_dir, f"source{extension}")
+        with open(input_path, "wb") as file_handle:
+            file_handle.write(file_bytes)
+
+        command = [
+            "soffice",
+            "--headless",
+            "--convert-to",
+            "pdf",
+            "--outdir",
+            temp_dir,
+            input_path,
+        ]
+        try:
+            result = subprocess.run(
+                command, capture_output=True, text=True, timeout=180
+            )
+        except Exception as e:
+            print(f"  LibreOffice conversion error: {e}")
+            return None
+
+        if result.returncode != 0:
+            stderr = (result.stderr or "").strip()
+            stdout = (result.stdout or "").strip()
+            detail = stderr or stdout or "unknown conversion failure"
+            print(f"  LibreOffice conversion failed: {detail}")
+            return None
+
+        output_path = os.path.splitext(input_path)[0] + ".pdf"
+        if not os.path.exists(output_path):
+            pdf_candidates = list(Path(temp_dir).glob("*.pdf"))
+            if not pdf_candidates:
+                print("  LibreOffice conversion did not produce a PDF.")
+                return None
+            output_path = str(pdf_candidates[0])
+
+        with open(output_path, "rb") as file_handle:
+            return file_handle.read()
 
 
 def main():
@@ -79,7 +275,7 @@ def main():
                     url = file_entry["download_url"]
                     mime = get_mime_type(name)
 
-                    if not (mime.startswith("text/") or mime == "application/pdf"):
+                    if not is_supported_file(name, mime):
                         print(f"Skipping unsupported: {name} ({mime})")
                         continue
 
@@ -102,11 +298,25 @@ def main():
                                 documents.append(Document(text=text, metadata=metadata))
 
                         elif mime == "application/pdf":
-                            text = read_pdf_content_safe(content)
+                            direct_pages = read_pdf_content_safe(content)
+                            text = ocr_pdf_pages(content, direct_pages)
                             if text.strip():
                                 documents.append(Document(text=text, metadata=metadata))
                             else:
                                 print(f"  No text extracted from: {name}")
+
+                        elif get_extension(name) in OFFICE_EXTENSIONS:
+                            pdf_bytes = convert_office_to_pdf(content, name)
+                            if not pdf_bytes:
+                                print(f"  Could not convert Office file: {name}")
+                                continue
+
+                            direct_pages = read_pdf_content_safe(pdf_bytes)
+                            text = ocr_pdf_pages(pdf_bytes, direct_pages)
+                            if text.strip():
+                                documents.append(Document(text=text, metadata=metadata))
+                            else:
+                                print(f"  No text extracted after conversion: {name}")
 
                     except Exception as e:
                         print(f"  Error processing {name}: {e}")
