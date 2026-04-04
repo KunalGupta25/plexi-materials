@@ -110,6 +110,12 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-2-Microprocessor.pin.diagram_.pdf",
           "name": "Unit-2-Microprocessor.pin.diagram_.pdf"
         }
+      ],
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_Syllabus_COMA_Syllabus.pdf",
+          "name": "COMA_Syllabus.pdf"
+        }
       ]
     },
     "Operating System": {
