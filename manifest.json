@@ -1,6 +1,12 @@
 {
   "Semester 4": {
     "Computer Network": {
+      "Notes": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_Notes_Unit-1-OSI_Model.pdf",
+          "name": "Unit-1-OSI_Model.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_PPTs_Unit-2-Data_Link_layer_and_Medium_Access_Sub_Layer.pdf",
