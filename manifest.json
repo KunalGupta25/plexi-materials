@@ -171,6 +171,76 @@
       ]
     },
     "Programming in Python with Full Stack": {
+      "Notes": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-Tupple.pdf",
+          "name": "Unit-1-Tupple.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-2-.Topic.Exception.Handling.pdf",
+          "name": "Unit-2-.Topic.Exception.Handling.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-2-.Topic.File.Handling.pdf",
+          "name": "Unit-2-.Topic.File.Handling.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-2-Function.pdf",
+          "name": "Unit-2-Function.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-3-Modules-and-Packages.pdf",
+          "name": "Unit-3-Modules-and-Packages.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-basic.pdf",
+          "name": "Unit-1-basic.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-Data.type.Casting.pdf",
+          "name": "Unit-1-Data.type.Casting.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-Data.type.in.py.pdf",
+          "name": "Unit-1-Data.type.in.py.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-Diff.Btw.list.and.Tupple.pdf",
+          "name": "Unit-1-Diff.Btw.list.and.Tupple.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-Exploring.Variables.pdf",
+          "name": "Unit-1-Exploring.Variables.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-for.loop.pdf",
+          "name": "Unit-1-for.loop.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-Intro.to.python.pdf",
+          "name": "Unit-1-Intro.to.python.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-Nested.for.loop.pdf",
+          "name": "Unit-1-Nested.for.loop.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-nested.if.pdf",
+          "name": "Unit-1-nested.if.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-python.installation.pdf",
+          "name": "Unit-1-python.installation.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-range.enumerator.function.pdf",
+          "name": "Unit-1-range.enumerator.function.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-string.slicing.pdf",
+          "name": "Unit-1-string.slicing.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_PPTs_Unit-3-Program.Flow.Control.pdf",
