@@ -241,6 +241,20 @@
           "name": "Unit-1-string.slicing.pdf"
         }
       ],
+      "PDFs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_PDFs_Unit-5-Finite_Differences_and_Interpolation.pdf",
+          "name": "Unit-5-Finite_Differences_and_Interpolation.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_PDFs_Unit-6-Numerical_Integration.pdf",
+          "name": "Unit-6-Numerical_Integration.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_PDFs_Unit-3-Hypothesis_testing.pdf",
+          "name": "Unit-3-Hypothesis_testing.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_PPTs_Unit-3-Program.Flow.Control.pdf",
