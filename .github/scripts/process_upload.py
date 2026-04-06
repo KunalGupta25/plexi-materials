@@ -297,10 +297,11 @@ def main():
 
     gh("issue", "comment", str(issue_number), "--repo", repo, "--body", comment)
 
-    if uploaded_files:
-        gh("issue", "close", str(issue_number), "--repo", repo)
-    else:
+    if not uploaded_files:
+        # Nothing uploaded at all — leave the issue open so the user can retry.
         sys.exit(1)
+
+    gh("issue", "close", str(issue_number), "--repo", repo)
 
     if failed_files:
         print(f"Warning: {len(failed_files)} file(s) failed. See issue comment for details.")
