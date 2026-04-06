@@ -79,6 +79,35 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
     if os.path.exists(dest):
         os.remove(dest)
 
+    # Prefer curl for GitHub attachment URLs; fallback to urllib if curl is unavailable.
+    try:
+        result = subprocess.run(
+            [
+                "curl",
+                "-L",
+                "--fail",
+                "--retry",
+                "3",
+                "--retry-connrefused",
+                "--retry-delay",
+                "1",
+                "-o",
+                dest,
+                url,
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(result.stderr.strip() or "curl download failed")
+        return
+    except FileNotFoundError:
+        pass
+    except Exception:
+        # Fall back to urllib on any curl failure
+        if os.path.exists(dest):
+            os.remove(dest)
+
     req = urllib.request.Request(url)
     with urllib.request.urlopen(req) as resp:
         with open(dest, "wb") as f:
