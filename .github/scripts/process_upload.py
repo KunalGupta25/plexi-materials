@@ -80,7 +80,6 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
         os.remove(dest)
 
     # Prefer curl for GitHub attachment URLs; fallback to urllib for transient 416s.
-    fallback_to_urllib = False
     try:
         result = subprocess.run(
             [
@@ -100,23 +99,18 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
             capture_output=True,
             text=True,
         )
-        if result.returncode != 0:
-            curl_error = result.stderr.strip() or result.stdout.strip()
-            if "curl: (22)" in curl_error and "error: 416" in curl_error:
-                fallback_to_urllib = True
-            else:
-                raise RuntimeError(f"curl download failed: {curl_error}")
-        else:
-            return
     except FileNotFoundError:
-        fallback_to_urllib = True
-    except Exception:
-        if os.path.exists(dest):
-            os.remove(dest)
-        raise
+        result = None
 
-    if not fallback_to_urllib:
-        return
+    if result is not None:
+        if result.returncode == 0:
+            return
+
+        curl_error = result.stderr.strip() or result.stdout.strip()
+        if not ("curl: (22)" in curl_error and "error: 416" in curl_error):
+            if os.path.exists(dest):
+                os.remove(dest)
+            raise RuntimeError(f"curl download failed: {curl_error}")
 
     req = urllib.request.Request(url)
     with urllib.request.urlopen(req) as resp:
