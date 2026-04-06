@@ -100,6 +100,7 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
             text=True,
         )
     except FileNotFoundError:
+        # curl not available in this environment; use urllib fallback.
         result = None
 
     if result is not None:
@@ -107,7 +108,10 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
             return
 
         curl_error = result.stderr.strip() or result.stdout.strip()
-        if not ("curl: (22)" in curl_error and "error: 416" in curl_error):
+        is_http_416 = result.returncode == 22 and bool(
+            re.search(r"(error|status)\s*:?\s*416\b", curl_error, flags=re.IGNORECASE)
+        )
+        if not is_http_416:
             if os.path.exists(dest):
                 os.remove(dest)
             raise RuntimeError(f"curl download failed: {curl_error}")
