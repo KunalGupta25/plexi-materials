@@ -402,38 +402,6 @@
         }
       ]
     },
-    "Employability Skills": {
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Group_Discussion.pptx",
-          "name": "Group_Discussion.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Personal_Interview.pptx",
-          "name": "Personal_Interview.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Listening.pptx",
-          "name": "IELTS_Listening.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Reading.pptx",
-          "name": "IELTS_Reading.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Speaking.pptx",
-          "name": "IELTS_Speaking.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Writing.pptx",
-          "name": "IELTS_Writing.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Resume.Building.pptx",
-          "name": "Resume.Building.pptx"
-        }
-      ]
-    },
     "High Performance Computing": {
       "Other": [
         {
@@ -483,60 +451,6 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Other_Question_bank_MEAN_Stack.pdf",
           "name": "Question_bank_MEAN_Stack.pdf"
-        }
-      ],
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Angular.Features.pptx",
-          "name": "Angular.Features.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_AngularProjectSetup.pptx",
-          "name": "AngularProjectSetup.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Express.Deep.dive.pptx",
-          "name": "Express.Deep.dive.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Express.pptx",
-          "name": "Express.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Introduction.to.JavaScript.pptx",
-          "name": "Introduction.to.JavaScript.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Introduction.to.NodeJS.pptx",
-          "name": "Introduction.to.NodeJS.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Introduction_to_Angular_and_Web_Fundamentals.pptx",
-          "name": "Introduction_to_Angular_and_Web_Fundamentals.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_JAVASCRIPT.ARCHITECTURE.pptx",
-          "name": "JAVASCRIPT.ARCHITECTURE.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_MongoDB.CURD.Operations.pptx",
-          "name": "MongoDB.CURD.Operations.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_MongoDB.Installation.pptx",
-          "name": "MongoDB.Installation.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_node.modules.pptx",
-          "name": "node.modules.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_NodeJsInstallation.pptx",
-          "name": "NodeJsInstallation.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Introduction-to-web-devlopement-and-mean-stack.pptx",
-          "name": "Introduction-to-web-devlopement-and-mean-stack.pptx"
         }
       ],
       "Syllabus": [
