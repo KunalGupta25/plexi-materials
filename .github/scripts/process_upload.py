@@ -9,7 +9,6 @@ import os
 import re
 import subprocess
 import sys
-import urllib.error
 import urllib.request
 
 
@@ -76,35 +75,18 @@ def sanitize_filename(name):
 
 
 def download_with_retry(url, dest, chunk_size=1024 * 1024):
-    """Download a URL to dest, retrying cleanly on HTTP 416."""
-    existing_size = os.path.getsize(dest) if os.path.exists(dest) else 0
+    """Download a URL to dest, always starting fresh."""
+    if os.path.exists(dest):
+        os.remove(dest)
 
-    def _download(range_start=None):
-        headers = {}
-        if range_start is not None and range_start > 0:
-            headers["Range"] = f"bytes={range_start}-"
-        req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req) as resp:
-            mode = "ab" if (range_start is not None and range_start > 0) else "wb"
-            with open(dest, mode) as f:
-                while True:
-                    chunk = resp.read(chunk_size)
-                    if not chunk:
-                        break
-                    f.write(chunk)
-
-    try:
-        if existing_size > 0:
-            _download(range_start=existing_size)
-        else:
-            _download(range_start=None)
-    except urllib.error.HTTPError as e:
-        if e.code == 416:
-            if os.path.exists(dest):
-                os.remove(dest)
-            _download(range_start=None)
-        else:
-            raise
+    req = urllib.request.Request(url)
+    with urllib.request.urlopen(req) as resp:
+        with open(dest, "wb") as f:
+            while True:
+                chunk = resp.read(chunk_size)
+                if not chunk:
+                    break
+                f.write(chunk)
 
 
 def main():
