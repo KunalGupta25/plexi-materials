@@ -99,14 +99,19 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
             text=True,
         )
         if result.returncode != 0:
-            raise RuntimeError(result.stderr.strip() or "curl download failed")
+            raise RuntimeError(
+                f"curl download failed: {result.stderr.strip() or result.stdout.strip()}"
+            )
         return
     except FileNotFoundError:
         pass
     except Exception:
-        # Fall back to urllib on any curl failure
         if os.path.exists(dest):
             os.remove(dest)
+        # If curl is available but failed, surface the curl error instead of
+        # falling back to urllib, which can intermittently fail with 416 on
+        # redirected GitHub attachment URLs.
+        raise
 
     req = urllib.request.Request(url)
     with urllib.request.urlopen(req) as resp:
