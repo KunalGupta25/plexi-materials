@@ -187,17 +187,13 @@ def download_file(url, max_retries=3):
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req, timeout=60) as resp:
                 return resp.read()
-        except urllib.error.HTTPError as e:
-            if e.code == 416:
+        except Exception as e:
+            if isinstance(e, urllib.error.HTTPError) and e.code == 416:
                 print(f"  Download got HTTP 416 (attempt {attempt + 1}/{max_retries}); retrying clean...")
                 if attempt < max_retries - 1:
                     time.sleep(2 ** attempt)
                     continue
                 raise
-            print(f"  Download error (attempt {attempt + 1}): {e}")
-            if attempt == max_retries - 1:
-                raise
-        except Exception as e:
             print(f"  Download error (attempt {attempt + 1}): {e}")
             if attempt == max_retries - 1:
                 raise
@@ -397,9 +393,9 @@ def main():
         for file_list in types.values()
         for entry in file_list
     }
-    pruned_count = len(indexed_urls)
+    original_cache_count = len(indexed_urls)
     indexed_urls = [u for u in indexed_urls if u in manifest_urls]
-    pruned_count -= len(indexed_urls)
+    pruned_count = original_cache_count - len(indexed_urls)
     if pruned_count > 0:
         print(f"Pruned {pruned_count} stale cache entries not in manifest.")
 

@@ -113,7 +113,9 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024, max_retries=3):
                 return  # success
 
             curl_error = curl_result.stderr.strip() or curl_result.stdout.strip()
-            is_416 = curl_result.returncode == 22 and "416" in curl_error
+            is_416 = curl_result.returncode == 22 and bool(
+                re.search(r"\b416\b", curl_error)
+            )
             if not is_416:
                 # Non-416 curl failure: retry the whole attempt.
                 last_error = RuntimeError(f"curl download failed: {curl_error}")
