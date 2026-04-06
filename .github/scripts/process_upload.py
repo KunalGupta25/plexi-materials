@@ -79,7 +79,7 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
     if os.path.exists(dest):
         os.remove(dest)
 
-    # Prefer curl for GitHub attachment URLs; fallback to urllib if curl is unavailable.
+    # Prefer curl for GitHub attachment URLs; fallback to urllib for transient 416s.
     try:
         result = subprocess.run(
             [
@@ -91,6 +91,7 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
                 "--retry-connrefused",
                 "--retry-delay",
                 "1",
+                "--http1.1",
                 "-o",
                 dest,
                 url,
@@ -98,20 +99,22 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
             capture_output=True,
             text=True,
         )
-        if result.returncode != 0:
-            raise RuntimeError(
-                f"curl download failed: {result.stderr.strip() or result.stdout.strip()}"
-            )
-        return
     except FileNotFoundError:
-        pass
-    except Exception:
-        if os.path.exists(dest):
-            os.remove(dest)
-        # If curl is available but failed, surface the curl error instead of
-        # falling back to urllib, which can intermittently fail with 416 on
-        # redirected GitHub attachment URLs.
-        raise
+        # curl not available in this environment; use urllib fallback.
+        result = None
+
+    if result is not None:
+        if result.returncode == 0:
+            return
+
+        curl_error = result.stderr.strip() or result.stdout.strip()
+        is_http_416 = result.returncode == 22 and bool(
+            re.search(r"(error|status)\s*:?\s*416\b", curl_error, flags=re.IGNORECASE)
+        )
+        if not is_http_416:
+            if os.path.exists(dest):
+                os.remove(dest)
+            raise RuntimeError(f"curl download failed: {curl_error}")
 
     req = urllib.request.Request(url)
     with urllib.request.urlopen(req) as resp:
