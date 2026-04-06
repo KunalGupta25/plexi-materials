@@ -9,7 +9,6 @@ import os
 import re
 import subprocess
 import sys
-import urllib.error
 import urllib.request
 
 
@@ -81,6 +80,7 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
         os.remove(dest)
 
     # Prefer curl for GitHub attachment URLs; fallback to urllib for transient 416s.
+    fallback_to_urllib = False
     try:
         result = subprocess.run(
             [
@@ -103,22 +103,20 @@ def download_with_retry(url, dest, chunk_size=1024 * 1024):
         if result.returncode != 0:
             curl_error = result.stderr.strip() or result.stdout.strip()
             if "curl: (22)" in curl_error and "error: 416" in curl_error:
-                raise urllib.error.HTTPError(url, 416, "Requested Range Not Satisfiable", None, None)
-            raise RuntimeError(
-                f"curl download failed: {curl_error}"
-            )
-        return
+                fallback_to_urllib = True
+            else:
+                raise RuntimeError(f"curl download failed: {curl_error}")
+        else:
+            return
     except FileNotFoundError:
-        pass
-    except urllib.error.HTTPError as e:
-        if e.code != 416:
-            if os.path.exists(dest):
-                os.remove(dest)
-            raise
+        fallback_to_urllib = True
     except Exception:
         if os.path.exists(dest):
             os.remove(dest)
         raise
+
+    if not fallback_to_urllib:
+        return
 
     req = urllib.request.Request(url)
     with urllib.request.urlopen(req) as resp:
