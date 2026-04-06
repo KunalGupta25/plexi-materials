@@ -217,6 +217,7 @@ def main():
     manifest[semester][subject].setdefault(file_type, [])
 
     uploaded_files = []
+    failed_files = []
 
     for attachment_url in attachment_urls:
         # Derive the original filename from the attachment URL
@@ -233,10 +234,20 @@ def main():
 
         # Download the attachment
         print(f"Downloading: {attachment_url}")
-        download_with_retry(attachment_url, local_path)
+        try:
+            download_with_retry(attachment_url, local_path)
+        except Exception as e:
+            print(f"  Failed to download {original_name}: {e}")
+            failed_files.append((original_name, str(e)))
+            continue
 
         print(f"Uploading {asset_name} to release {tag}...")
-        gh("release", "upload", tag, local_path, "--repo", repo, "--clobber")
+        try:
+            gh("release", "upload", tag, local_path, "--repo", repo, "--clobber")
+        except SystemExit as e:
+            print(f"  Failed to upload {original_name} to release")
+            failed_files.append((original_name, "upload to release failed"))
+            continue
 
         # Build download URL
         download_url = f"https://github.com/{repo}/releases/download/{tag}/{asset_name}"
@@ -253,24 +264,47 @@ def main():
 
         uploaded_files.append(original_name)
 
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, indent=2, sort_keys=True)
+    if uploaded_files:
+        with open(manifest_path, "w", encoding="utf-8") as f:
+            json.dump(manifest, f, indent=2, sort_keys=True)
 
-    # Close issue with success comment
-    file_list = "\n".join(f"  - `{name}`" for name in uploaded_files)
-    comment = (
-        f"**{len(uploaded_files)} file(s) uploaded successfully!**\n\n"
-        f"- **Semester:** {semester}\n"
-        f"- **Subject:** {subject}\n"
-        f"- **Type:** {file_type}\n"
-        f"- **Files:**\n{file_list}\n"
-    )
-    if notes:
-        comment += f"- **Notes:** {notes}\n"
-    comment += f"\nThe manifest has been updated and the files are now available in the Study Materials Hub."
+    # Build issue comment
+    if uploaded_files:
+        file_list = "\n".join(f"  - `{name}`" for name in uploaded_files)
+        comment = (
+            f"**{len(uploaded_files)} file(s) uploaded successfully!**\n\n"
+            f"- **Semester:** {semester}\n"
+            f"- **Subject:** {subject}\n"
+            f"- **Type:** {file_type}\n"
+            f"- **Files:**\n{file_list}\n"
+        )
+        if notes:
+            comment += f"- **Notes:** {notes}\n"
+        comment += "\nThe manifest has been updated and the files are now available in the Study Materials Hub."
+    else:
+        comment = (
+            f"**Upload failed — no files could be processed.**\n\n"
+            f"- **Semester:** {semester}\n"
+            f"- **Subject:** {subject}\n"
+            f"- **Type:** {file_type}\n"
+        )
+
+    if failed_files:
+        failed_list = "\n".join(
+            f"  - `{name}` — {reason}" for name, reason in failed_files
+        )
+        comment += f"\n\n⚠️ **{len(failed_files)} file(s) could not be downloaded/uploaded** (the attachment URL may be invalid or expired — please re-upload these files in a new issue):\n{failed_list}"
 
     gh("issue", "comment", str(issue_number), "--repo", repo, "--body", comment)
-    gh("issue", "close", str(issue_number), "--repo", repo)
+
+    if uploaded_files:
+        gh("issue", "close", str(issue_number), "--repo", repo)
+    else:
+        sys.exit(1)
+
+    if failed_files:
+        print(f"Warning: {len(failed_files)} file(s) failed. See issue comment for details.")
+        sys.exit(1)
 
     print("Done!")
 
