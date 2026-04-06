@@ -9,6 +9,8 @@ import os
 import re
 import subprocess
 import sys
+import time
+import urllib.error
 import urllib.request
 
 
@@ -74,56 +76,85 @@ def sanitize_filename(name):
     return re.sub(r"[^\w.\-]", "_", name)
 
 
-def download_with_retry(url, dest, chunk_size=1024 * 1024):
-    """Download a URL to dest, always starting fresh."""
-    if os.path.exists(dest):
-        os.remove(dest)
+def download_with_retry(url, dest, chunk_size=1024 * 1024, max_retries=3):
+    """Download a URL to dest, always starting fresh.
 
-    # Prefer curl for GitHub attachment URLs; fallback to urllib for transient 416s.
-    try:
-        result = subprocess.run(
-            [
-                "curl",
-                "-L",
-                "--fail",
-                "--retry",
-                "3",
-                "--retry-connrefused",
-                "--retry-delay",
-                "1",
-                "--http1.1",
-                "-o",
-                dest,
-                url,
-            ],
-            capture_output=True,
-            text=True,
-        )
-    except FileNotFoundError:
-        # curl not available in this environment; use urllib fallback.
-        result = None
+    Uses curl when available (no internal --retry to avoid Range-header
+    injection on partial files). Falls back to urllib. Handles HTTP 416
+    gracefully by clearing any partial file and retrying.
+    """
+    last_error = None
+    for attempt in range(max_retries):
+        # Always start each attempt with a clean slate.
+        if os.path.exists(dest):
+            os.remove(dest)
 
-    if result is not None:
-        if result.returncode == 0:
-            return
+        # --- curl path ---
+        curl_result = None
+        try:
+            curl_result = subprocess.run(
+                [
+                    "curl",
+                    "-L",
+                    "--fail",
+                    "--http1.1",
+                    "-o",
+                    dest,
+                    url,
+                ],
+                capture_output=True,
+                text=True,
+            )
+        except FileNotFoundError:
+            pass  # curl not available; use urllib below
 
-        curl_error = result.stderr.strip() or result.stdout.strip()
-        is_http_416 = result.returncode == 22 and bool(
-            re.search(r"(error|status)\s*:?\s*416\b", curl_error, flags=re.IGNORECASE)
-        )
-        if not is_http_416:
-            if os.path.exists(dest):
-                os.remove(dest)
-            raise RuntimeError(f"curl download failed: {curl_error}")
+        if curl_result is not None:
+            if curl_result.returncode == 0:
+                return  # success
 
-    req = urllib.request.Request(url)
-    with urllib.request.urlopen(req) as resp:
-        with open(dest, "wb") as f:
-            while True:
-                chunk = resp.read(chunk_size)
-                if not chunk:
-                    break
-                f.write(chunk)
+            curl_error = curl_result.stderr.strip() or curl_result.stdout.strip()
+            is_416 = curl_result.returncode == 22 and "416" in curl_error
+            if not is_416:
+                # Non-416 curl failure: retry the whole attempt.
+                last_error = RuntimeError(f"curl download failed: {curl_error}")
+                print(f"  curl error (attempt {attempt + 1}/{max_retries}): {curl_error}")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)
+                continue
+            # 416 from curl: fall through to urllib for a clean retry.
+            print(f"  curl got 416 (attempt {attempt + 1}/{max_retries}); retrying via urllib...")
+
+        # --- urllib path (also used when curl not available) ---
+        if os.path.exists(dest):
+            os.remove(dest)
+        try:
+            req = urllib.request.Request(url)
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                with open(dest, "wb") as f:
+                    while True:
+                        chunk = resp.read(chunk_size)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+            return  # success
+        except urllib.error.HTTPError as e:
+            if e.code == 416:
+                print(f"  urllib got 416 (attempt {attempt + 1}/{max_retries}); retrying clean...")
+                last_error = e
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)
+                continue
+            raise
+        except Exception as e:
+            last_error = e
+            print(f"  urllib error (attempt {attempt + 1}/{max_retries}): {e}")
+            if attempt < max_retries - 1:
+                time.sleep(2 ** attempt)
+            continue
+
+    if last_error:
+        raise last_error
+    raise RuntimeError(f"Download failed after {max_retries} attempts")
 
 
 def main():
