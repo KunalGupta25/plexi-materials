@@ -15,6 +15,8 @@ import mimetypes
 import os
 import subprocess
 import tempfile
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -179,13 +181,19 @@ def ocr_pdf_pages(pdf_bytes, direct_pages):
 
 
 def download_file(url, max_retries=3):
-    """Download a file from URL with retry logic."""
+    """Download a file from URL with retry logic, handling HTTP 416 gracefully."""
     for attempt in range(max_retries):
         try:
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req, timeout=60) as resp:
                 return resp.read()
         except Exception as e:
+            if isinstance(e, urllib.error.HTTPError) and e.code == 416:
+                print(f"  Download got HTTP 416 (attempt {attempt + 1}/{max_retries}); retrying clean...")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)
+                    continue
+                raise
             print(f"  Download error (attempt {attempt + 1}): {e}")
             if attempt == max_retries - 1:
                 raise
@@ -376,6 +384,21 @@ def main():
         except Exception as e:
             print(f"Warning: could not read cache: {e}")
 
+    # Prune stale cache entries whose URLs are no longer in the manifest.
+    # This prevents dangling references when files are removed from the manifest.
+    manifest_urls = {
+        entry["download_url"]
+        for subjects in manifest.values()
+        for types in subjects.values()
+        for file_list in types.values()
+        for entry in file_list
+    }
+    original_cache_count = len(indexed_urls)
+    indexed_urls = [u for u in indexed_urls if u in manifest_urls]
+    pruned_count = original_cache_count - len(indexed_urls)
+    if pruned_count > 0:
+        print(f"Pruned {pruned_count} stale cache entries not in manifest.")
+
     # Collect all files from manifest
     documents = []
     newly_indexed_urls = []
@@ -444,6 +467,11 @@ def main():
 
     if not documents:
         print("No new documents to index.")
+        # Still persist the pruned cache so stale entries are removed on disk.
+        if pruned_count > 0:
+            with open(INDEX_CACHE_PATH, "w") as f:
+                json.dump(indexed_urls, f, indent=2)
+            print(f"Cache saved with {pruned_count} stale entries removed.")
         return
 
     print(f"\nBuilding/Updating index with {len(documents)} new documents...")
