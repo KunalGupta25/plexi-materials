@@ -1,1 +1,36 @@
-{}
+{
+  "Semester 6": {
+    "Machine Learning": {
+      "PDFs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Intro_to_ML.pdf",
+          "name": "Intro_to_ML.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Supervised_learning.pdf",
+          "name": "Supervised_learning.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Supervised_learning-II.pdf",
+          "name": "Supervised_learning-II.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Unsupervised_learning.pdf",
+          "name": "Unsupervised_learning.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Ensemble_learning.pdf",
+          "name": "Ensemble_learning.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Evaluation_Metrics.pdf",
+          "name": "Evaluation_Metrics.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Intro_to_data_collection.pdf",
+          "name": "Intro_to_data_collection.pdf"
+        }
+      ]
+    }
+  }
+}
