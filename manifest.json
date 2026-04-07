@@ -7,28 +7,6 @@
           "name": "Unit-1-OSI_Model.pdf"
         }
       ],
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_PPTs_Unit-2-Data_Link_layer_and_Medium_Access_Sub_Layer.pdf",
-          "name": "Unit-2-Data_Link_layer_and_Medium_Access_Sub_Layer.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_PPTs_Unit-3-Network_Layer.pdf",
-          "name": "Unit-3-Network_Layer.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_PPTs_Unit-4-Transport_layer.pdf",
-          "name": "Unit-4-Transport_layer.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_PPTs_Unit-5-Application_layer.pdf",
-          "name": "Unit-5-Application_layer.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_PPTs_Unit-1-Data_Communication_Components.pdf",
-          "name": "Unit-1-Data_Communication_Components.pdf"
-        }
-      ],
       "Syllabus": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_Syllabus_Syllabus_CN.pdf",
@@ -89,64 +67,6 @@
           "name": "Unit-3-Timing.diagram.pdf"
         }
       ],
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-3-8085.Instructions.pdf",
-          "name": "Unit-3-8085.Instructions.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-3-Looping.counting.indexing.pdf",
-          "name": "Unit-3-Looping.counting.indexing.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-4-counterstimedelay.pdf",
-          "name": "Unit-4-counterstimedelay.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-4-Stack_Subroutines.pdf",
-          "name": "Unit-4-Stack_Subroutines.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-5-INTRUPPT.pdf",
-          "name": "Unit-5-INTRUPPT.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.1.pdf",
-          "name": "Unit6.1.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.2.pdf",
-          "name": "Unit6.2.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.3.pdf",
-          "name": "Unit6.3.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.4.pdf",
-          "name": "Unit6.4.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit6.5.pdf",
-          "name": "Unit6.5.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-6-Basic.computer.design.pdf",
-          "name": "Unit-6-Basic.computer.design.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-6-Register.transfer.language.pdf",
-          "name": "Unit-6-Register.transfer.language.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-1-8085.Microprocessor.1.pdf",
-          "name": "Unit-1-8085.Microprocessor.1.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-2-Microprocessor.pin.diagram_.pdf",
-          "name": "Unit-2-Microprocessor.pin.diagram_.pdf"
-        }
-      ],
       "Syllabus": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_Syllabus_COMA_Syllabus.pdf",
@@ -163,40 +83,6 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PDFs_Unit-2-Notes.OS.pdf",
           "name": "Unit-2-Notes.OS.pdf"
-        }
-      ],
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-3-Inter-process-communication.pdf",
-          "name": "Unit-3-Inter-process-communication.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-4-deadlocks.pdf",
-          "name": "Unit-4-deadlocks.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-6-Virtual-memory.pdf",
-          "name": "Unit-6-Virtual-memory.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-5-Memory.Management.pdf",
-          "name": "Unit-5-Memory.Management.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-8-I_O.system.file.disk.management.pdf",
-          "name": "Unit-8-I_O.system.file.disk.management.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-7-OS-I_O-System.pdf",
-          "name": "Unit-7-OS-I_O-System.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-1-OS-introduction.pdf",
-          "name": "Unit-1-OS-introduction.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-2-thread-and-process-scheduling.pdf",
-          "name": "Unit-2-thread-and-process-scheduling.pdf"
         }
       ],
       "Syllabus": [
@@ -323,16 +209,6 @@
           "name": "Unit-3-Hypothesis_testing.pdf"
         }
       ],
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_PPTs_Unit-3-Program.Flow.Control.pdf",
-          "name": "Unit-3-Program.Flow.Control.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_PPTs_Unit-2-Pyhton-programming.pdf",
-          "name": "Unit-2-Pyhton-programming.pdf"
-        }
-      ],
       "Syllabus": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Syllabus_Syllabus_PPFSD.pdf",
@@ -378,93 +254,13 @@
         }
       ]
     },
-    "Cyber Security": {
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_PPTs_Information_Security.pdf",
-          "name": "Information_Security.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_PPTs_Systems_Vulnerability_Scanning.pdf",
-          "name": "Systems_Vulnerability_Scanning.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_PPTs_Network_Defense_tools.pdf",
-          "name": "Network_Defense_tools.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_PPTs_Cyber_Crime.pdf",
-          "name": "Cyber_Crime.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_PPTs_Cyber_Security.pdf",
-          "name": "Cyber_Security.pdf"
-        }
-      ]
-    },
-    "Employability Skills": {
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Group_Discussion.pptx",
-          "name": "Group_Discussion.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Personal_Interview.pptx",
-          "name": "Personal_Interview.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Listening.pptx",
-          "name": "IELTS_Listening.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Reading.pptx",
-          "name": "IELTS_Reading.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Speaking.pptx",
-          "name": "IELTS_Speaking.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_IELTS_Writing.pptx",
-          "name": "IELTS_Writing.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Employability_Skills_PPTs_Resume.Building.pptx",
-          "name": "Resume.Building.pptx"
-        }
-      ]
-    },
+    "Cyber Security": {},
+    "Employability Skills": {},
     "High Performance Computing": {
       "Other": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Other_HPC_Question_Bank.pdf",
           "name": "HPC_Question_Bank.pdf"
-        }
-      ],
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Introduction_to_HPC.pdf",
-          "name": "Introduction_to_HPC.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Parallel_Programming.pdf",
-          "name": "Parallel_Programming.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Fundamental_design_issues_in_HPC.pdf",
-          "name": "Fundamental_design_issues_in_HPC.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Unit-4_HPC.pdf",
-          "name": "Unit-4_HPC.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Parallel_programming_using_GPU.pdf",
-          "name": "Parallel_programming_using_GPU.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Performance.Measures.pdf",
-          "name": "Performance.Measures.pdf"
         }
       ],
       "Question Papers": [
@@ -483,60 +279,6 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Other_Question_bank_MEAN_Stack.pdf",
           "name": "Question_bank_MEAN_Stack.pdf"
-        }
-      ],
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Angular.Features.pptx",
-          "name": "Angular.Features.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_AngularProjectSetup.pptx",
-          "name": "AngularProjectSetup.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Express.Deep.dive.pptx",
-          "name": "Express.Deep.dive.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Express.pptx",
-          "name": "Express.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Introduction.to.JavaScript.pptx",
-          "name": "Introduction.to.JavaScript.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Introduction.to.NodeJS.pptx",
-          "name": "Introduction.to.NodeJS.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Introduction_to_Angular_and_Web_Fundamentals.pptx",
-          "name": "Introduction_to_Angular_and_Web_Fundamentals.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_JAVASCRIPT.ARCHITECTURE.pptx",
-          "name": "JAVASCRIPT.ARCHITECTURE.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_MongoDB.CURD.Operations.pptx",
-          "name": "MongoDB.CURD.Operations.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_MongoDB.Installation.pptx",
-          "name": "MongoDB.Installation.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_node.modules.pptx",
-          "name": "node.modules.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_NodeJsInstallation.pptx",
-          "name": "NodeJsInstallation.pptx"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Introduction-to-web-devlopement-and-mean-stack.pptx",
-          "name": "Introduction-to-web-devlopement-and-mean-stack.pptx"
         }
       ],
       "Syllabus": [
