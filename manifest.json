@@ -1,5 +1,17 @@
 {
   "Semester 6": {
+    "MEAN Stack Web Development": {
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Syllabus_MEAN_lab.pdf",
+          "name": "MEAN_lab.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Syllabus_MEAN_Theory.pdf",
+          "name": "MEAN_Theory.pdf"
+        }
+      ]
+    },
     "Machine Learning": {
       "Other": [
         {
