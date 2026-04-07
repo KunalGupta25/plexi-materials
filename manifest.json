@@ -268,6 +268,38 @@
         }
       ]
     },
+    "Mobile App Development": {
+      "Notes": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Notes_Android.Components.and.Resource.Handling.pdf",
+          "name": "Android.Components.and.Resource.Handling.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Notes_Data_sort_techniques.pdf",
+          "name": "Data_sort_techniques.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Notes_Polish_and_publish_APP.pdf",
+          "name": "Polish_and_publish_APP.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Notes_Unit-1_MAD.pdf",
+          "name": "Unit-1_MAD.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Notes_User_interface_components.pdf",
+          "name": "User_interface_components.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Notes_Views_and_fragments.pdf",
+          "name": "Views_and_fragments.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Notes_Web_application_intergration_technique.pdf",
+          "name": "Web_application_intergration_technique.pdf"
+        }
+      ]
+    },
     "Quant and Reasoning": {
       "Notes": [
         {
