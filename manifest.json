@@ -15,6 +15,12 @@
           "name": "POINT.TO.POINT.COMMUNICATION._.MPI.pdf"
         }
       ],
+      "Other": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Other_HPC_Question_Bank.pdf",
+          "name": "HPC_Question_Bank.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Unit-1_Introduction_to_HPC.pdf",
