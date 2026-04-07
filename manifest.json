@@ -1,5 +1,41 @@
 {
   "Semester 6": {
+    "Compiler Design": {
+      "PPTs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-2_Introduction_to_syntax_analysis_4.pdf",
+          "name": "Unit-2_Introduction_to_syntax_analysis_4.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-2_Introduction_to_syntax_analysis_5.pdf",
+          "name": "Unit-2_Introduction_to_syntax_analysis_5.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-3_semantic_analysis.pdf",
+          "name": "Unit-3_semantic_analysis.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-4_Semantic_analysis_of_expressions_and_Statement.pdf",
+          "name": "Unit-4_Semantic_analysis_of_expressions_and_Statement.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-5_semantic_error_recovery.pdf",
+          "name": "Unit-5_semantic_error_recovery.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-1_Overview_of_compilation.pdf",
+          "name": "Unit-1_Overview_of_compilation.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-2_Introduction_to_syntax_analysis_1.pdf",
+          "name": "Unit-2_Introduction_to_syntax_analysis_1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-2_Introduction_to_syntax_analysis_2.pdf",
+          "name": "Unit-2_Introduction_to_syntax_analysis_2.pdf"
+        }
+      ]
+    },
     "Cyber Security": {
       "PPTs": [
         {
