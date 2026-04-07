@@ -1,6 +1,60 @@
 {
   "Semester 6": {
     "MEAN Stack Web Development": {
+      "PPTs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-1_MongoDB.Installation.pdf",
+          "name": "Unit-1_MongoDB.Installation.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-1_NodeJs.Installation.pdf",
+          "name": "Unit-1_NodeJs.Installation.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-2_MongoDB.pdf",
+          "name": "Unit-2_MongoDB.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-3_Express.Deep.dive.pdf",
+          "name": "Unit-3_Express.Deep.dive.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-3_Express.pdf",
+          "name": "Unit-3_Express.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-3_Introduction.to.JavaScript.pdf",
+          "name": "Unit-3_Introduction.to.JavaScript.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-3_Introduction.to.NodeJS.pdf",
+          "name": "Unit-3_Introduction.to.NodeJS.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-3_node.modules.pdf",
+          "name": "Unit-3_node.modules.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-4_Angular.Features.pdf",
+          "name": "Unit-4_Angular.Features.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-4_Introduction_to_Angular_and_Web_Fundamentals.pdf",
+          "name": "Unit-4_Introduction_to_Angular_and_Web_Fundamentals.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-1_Angular.Project.Setup.pdf",
+          "name": "Unit-1_Angular.Project.Setup.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-1_Introduction_to_web_devlopement_and_mean_stack.pdf",
+          "name": "Unit-1_Introduction_to_web_devlopement_and_mean_stack.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-1_JAVASCRIPT.ARCHITECTURE.pdf",
+          "name": "Unit-1_JAVASCRIPT.ARCHITECTURE.pdf"
+        }
+      ],
       "Syllabus": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Syllabus_MEAN_lab.pdf",
