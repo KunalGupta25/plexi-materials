@@ -358,6 +358,16 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Question_Papers_MAD_PYQ_11-2024.pdf",
           "name": "MAD_PYQ_11-2024.pdf"
         }
+      ],
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Syllabus_MAD_Laboratory.pdf",
+          "name": "MAD_Laboratory.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Syllabus_MAD_theory.pdf",
+          "name": "MAD_theory.pdf"
+        }
       ]
     },
     "Quant and Reasoning": {
