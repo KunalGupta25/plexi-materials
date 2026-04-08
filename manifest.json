@@ -146,6 +146,12 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PPTs_Unit-4-Stack_Subroutines.pdf",
           "name": "Unit-4-Stack_Subroutines.pdf"
         }
+      ],
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_Syllabus_COMA_Syllabus.pdf",
+          "name": "COMA_Syllabus.pdf"
+        }
       ]
     }
   },
