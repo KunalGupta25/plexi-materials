@@ -1,6 +1,16 @@
 {
   "Semester 6": {
     "Compiler Design": {
+      "Assignments": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Assignments_CD_Assignment.2.pdf",
+          "name": "CD_Assignment.2.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Assignments_CD_Assignment.3.pdf",
+          "name": "CD_Assignment.3.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-2_Introduction_to_syntax_analysis_4.pdf",
