@@ -330,6 +330,20 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Notes_Web_application_intergration_technique.pdf",
           "name": "Web_application_intergration_technique.pdf"
         }
+      ],
+      "Question Papers": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Question_Papers_MAD_PYQ_04-2025.pdf",
+          "name": "MAD_PYQ_04-2025.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Question_Papers_MAD_PYQ_05-2024.pdf",
+          "name": "MAD_PYQ_05-2024.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Question_Papers_MAD_PYQ_11-2024.pdf",
+          "name": "MAD_PYQ_11-2024.pdf"
+        }
       ]
     },
     "Quant and Reasoning": {
