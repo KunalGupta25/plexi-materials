@@ -34,6 +34,16 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-2_Introduction_to_syntax_analysis_2.pdf",
           "name": "Unit-2_Introduction_to_syntax_analysis_2.pdf"
         }
+      ],
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Syllabus_CD_Laboratory.pdf",
+          "name": "CD_Laboratory.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_Syllabus_CD_theory.pdf",
+          "name": "CD_theory.pdf"
+        }
       ]
     },
     "Cyber Security": {
