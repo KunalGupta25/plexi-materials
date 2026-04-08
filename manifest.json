@@ -1,4 +1,14 @@
 {
+  "Semester 4": {
+    "Computer Network": {
+      "Notes": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_Notes_Unit-1-OSI_Model.pdf",
+          "name": "Unit-1-OSI_Model.pdf"
+        }
+      ]
+    }
+  },
   "Semester 6": {
     "Compiler Design": {
       "Assignments": [
@@ -235,6 +245,28 @@
       ]
     },
     "Machine Learning": {
+      "Assignments": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-2.pdf",
+          "name": "ML_Assignment-2.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-3.pdf",
+          "name": "ML_Assignment-3.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-4.pdf",
+          "name": "ML_Assignment-4.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-5.pdf",
+          "name": "ML_Assignment-5.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-1.pdf",
+          "name": "ML_Assignment-1.pdf"
+        }
+      ],
       "PDFs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Intro_to_ML.pdf",
@@ -275,6 +307,12 @@
           "name": "ML_PYQ_2022-23.pdf"
         }
       ],
+      "Question banks": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Question_bank.pdf",
+          "name": "ML_Question_bank.pdf"
+        }
+      ],
       "Syllabus": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Syllabus_ML_Lab.pdf",
@@ -283,34 +321,6 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Syllabus_ML_Theory.pdf",
           "name": "ML_Theory.pdf"
-        }
-      ],
-      "Assignments": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-2.pdf",
-          "name": "ML_Assignment-2.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-3.pdf",
-          "name": "ML_Assignment-3.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-4.pdf",
-          "name": "ML_Assignment-4.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-5.pdf",
-          "name": "ML_Assignment-5.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-1.pdf",
-          "name": "ML_Assignment-1.pdf"
-        }
-      ],
-      "Question banks": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Question_bank.pdf",
-          "name": "ML_Question_bank.pdf"
         }
       ]
     },
