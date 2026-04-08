@@ -35,6 +35,50 @@
           "name": "Syllabus_CN.pdf"
         }
       ]
+    },
+    "Computer Organization and Microprocessor": {
+      "PDFs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-2-8085.Architecture.pdf",
+          "name": "Unit-2-8085.Architecture.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-2-8085.BUS.Organization.pdf",
+          "name": "Unit-2-8085.BUS.Organization.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-2-8085.Microprocessor.Pin.Diagram.pdf",
+          "name": "Unit-2-8085.Microprocessor.Pin.Diagram.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-2-Architecture.of.8085.pdf",
+          "name": "Unit-2-Architecture.of.8085.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-2-Memory.pdf",
+          "name": "Unit-2-Memory.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-3-logical.instruction.rotate.compare.pdf",
+          "name": "Unit-3-logical.instruction.rotate.compare.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-3-MOV.TIming.Diagram.pdf",
+          "name": "Unit-3-MOV.TIming.Diagram.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-3-Timing.diagram.pdf",
+          "name": "Unit-3-Timing.diagram.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-1-Instruction.Set_8085.pdf",
+          "name": "Unit-1-Instruction.Set_8085.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Organization_and_Microprocessor_PDFs_Unit-1-Programming.Model.8085.pdf",
+          "name": "Unit-1-Programming.Model.8085.pdf"
+        }
+      ]
     }
   },
   "Semester 6": {
