@@ -378,6 +378,12 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Quant_and_Reasoning_Notes_Unit-2_Averages_and_Progressions.pdf",
           "name": "Unit-2_Averages_and_Progressions.pdf"
         }
+      ],
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Quant_and_Reasoning_Syllabus_QR_theory.pdf",
+          "name": "QR_theory.pdf"
+        }
       ]
     }
   }
