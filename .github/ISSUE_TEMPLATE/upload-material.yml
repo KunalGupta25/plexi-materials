@@ -78,6 +78,8 @@ body:
         - PPTs
         - Notes
         - Question Papers
+        - Question banks
+        - Assignments
         - Syllabus
         - Other
     validations:
