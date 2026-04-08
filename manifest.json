@@ -155,6 +155,12 @@
       ]
     },
     "Operating System": {
+      "Notes": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_Notes_OS_Notes.pdf",
+          "name": "OS_Notes.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Operating_System_PPTs_Unit-2-thread-and-process-scheduling.pdf",
