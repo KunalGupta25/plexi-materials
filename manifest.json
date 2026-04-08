@@ -107,12 +107,6 @@
           "name": "POINT.TO.POINT.COMMUNICATION._.MPI.pdf"
         }
       ],
-      "Other": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Other_HPC_Question_Bank.pdf",
-          "name": "HPC_Question_Bank.pdf"
-        }
-      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_PPTs_Unit-1_Introduction_to_HPC.pdf",
@@ -148,15 +142,15 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Question_Papers_HPC_PYQ_2023.pdf",
           "name": "HPC_PYQ_2023.pdf"
         }
+      ],
+      "Question banks": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Other_HPC_Question_Bank.pdf",
+          "name": "HPC_Question_Bank.pdf"
+        }
       ]
     },
     "MEAN Stack Web Development": {
-      "Other": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Other_Question_bank_MEAN_Stack.pdf",
-          "name": "Question_bank_MEAN_Stack.pdf"
-        }
-      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-1_MongoDB.Installation.pdf",
@@ -223,6 +217,10 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Question_banks_MAD_Question.Bank-3.pdf",
           "name": "MAD_Question.Bank-3.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Other_Question_bank_MEAN_Stack.pdf",
+          "name": "Question_bank_MEAN_Stack.pdf"
         }
       ],
       "Syllabus": [
@@ -237,32 +235,6 @@
       ]
     },
     "Machine Learning": {
-      "Other": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-2.pdf",
-          "name": "ML_Assignment-2.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-3.pdf",
-          "name": "ML_Assignment-3.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-4.pdf",
-          "name": "ML_Assignment-4.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-5.pdf",
-          "name": "ML_Assignment-5.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-1.pdf",
-          "name": "ML_Assignment-1.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Question_bank.pdf",
-          "name": "ML_Question_bank.pdf"
-        }
-      ],
       "PDFs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PDFs_Intro_to_ML.pdf",
@@ -311,6 +283,34 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Syllabus_ML_Theory.pdf",
           "name": "ML_Theory.pdf"
+        }
+      ],
+      "Assignments": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-2.pdf",
+          "name": "ML_Assignment-2.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-3.pdf",
+          "name": "ML_Assignment-3.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-4.pdf",
+          "name": "ML_Assignment-4.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-5.pdf",
+          "name": "ML_Assignment-5.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Assignment-1.pdf",
+          "name": "ML_Assignment-1.pdf"
+        }
+      ],
+      "Question banks": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Other_ML_Question_bank.pdf",
+          "name": "ML_Question_bank.pdf"
         }
       ]
     },
