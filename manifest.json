@@ -28,6 +28,12 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_PPTs_Unit-1-Data_Communication_Components.pdf",
           "name": "Unit-1-Data_Communication_Components.pdf"
         }
+      ],
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Computer_Network_Syllabus_Syllabus_CN.pdf",
+          "name": "Syllabus_CN.pdf"
+        }
       ]
     }
   },
