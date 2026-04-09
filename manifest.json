@@ -238,6 +238,20 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Probability__Statistics_and_Numerical_Methods_PDFs_Unit-3-Hypothesis_testing.pdf",
           "name": "Unit-3-Hypothesis_testing.pdf"
         }
+      ],
+      "Question Papers": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Probability__Statistics_and_Numerical_Methods_Question_Papers_Mid_exam_paper.02-2021._PSNM.pdf",
+          "name": "Mid_exam_paper.02-2021._PSNM.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Probability__Statistics_and_Numerical_Methods_Question_Papers_Mid_exam_paper.03-2025._PSNM.pdf",
+          "name": "Mid_exam_paper.03-2025._PSNM.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Probability__Statistics_and_Numerical_Methods_Question_Papers_Mid_exam_paper.01-2025._PSNM.pdf",
+          "name": "Mid_exam_paper.01-2025._PSNM.pdf"
+        }
       ]
     },
     "Programming in Python with Full Stack": {
