@@ -288,6 +288,12 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Notes_Unit-1-Data.type.Casting.pdf",
           "name": "Unit-1-Data.type.Casting.pdf"
         }
+      ],
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-4/Programming_in_Python_with_Full_Stack_Syllabus_Syllabus_PPFSD.pdf",
+          "name": "Syllabus_PPFSD.pdf"
+        }
       ]
     }
   },
