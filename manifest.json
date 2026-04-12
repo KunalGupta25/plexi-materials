@@ -533,6 +533,10 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Other_HPC_Question_Bank.pdf",
           "name": "HPC_Question_Bank.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Question_banks_Unit-2_2_Marks_Question.pdf",
+          "name": "Unit-2_2_Marks_Question.pdf"
         }
       ]
     },
