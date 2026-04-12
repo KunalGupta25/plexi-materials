@@ -463,6 +463,34 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_Theory_HPC.pdf",
           "name": "Theory_HPC.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_CUDA_Programing_Notes.pdf",
+          "name": "CUDA_Programing_Notes.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_CPU_vs_GPU.pdf",
+          "name": "CPU_vs_GPU.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_Unit-2_Decomposition_and_its_techniques.pdf",
+          "name": "Unit-2_Decomposition_and_its_techniques.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_Level_of_Parallelism.pdf",
+          "name": "Level_of_Parallelism.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_Unit-2_Parallel_Algorithm_models.pdf",
+          "name": "Unit-2_Parallel_Algorithm_models.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_Shared_Memory_Model_._Message_Passing_Model.pdf",
+          "name": "Shared_Memory_Model_._Message_Passing_Model.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_Implicit_._Explicit_Parallelism.pdf",
+          "name": "Implicit_._Explicit_Parallelism.pdf"
         }
       ],
       "PPTs": [
