@@ -455,6 +455,14 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_POINT.TO.POINT.COMMUNICATION._.MPI.pdf",
           "name": "POINT.TO.POINT.COMMUNICATION._.MPI.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_Lab_HPC.pdf",
+          "name": "Lab_HPC.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_Theory_HPC.pdf",
+          "name": "Theory_HPC.pdf"
         }
       ],
       "PPTs": [
