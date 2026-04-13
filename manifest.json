@@ -385,6 +385,34 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-2_Introduction_to_syntax_analysis_2.pdf",
           "name": "Unit-2_Introduction_to_syntax_analysis_2.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-7_Run_time_environments.pdf",
+          "name": "Unit-7_Run_time_environments.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-6_Intermediate_code_generation.pdf",
+          "name": "Unit-6_Intermediate_code_generation.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-5_Semantic_Analysis.pdf",
+          "name": "Unit-5_Semantic_Analysis.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-5_Semantic_Analysis_of_Expressions_and_Statements.pdf",
+          "name": "Unit-5_Semantic_Analysis_of_Expressions_and_Statements.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-4_Syntax-directed_definitions.pdf",
+          "name": "Unit-4_Syntax-directed_definitions.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-3_Top_down_parsing.pdf",
+          "name": "Unit-3_Top_down_parsing.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Compiler_Design_PPTs_Unit-8_Introduction_to_machine_code_generation_and_optimization.pdf",
+          "name": "Unit-8_Introduction_to_machine_code_generation_and_optimization.pdf"
         }
       ],
       "Question Papers": [
@@ -448,7 +476,6 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_POINT.TO.POINT.COMMUNICATION._.MPI.pdf",
           "name": "POINT.TO.POINT.COMMUNICATION._.MPI.pdf"
         },
-
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/High_Performance_Computing_Notes_CUDA_Programing_Notes.pdf",
           "name": "CUDA_Programing_Notes.pdf"
