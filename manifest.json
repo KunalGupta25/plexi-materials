@@ -460,6 +460,16 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_PPTs_Unit-4_Cyber_Crime.pdf",
           "name": "Unit-4_Cyber_Crime.pdf"
         }
+      ],
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_Syllabus_Lab_CS.pdf",
+          "name": "Lab_CS.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_Syllabus_Theory_CS.pdf",
+          "name": "Theory_CS.pdf"
+        }
       ]
     },
     "High Performance Computing": {
