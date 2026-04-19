@@ -709,6 +709,40 @@
           "name": "Intro_to_data_collection.pdf"
         }
       ],
+      "PPTs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PPTs_Unit-1_Introduction.part-1.pdf",
+          "name": "Unit-1_Introduction.part-1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PPTs_Unit-1_ML_in_practice.part-1.pdf",
+          "name": "Unit-1_ML_in_practice.part-1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PPTs_Unit-2_Supervised-Learning-I.pdf",
+          "name": "Unit-2_Supervised-Learning-I.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PPTs_Unit-3_Supervised-Learning-II.pdf",
+          "name": "Unit-3_Supervised-Learning-II.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PPTs_Unit-4_unsupervised-Learning.pdf",
+          "name": "Unit-4_unsupervised-Learning.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PPTs_Unit-5_Evaluation_Matrics.pdf",
+          "name": "Unit-5_Evaluation_Matrics.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PPTs_Unit-6_Ensemble_Learning.part-1.pdf",
+          "name": "Unit-6_Ensemble_Learning.part-1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_PPTs_Unit-6_Ensemble_Learning.part-2.pdf",
+          "name": "Unit-6_Ensemble_Learning.part-2.pdf"
+        }
+      ],
       "Question Papers": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Machine_Learning_Question_Papers_ML_PYQ_2023-24.pdf",
