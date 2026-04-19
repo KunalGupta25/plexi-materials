@@ -439,6 +439,16 @@
       ]
     },
     "Cyber Security": {
+      "Assignments": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_Assignments_CS_.Assignment_1.pdf",
+          "name": "CS_.Assignment_1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_Assignments_CS_.Assignment_2.pdf",
+          "name": "CS_.Assignment_2.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Cyber_Security_PPTs_Unit-5_Cyber_Security.pdf",
