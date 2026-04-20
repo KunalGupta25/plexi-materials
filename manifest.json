@@ -639,18 +639,6 @@
       ],
       "Question banks": [
         {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Question_banks_MAD_Question.Bank-1.pdf",
-          "name": "MAD_Question.Bank-1.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Question_banks_MAD_Question.Bank-2.pdf",
-          "name": "MAD_Question.Bank-2.pdf"
-        },
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Question_banks_MAD_Question.Bank-3.pdf",
-          "name": "MAD_Question.Bank-3.pdf"
-        },
-        {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_Other_Question_bank_MEAN_Stack.pdf",
           "name": "Question_bank_MEAN_Stack.pdf"
         }
@@ -823,6 +811,20 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Question_Papers_MAD_PYQ_11-2024.pdf",
           "name": "MAD_PYQ_11-2024.pdf"
+        }
+      ],
+      "Question banks": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Question_banks_MAD_Question.Bank-1.pdf",
+          "name": "MAD_Question.Bank-1.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Question_banks_MAD_Question.Bank-2.pdf",
+          "name": "MAD_Question.Bank-2.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/Mobile_App_Development_Question_banks_MAD_Question.Bank-3.pdf",
+          "name": "MAD_Question.Bank-3.pdf"
         }
       ],
       "Syllabus": [
