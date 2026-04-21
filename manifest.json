@@ -583,6 +583,32 @@
       ]
     },
     "MEAN Stack Web Development": {
+      "PDFs": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PDFs_Unit-1_Introduction_to_web_devlopement.pdf",
+          "name": "Unit-1_Introduction_to_web_devlopement.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PDFs_Unit-2_Mongo_DB.pdf",
+          "name": "Unit-2_Mongo_DB.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PDFs_Unit-3_NodeJS_and_Express.pdf",
+          "name": "Unit-3_NodeJS_and_Express.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PDFs_Unit-4_Angular.pdf",
+          "name": "Unit-4_Angular.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PDFs_Unit-5_Integration.pdf",
+          "name": "Unit-5_Integration.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PDFs_Unit-6_Devlopement_and_best_practices.pdf",
+          "name": "Unit-6_Devlopement_and_best_practices.pdf"
+        }
+      ],
       "PPTs": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-6/MEAN_Stack_Web_Development_PPTs_Unit-1_MongoDB.Installation.pdf",
