@@ -13,6 +13,7 @@
 
 require('dotenv').config();
 
+const path         = require('path');
 const express      = require('express');
 const cookieParser = require('cookie-parser');
 const multer       = require('multer');
@@ -43,6 +44,10 @@ app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+// Serve the bundled frontend from public/
+// express.static handles GET / → public/index.html automatically.
+app.use(express.static(path.join(__dirname, 'public')));
+
 // 25 MB per file, up to 10 files per request
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -56,8 +61,8 @@ const IS_PROD     = NODE_ENV === 'production';
 const COOKIE_OPTS = {
   httpOnly: true,
   secure:   IS_PROD,
-  sameSite: IS_PROD ? 'none' : 'lax', // 'none' required for cross-origin cookies in prod
-  maxAge:   24 * 60 * 60 * 1000,      // 1 day
+  sameSite: 'lax',              // same-origin deployment — 'lax' is safe in all envs
+  maxAge:   24 * 60 * 60 * 1000, // 1 day
   path:     '/',
 };
 
@@ -147,7 +152,7 @@ app.get('/api/auth/github', (req, res) => {
 /** Step 2 — GitHub redirects here with ?code. */
 app.get('/api/auth/callback', async (req, res) => {
   const { code } = req.query;
-  if (!code) return res.redirect(`${FRONTEND_URL}?auth=error&reason=no_code`);
+  if (!code) return res.redirect('/?auth=error&reason=no_code');
 
   try {
     // Exchange code for access token
@@ -168,11 +173,11 @@ app.get('/api/auth/callback', async (req, res) => {
     // Issue a JWT and set it as an httpOnly cookie
     const token = signToken({ login: user.login, name: user.name || user.login, avatar_url: user.avatar_url });
     res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
-    res.redirect(`${FRONTEND_URL}?auth=success`);
+    res.redirect('/?auth=success');
 
   } catch (err) {
     console.error('[OAuth] Error:', err.message);
-    res.redirect(`${FRONTEND_URL}?auth=error`);
+    res.redirect('/?auth=error');
   }
 });
 
@@ -276,6 +281,13 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
 
 // ── Health ─────────────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
+
+// ── SPA fallback ───────────────────────────────────────────────────────────────
+// Unmatched /api/* routes return a JSON 404.
+// Everything else (deep links, unknown paths) serves index.html so the
+// frontend can handle routing client-side.
+app.use('/api', (_req, res) => res.status(404).json({ error: 'API route not found' }));
+app.get('*', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 // ── Local dev server ───────────────────────────────────────────────────────────
 // When run directly (npm start / npm run dev), start a real HTTP server.
