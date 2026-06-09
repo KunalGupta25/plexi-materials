@@ -1,0 +1,23 @@
+# ── Environment secrets ───────────────────────────────────────────────────────
+# NEVER commit real .env files — use .env.example as the template
+backend/.env
+.env
+.env.local
+.env.production
+
+# ── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+backend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── OS / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+
+# ── Build / Vercel ────────────────────────────────────────────────────────────
+.vercel/
+dist/
+build/
