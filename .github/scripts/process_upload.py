@@ -31,8 +31,18 @@ def parse_issue_body(body):
 
 
 def extract_attachment_urls(text):
-    """Extract all file attachment URLs from text."""
-    pattern = r"https://github\.com/[^\s\)]+/(?:files|assets)/[^\s\)]+"
+    """Extract all file attachment URLs from text.
+
+    Matches two URL formats:
+      - GitHub Issue attachments:  .../files/<id>/filename  or  .../assets/<id>/filename
+      - GitHub Release downloads:  .../releases/download/<tag>/filename
+        (used by the Plexi Upload Portal backend, which stages files in a
+        'staging-uploads' release before creating the issue)
+    """
+    pattern = (
+        r"https://github\.com/[^\s\)\"]+/"
+        r"(?:(?:files|assets)/[^\s\)\"]+|releases/download/[^/\s\"]+/[^\s\)\"]+)"
+    )
     return re.findall(pattern, text)
 
 

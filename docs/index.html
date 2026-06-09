@@ -3,533 +3,1478 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upload Study Material — Plexi Materials</title>
-  <meta name="description" content="Submit study materials to the Plexi Materials repository. Organized by semester and subject." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>Upload Study Material — Plexi</title>
+  <meta name="description" content="Submit study materials to the Plexi platform. Files are reviewed by a maintainer before being published." />
+  <meta name="robots" content="noindex" />
+
+  <!-- Geist font -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" />
+
   <style>
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* ── Design Tokens ───────────────────────────────────────────────────────── */
+    :root {
+      /* Typography */
+      --font-family:        'Geist Sans', 'Geist', system-ui, sans-serif;
+      --font-size-xs:       14px;
+      --font-size-sm:       16px;
+      --font-size-md:       18px;
+      --font-size-lg:       20px;
+      --font-size-xl:       36px;
+      --font-size-2xl:      60px;
+      --font-weight-base:   400;
+      --font-weight-medium: 500;
+      --font-weight-semi:   600;
+      --line-height-base:   24px;
+
+      /* Color — brand tokens (CSS Color 4) */
+      --color-text-primary:   lab(95.3444 -0.267148 -1.87211);
+      --color-text-secondary: lab(59.3671 -0.503778 -3.72702);
+      --color-text-tertiary:  lab(1.5459 -0.0968501 -1.40916);
+      --color-surface-base:   #000000;
+      --color-surface-muted:  lab(3.67543 -0.212148 -2.43837);
+      --color-border-default: lab(14.1232 -0.433221 -3.69173);
+      --color-focus-ring:     oklab(0.499994 -0.041048 -0.112747 / 0.5);
+      --color-danger:         #ef4444;
+      --color-danger-muted:   rgba(239, 68, 68, 0.08);
+      --color-success:        #22c55e;
+
+      /* Spacing */
+      --space-1: 8px;
+      --space-2: 10px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 40px;
+      --space-8: 64px;
+
+      /* Radius */
+      --radius-xs: 16px;
+      --radius-sm: 10px;
+      --radius-pill: 999px;
+
+      /* Shadows */
+      --shadow-1: rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0) 0px 0px 0px 0px,
+                  rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0) 0px 0px 0px 0px,
+                  rgba(0,0,0,0.05) 0px 1px 2px 0px;
+
+      /* Motion */
+      --motion-instant: 150ms;
+      --motion-fast:    300ms;
     }
 
-    :root {
-      --bg: #0b0e14;
-      --surface: #12161f;
-      --surface-hover: #181d29;
-      --border: #1e2533;
-      --border-focus: #4f7dff;
-      --text: #e2e8f0;
-      --text-muted: #8892a6;
-      --accent: #4f7dff;
-      --accent-hover: #6b91ff;
-      --accent-glow: rgba(79, 125, 255, 0.15);
-      --danger: #ff5f5f;
-      --success: #34d399;
-      --radius: 12px;
-      --radius-sm: 8px;
+    /* ── Reset ───────────────────────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-      position: relative;
-      overflow-x: hidden;
+      font-family:    var(--font-family);
+      font-size:      var(--font-size-sm);
+      font-weight:    var(--font-weight-base);
+      line-height:    var(--line-height-base);
+      color:          var(--color-text-primary);
+      background:     var(--color-surface-base);
+      min-height:     100dvh;
     }
 
-    /* Ambient background glow */
+    /* Subtle ambient glow — on-brand but premium */
     body::before {
       content: '';
       position: fixed;
-      top: -40%;
-      left: -20%;
-      width: 80%;
-      height: 80%;
-      background: radial-gradient(circle, rgba(79, 125, 255, 0.06) 0%, transparent 70%);
+      inset: 0;
+      background: radial-gradient(ellipse 90% 50% at 50% -5%,
+        rgba(255, 255, 255, 0.03) 0%,
+        transparent 70%);
       pointer-events: none;
       z-index: 0;
     }
 
-    body::after {
-      content: '';
-      position: fixed;
-      bottom: -30%;
-      right: -10%;
-      width: 60%;
-      height: 60%;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.04) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+    img { display: block; }
+    button { font-family: inherit; cursor: pointer; }
+    a { color: inherit; }
+
+    /* ── Layout helpers ──────────────────────────────────────────────────────── */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
     }
 
-    .container {
-      width: 100%;
-      max-width: 560px;
+    .view {
       position: relative;
       z-index: 1;
     }
 
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 2rem;
+    /* ── Typography ──────────────────────────────────────────────────────────── */
+    .text-secondary { color: var(--color-text-secondary); }
+    .text-xs        { font-size: var(--font-size-xs); }
+    .text-sm        { font-size: var(--font-size-sm); }
+    .text-lg        { font-size: var(--font-size-lg); }
+
+    /* ── Loading View ────────────────────────────────────────────────────────── */
+    #v-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
     }
 
-    .header-icon {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, var(--accent), #6366f1);
-      border-radius: 16px;
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--color-border-default);
+      border-top-color: var(--color-text-primary);
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Brand mark ──────────────────────────────────────────────────────────── */
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semi);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      color: var(--color-text-primary);
+    }
+    .brand-dot {
+      width: 24px;
+      height: 24px;
+      background: var(--color-text-primary);
+      border-radius: 6px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 8px 32px rgba(79, 125, 255, 0.25);
-    }
-
-    .header h1 {
-      font-size: 1.7rem;
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.4rem;
-      background: linear-gradient(135deg, #fff, #94a3b8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--color-text-tertiary);
+      flex-shrink: 0;
     }
 
-    .header p {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      line-height: 1.5;
+    /* ── Auth View ───────────────────────────────────────────────────────────── */
+    #v-auth {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .auth-shell {
+      width: 100%;
+      max-width: 360px;
+      animation: fadeUp var(--motion-fast) ease-out both;
+    }
+
+    .auth-brand {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--space-7);
+    }
+
+    .auth-card {
+      background: var(--color-surface-muted);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-xs);
+      padding: var(--space-7) var(--space-6);
+      box-shadow: var(--shadow-1);
+    }
+
+    .auth-title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semi);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: var(--space-2);
+    }
+
+    .auth-desc {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      line-height: 20px;
+      margin-bottom: var(--space-6);
+    }
+
+    .auth-privacy {
+      margin-top: var(--space-4);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      text-align: center;
+      line-height: 18px;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      width: 100%;
+      padding: var(--space-3) var(--space-5);
+      background: var(--color-text-primary);
+      color: var(--color-text-tertiary);
+      border: 1px solid transparent;
+      border-radius: var(--radius-xs);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      font-family: inherit;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      cursor: pointer;
+      transition:
+        opacity var(--motion-instant) ease,
+        transform var(--motion-instant) ease,
+        box-shadow var(--motion-instant) ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .btn-primary:hover:not(:disabled) { opacity: 0.88; }
+    .btn-primary:active:not(:disabled) { transform: scale(0.99); }
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--color-focus-ring);
+      outline-offset: 3px;
+    }
+    .btn-primary:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .btn-primary.loading {
+      pointer-events: none;
+    }
+    .btn-primary svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-1) var(--space-3);
+      background: transparent;
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--space-2);
+      font-size: var(--font-size-xs);
+      font-family: inherit;
+      cursor: pointer;
+      transition:
+        color var(--motion-instant),
+        background var(--motion-instant),
+        border-color var(--motion-instant);
+    }
+    .btn-ghost:hover { color: var(--color-text-primary); background: var(--color-surface-muted); }
+    .btn-ghost:focus-visible {
+      outline: 2px solid var(--color-focus-ring);
+      outline-offset: 2px;
+    }
+
+    .btn-text {
+      background: none;
+      border: none;
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-xs);
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color var(--motion-instant);
+    }
+    .btn-text:hover { color: var(--color-text-primary); }
+    .btn-text:focus-visible {
+      outline: 2px solid var(--color-focus-ring);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ── Form View ───────────────────────────────────────────────────────────── */
+    #v-form {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top navigation bar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-6);
+      border-bottom: 1px solid var(--color-border-default);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .topbar-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border-default);
+      flex-shrink: 0;
+    }
+    .topbar-username {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+    }
+
+    /* Main content area */
+    .form-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: var(--space-8) var(--space-4);
+    }
+
+    .form-shell {
+      width: 100%;
+      max-width: 520px;
+      animation: fadeUp var(--motion-fast) ease-out both;
+    }
+
+    .form-header {
+      margin-bottom: var(--space-6);
+    }
+    .form-header h1 {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-semi);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: var(--space-2);
+    }
+    .form-header p {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      line-height: 20px;
     }
 
     /* Card */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(10px);
+      background: var(--color-surface-muted);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-xs);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-1);
     }
 
-    /* Form */
-    .form-group {
-      margin-bottom: 1.4rem;
+    /* ── Form fields ─────────────────────────────────────────────────────────── */
+    .field {
+      margin-bottom: var(--space-5);
+    }
+    .field:last-of-type { margin-bottom: 0; }
+
+    .field-label {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-1);
+      margin-bottom: var(--space-2);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-primary);
+    }
+    .field-label .required {
+      color: var(--color-danger);
+      line-height: 1;
+    }
+    .field-label .optional {
+      color: var(--color-text-secondary);
+      font-weight: var(--font-weight-base);
     }
 
-    .form-group:last-of-type {
-      margin-bottom: 1.8rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.01em;
-    }
-
-    label .required {
-      color: var(--danger);
-      margin-left: 2px;
-    }
-
-    label .hint {
-      font-weight: 400;
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      margin-left: 0.4rem;
-    }
-
-    select,
-    textarea {
+    select, textarea {
       width: 100%;
-      padding: 0.7rem 0.9rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
+      padding: var(--space-2) var(--space-4);
+      background: var(--color-surface-base);
+      border: 1px solid var(--color-border-default);
       border-radius: var(--radius-sm);
-      color: var(--text);
+      color: var(--color-text-primary);
       font-family: inherit;
-      font-size: 0.9rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      font-size: var(--font-size-xs);
+      line-height: var(--line-height-base);
+      transition:
+        border-color var(--motion-instant),
+        box-shadow var(--motion-instant);
+      outline: none;
       appearance: none;
       -webkit-appearance: none;
-      outline: none;
     }
-
     select {
       cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M4.47 5.97a.75.75 0 0 1 1.06 0L8 8.44l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 16 16'%3E%3Cpath stroke='%23555566' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 0.75rem center;
-      padding-right: 2.2rem;
+      background-position: right var(--space-3) center;
+      padding-right: 2.4rem;
     }
-
-    select:focus,
-    textarea:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px var(--accent-glow);
+    select option {
+      background: var(--color-surface-muted);
+      color: var(--color-text-primary);
     }
-
-    select:hover,
-    textarea:hover {
-      border-color: #2a3347;
-    }
-
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: 88px;
     }
-
-    select option {
-      background: var(--surface);
-      color: var(--text);
+    select:hover, textarea:hover {
+      border-color: var(--color-text-secondary);
     }
-
-    /* Disabled state */
+    select:focus-visible, textarea:focus-visible {
+      border-color: var(--color-text-secondary);
+      box-shadow: 0 0 0 3px var(--color-focus-ring);
+    }
     select:disabled {
-      opacity: 0.45;
+      opacity: 0.35;
       cursor: not-allowed;
     }
+    fieldset:disabled select,
+    fieldset:disabled textarea {
+      opacity: 0.35;
+      pointer-events: none;
+    }
 
-    /* Submit button */
-    .btn-submit {
-      width: 100%;
-      padding: 0.8rem 1.2rem;
-      background: linear-gradient(135deg, var(--accent), #6366f1);
-      border: none;
+    /* ── Drop Zone ───────────────────────────────────────────────────────────── */
+    .drop-zone {
+      border: 1px dashed var(--color-border-default);
       border-radius: var(--radius-sm);
-      color: #fff;
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 600;
+      padding: var(--space-7) var(--space-5);
+      text-align: center;
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      transition:
+        border-color var(--motion-instant),
+        background var(--motion-instant);
+      user-select: none;
+    }
+    .drop-zone:hover {
+      border-color: var(--color-text-secondary);
+      background: rgba(255,255,255,0.015);
+    }
+    .drop-zone.drag-active {
+      border-color: var(--color-text-primary);
+      background: rgba(255,255,255,0.03);
+      border-style: solid;
+    }
+    .drop-zone:focus-visible {
+      outline: 2px solid var(--color-focus-ring);
+      outline-offset: 2px;
+    }
+
+    .drop-icon {
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: var(--space-3);
+      display: block;
+    }
+    .drop-primary {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+    .drop-primary .link {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+    .drop-secondary {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+    }
+
+    /* ── File List ───────────────────────────────────────────────────────────── */
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+    }
+    .file-list:empty { display: none; }
+
+    .file-chip {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-surface-base);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      animation: fadeIn var(--motion-instant) ease-out both;
+    }
+    .file-chip-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .file-chip-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .file-chip-name {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .file-chip-size {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-top: 1px;
+    }
+    .file-chip-remove {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      letter-spacing: 0.01em;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: color var(--motion-instant), background var(--motion-instant);
+      font-size: 14px;
+      line-height: 1;
+    }
+    .file-chip-remove:hover {
+      color: var(--color-text-primary);
+      background: var(--color-border-default);
+    }
+    .file-chip-remove:focus-visible {
+      outline: 2px solid var(--color-focus-ring);
+      outline-offset: 1px;
     }
 
-    .btn-submit:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(79, 125, 255, 0.3);
+    /* ── Form actions ────────────────────────────────────────────────────────── */
+    .form-actions {
+      margin-top: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
     }
 
-    .btn-submit:active {
-      transform: translateY(0);
-    }
-
-    .btn-submit:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .btn-submit svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    /* Info banner */
-    .info-banner {
+    /* ── Error message ───────────────────────────────────────────────────────── */
+    .form-error {
       display: flex;
       align-items: flex-start;
-      gap: 0.6rem;
-      background: var(--accent-glow);
-      border: 1px solid rgba(79, 125, 255, 0.2);
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-danger-muted);
+      border: 1px solid rgba(239, 68, 68, 0.2);
       border-radius: var(--radius-sm);
-      padding: 0.75rem 1rem;
-      margin-bottom: 1.6rem;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.5;
+      font-size: var(--font-size-xs);
+      color: #fca5a5;
+      line-height: 20px;
     }
 
-    .info-banner svg {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-      margin-top: 1px;
-      fill: var(--accent);
+    /* ── Progress ────────────────────────────────────────────────────────────── */
+    .progress-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .progress-label {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+    }
+    .progress-pct {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+    .progress-track {
+      height: 2px;
+      background: var(--color-border-default);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--color-text-primary);
+      border-radius: var(--radius-pill);
+      width: 0%;
+      transition: width var(--motion-fast) ease;
     }
 
-    /* Footer */
-    .footer {
+    /* ── Success View ────────────────────────────────────────────────────────── */
+    #v-success {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .success-shell {
+      width: 100%;
+      max-width: 400px;
       text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      animation: fadeUp var(--motion-fast) ease-out both;
     }
 
-    .footer a {
-      color: var(--accent);
+    .success-icon-wrap {
+      width: 56px;
+      height: 56px;
+      background: var(--color-surface-muted);
+      border: 1px solid var(--color-border-default);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-6);
+      font-size: 22px;
+      animation: popIn var(--motion-fast) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .success-title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semi);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-2);
+    }
+    .success-desc {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      line-height: 20px;
+      margin-bottom: var(--space-5);
+    }
+    .success-issue-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-surface-muted);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--space-2);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-primary);
       text-decoration: none;
-      transition: color 0.15s;
+      margin-bottom: var(--space-6);
+      transition: background var(--motion-instant);
+    }
+    .success-issue-link:hover { background: var(--color-border-default); }
+    .success-issue-link:focus-visible {
+      outline: 2px solid var(--color-focus-ring);
+      outline-offset: 2px;
+      border-radius: var(--space-2);
     }
 
-    .footer a:hover {
-      color: var(--accent-hover);
+    /* ── Divider ─────────────────────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--color-border-default);
+      margin: var(--space-5) 0;
     }
 
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* ── Animations ──────────────────────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7); }
+      to   { opacity: 1; transform: scale(1); }
     }
 
-    .container {
-      animation: fadeInUp 0.5s ease-out;
-    }
-
-    /* Responsive */
+    /* ── Responsive ──────────────────────────────────────────────────────────── */
     @media (max-width: 480px) {
-      .card {
-        padding: 1.4rem;
-      }
-
-      .header h1 {
-        font-size: 1.4rem;
-      }
+      .form-main { padding: var(--space-5) var(--space-3); }
+      .card { padding: var(--space-5); }
+      .form-header h1 { font-size: var(--font-size-lg); }
+      .topbar { padding: var(--space-3) var(--space-4); }
     }
+
+    /* ── Hidden utility ──────────────────────────────────────────────────────── */
+    [hidden] { display: none !important; }
   </style>
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="header-icon">📤</div>
-      <h1>Upload Study Material</h1>
-      <p>Submit a file to the Plexi Materials repository.<br />It will be reviewed before being published.</p>
-    </div>
 
-    <div class="card">
-      <div class="info-banner">
-        <svg viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.75 5a.75.75 0 00-1.5 0v1a.75.75 0 001.5 0V7zm-.75 3a.75.75 0 00-.75.75v3.5a.75.75 0 001.5 0v-3.5A.75.75 0 0010 10z"/></svg>
-        <span>You'll be redirected to GitHub to attach your file. All uploads require maintainer approval.</span>
+<body>
+  <!-- ── View: Loading ─────────────────────────────────────────────────────── -->
+  <div id="v-loading" class="view" role="status" aria-label="Loading">
+    <div class="spinner" aria-hidden="true"></div>
+  </div>
+
+  <!-- ── View: Auth ────────────────────────────────────────────────────────── -->
+  <div id="v-auth" class="view" hidden>
+    <div class="auth-shell">
+      <div class="auth-brand">
+        <span class="brand" aria-label="Plexi">
+          <span class="brand-dot" aria-hidden="true">P</span>
+          Plexi
+        </span>
       </div>
 
-      <form id="uploadForm">
-        <div class="form-group">
-          <label for="semester">Semester <span class="required">*</span></label>
-          <select id="semester" required>
-            <option value="" disabled selected>Select Semester</option>
-          </select>
-        </div>
+      <div class="auth-card">
+        <h1 class="auth-title">Upload Study Materials</h1>
+        <p class="auth-desc">
+          Sign in with GitHub to submit files. A maintainer will review your
+          upload before it's published to the platform.
+        </p>
 
-        <div class="form-group">
-          <label for="subject">Subject <span class="required">*</span></label>
-          <select id="subject" required disabled>
-            <option value="" disabled selected>Select a semester first</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="fileType">Material Type <span class="required">*</span></label>
-          <select id="fileType" required>
-            <option value="" disabled selected>Select Type</option>
-            <option value="PDFs">PDFs</option>
-            <option value="PPTs">PPTs</option>
-            <option value="Notes">Notes</option>
-            <option value="Question Papers">Question Papers</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="notes">Additional Notes <span class="hint">(optional)</span></label>
-          <textarea id="notes" rows="3" placeholder="e.g. Chapter 3 — Linked Lists"></textarea>
-        </div>
-
-        <button type="submit" class="btn-submit" id="submitBtn" disabled>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z" clip-rule="evenodd" /></svg>
-          Continue on GitHub
+        <button id="btn-login" class="btn-primary" type="button">
+          <!-- GitHub mark -->
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+              -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+              .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+              -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27
+              .68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12
+              .51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
+              0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8
+              c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          Continue with GitHub
         </button>
-      </form>
-    </div>
 
-    <div class="footer">
-      Powered by <a href="https://github.com/KunalGupta25/plexi-materials" target="_blank" rel="noopener">Plexi Materials</a>
+        <p class="auth-privacy">
+          Only your GitHub username and avatar are collected.
+          No repository access is requested.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── View: Upload Form ──────────────────────────────────────────────────── -->
+  <div id="v-form" class="view" hidden>
+    <header class="topbar" role="banner">
+      <a href="/" class="brand" aria-label="Plexi home">
+        <span class="brand-dot" aria-hidden="true">P</span>
+        Plexi
+      </a>
+      <div class="topbar-user">
+        <img id="user-avatar" class="topbar-avatar" src="" alt="" width="24" height="24" />
+        <span id="user-name" class="topbar-username" aria-live="polite"></span>
+        <button id="btn-logout" class="btn-ghost" type="button">Sign out</button>
+      </div>
+    </header>
+
+    <main class="form-main" id="main-content">
+      <div class="form-shell">
+        <div class="form-header">
+          <h1>Upload Materials</h1>
+          <p>Files go to a staging area and are published after maintainer approval.</p>
+        </div>
+
+        <div class="card">
+          <form id="upload-form" novalidate aria-label="Upload study material">
+            <fieldset id="form-fields" style="border:none;">
+              <legend class="sr-only">Material details</legend>
+
+              <!-- Semester -->
+              <div class="field">
+                <label class="field-label" for="f-semester">
+                  Semester <span class="required" aria-label="required">*</span>
+                </label>
+                <select id="f-semester" name="semester" required aria-required="true">
+                  <option value="" disabled selected>Select semester</option>
+                </select>
+              </div>
+
+              <!-- Subject -->
+              <div class="field">
+                <label class="field-label" for="f-subject">
+                  Subject <span class="required" aria-label="required">*</span>
+                </label>
+                <select id="f-subject" name="subject" required aria-required="true" disabled>
+                  <option value="" disabled selected>Select a semester first</option>
+                </select>
+              </div>
+
+              <!-- Material Type -->
+              <div class="field">
+                <label class="field-label" for="f-type">
+                  Material Type <span class="required" aria-label="required">*</span>
+                </label>
+                <select id="f-type" name="fileType" required aria-required="true">
+                  <option value="" disabled selected>Select type</option>
+                  <option value="PDFs">PDFs</option>
+                  <option value="PPTs">PPTs</option>
+                  <option value="Notes">Notes</option>
+                  <option value="Question Papers">Question Papers</option>
+                  <option value="Question banks">Question banks</option>
+                  <option value="Assignments">Assignments</option>
+                  <option value="Syllabus">Syllabus</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <!-- File drop zone -->
+              <div class="field">
+                <label class="field-label" id="files-label">
+                  Files <span class="required" aria-label="required">*</span>
+                </label>
+
+                <div
+                  id="drop-zone"
+                  class="drop-zone"
+                  role="button"
+                  tabindex="0"
+                  aria-labelledby="files-label"
+                  aria-describedby="drop-hint"
+                >
+                  <input
+                    type="file"
+                    id="file-input"
+                    name="files"
+                    multiple
+                    accept=".pdf,.ppt,.pptx,.doc,.docx"
+                    class="sr-only"
+                    aria-hidden="true"
+                    tabindex="-1"
+                  />
+                  <span class="drop-icon" aria-hidden="true">📎</span>
+                  <p class="drop-primary">
+                    Drop files here or <span class="link">browse</span>
+                  </p>
+                  <p class="drop-secondary" id="drop-hint">
+                    PDF, PPT, PPTX, DOC, DOCX · up to 25 MB each
+                  </p>
+                </div>
+
+                <!-- Selected file chips -->
+                <div id="file-list" class="file-list" role="list" aria-label="Selected files" aria-live="polite"></div>
+              </div>
+
+              <!-- Notes -->
+              <div class="field">
+                <label class="field-label" for="f-notes">
+                  Additional Notes
+                  <span class="optional">(optional)</span>
+                </label>
+                <textarea
+                  id="f-notes"
+                  name="notes"
+                  rows="3"
+                  placeholder="e.g. Chapter 3 — Linked Lists"
+                  aria-describedby="notes-hint"
+                ></textarea>
+                <p id="notes-hint" class="sr-only">
+                  Provide any extra context, such as chapter number or topic name.
+                </p>
+              </div>
+            </fieldset>
+
+            <!-- Error banner -->
+            <div id="form-error" class="form-error" role="alert" aria-live="assertive" hidden>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="flex-shrink:0;margin-top:2px;">
+                <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm-.75 3.75a.75.75 0 011.5 0v3.5a.75.75 0 01-1.5 0v-3.5zm.75 7a.875.875 0 110-1.75.875.875 0 010 1.75z"/>
+              </svg>
+              <span id="form-error-text"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <!-- Progress (shown while uploading) -->
+              <div id="progress-wrap" class="progress-wrap" hidden aria-live="polite" aria-label="Upload progress">
+                <div class="progress-meta">
+                  <span class="progress-label">Uploading…</span>
+                  <span id="progress-pct" class="progress-pct">0%</span>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress-bar">
+                  <div id="progress-fill" class="progress-fill"></div>
+                </div>
+              </div>
+
+              <button type="submit" id="btn-submit" class="btn-primary" disabled aria-disabled="true">
+                Upload Materials
+              </button>
+            </div>
+          </form>
+
+          <!-- Inline legacy fallback (shown when backend unavailable) -->
+          <div id="fallback-wrap" hidden>
+            <div class="divider"></div>
+            <p style="font-size:var(--font-size-xs);color:var(--color-text-secondary);text-align:center;margin-bottom:var(--space-3);">
+              Backend unavailable? You can still submit via
+            </p>
+            <a id="fallback-link" href="#" target="_blank" rel="noopener" class="btn-primary"
+               style="text-decoration:none;justify-content:center;">
+              Open GitHub Issue
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ── View: Success ──────────────────────────────────────────────────────── -->
+  <div id="v-success" class="view" hidden role="main" aria-live="polite">
+    <div class="success-shell">
+      <div class="success-icon-wrap" aria-hidden="true">✓</div>
+      <h1 class="success-title">Submitted for review</h1>
+      <p class="success-desc">
+        Your materials are in the staging queue.<br />
+        A maintainer will publish them after review.
+      </p>
+
+      <a id="success-issue-link" href="#" target="_blank" rel="noopener" class="success-issue-link">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/><path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"/>
+        </svg>
+        <span id="success-issue-text">Issue</span>
+      </a>
+
+      <button id="btn-upload-another" class="btn-primary" type="button">
+        Upload more files
+      </button>
     </div>
   </div>
 
   <script>
-    // ── Semester → Subjects mapping ──────────────────────────────────
+    // ────────────────────────────────────────────────────────────────────────────
+    // Configuration
+    // Update API_BASE to your backend URL before deploying.
+    // ────────────────────────────────────────────────────────────────────────────
+    const API_BASE = (() => {
+      const { hostname } = window.location;
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:3001';
+      }
+      // ← Update this for your production deployment
+      return 'https://api.plexi-material.mexus.tech';
+    })();
+
+    const REPO = 'KunalGupta25/plexi-materials';
+
+    // ── Subjects map ─────────────────────────────────────────────────────────
     const SUBJECTS = {
-      "Semester 1": [
-        "OSS",
-        "Maths-1",
-        "CTSD-1",
-        "EEE"
+      'Semester 1': ['OSS', 'Maths-1', 'CTSD-1', 'EEE', 'Other'],
+      'Semester 2': ['CTSD-2', 'Maths-2', 'E-Physics', 'GCF', 'DT', 'ICT', 'Other'],
+      'Semester 3': [
+        'Object Oriented Programming with Java',
+        'Design of Data Structures',
+        'Database Management Systems',
+        'Discrete Mathematics',
+        'Digital Electronics',
+        'Other',
       ],
-      "Semester 2": [
-        "CTSD-2",
-        "Maths-2",
-        "E-Physics",
-        "GCF",
-        "DT",
-        "ICT"
+      'Semester 4': [
+        'Operating System',
+        'Computer Organization and Microprocessor',
+        'Computer Network',
+        'Programming in Python with Full Stack',
+        'Probability, Statistics and Numerical Methods',
+        'Competitive Coding',
+        'Software Engineering',
+        'Other',
       ],
-      "Semester 3": [
-        "Object Oriented Programming with Java",
-        "Design of Data Structures",
-        "Database Management Systems",
-        "Discrete Mathematics",
-        "Digital Electronics"
+      'Semester 5': [
+        'Enterprise Programming',
+        'Data Analytics and Data Visualization',
+        'Theory of Computation',
+        'Design and Analysis of Algorithms',
+        'Software Engineering',
+        'AWS Fundamentals',
+        'Professionalism and Corporate Ethics',
+        'Artificial Intelligence',
+        'Circulars and Time tables',
+        'Other',
       ],
-      "Semester 4": [
-        "Operating System",
-        "Computer Organization and Microprocessor",
-        "Computer Network",
-        "Programming in Python with Full Stack",
-        "Probability, Statistics and Numerical Methods",
-        "Competitive Coding",
-        "Software Engineering"
+      'Semester 6': [
+        'Quant and Reasoning',
+        'Compiler Design',
+        'Mobile App Development',
+        'MEAN Stack Web Development',
+        'Machine Learning',
+        'High Performance Computing',
+        'Employability Skills',
+        'Cyber Security',
+        'Other',
       ],
-      "Semester 5": [
-        "Enterprise Programming",
-        "Data Analytics and Data Visualization",
-        "Theory of Computation",
-        "Design and Analysis of Algorithms",
-        "Software Engineering",
-        "AWS Fundamentals",
-        "Professionalism and Corporate Ethics",
-        "Artificial Intelligence",
-        "Circulars and Time tables"
+      'Semester 7': [
+        'Deep Learning with NLP',
+        'Pattern Recognition',
+        'Image Processing',
+        'Software Testing and Quality Assurance',
+        'Cyber Physical Systems',
+        'Data Science',
+        'Other',
       ],
-      "Semester 6": [
-        "Quant and Reasoning",
-        "Compiler Design",
-        "Mobile App Development",
-        "MEAN Stack Web Development",
-        "Machine Learning",
-        "High Performance Computing",
-        "Employability Skills",
-        "Cyber Security"
-      ]
     };
 
-    const REPO = "KunalGupta25/plexi-materials";
+    // ── DOM refs ──────────────────────────────────────────────────────────────
+    const $ = id => document.getElementById(id);
 
-    // ── DOM refs ─────────────────────────────────────────────────────
-    const semesterSelect = document.getElementById("semester");
-    const subjectSelect  = document.getElementById("subject");
-    const fileTypeSelect = document.getElementById("fileType");
-    const notesInput     = document.getElementById("notes");
-    const form           = document.getElementById("uploadForm");
-    const submitBtn      = document.getElementById("submitBtn");
+    const views = {
+      loading: $('v-loading'),
+      auth:    $('v-auth'),
+      form:    $('v-form'),
+      success: $('v-success'),
+    };
 
-    // ── Populate semesters ───────────────────────────────────────────
-    Object.keys(SUBJECTS).forEach(sem => {
-      const opt = document.createElement("option");
-      opt.value = sem;
-      opt.textContent = sem;
-      semesterSelect.appendChild(opt);
-    });
+    const semesterSel  = $('f-semester');
+    const subjectSel   = $('f-subject');
+    const typeSel      = $('f-type');
+    const notesArea    = $('f-notes');
+    const fileInput    = $('file-input');
+    const dropZone     = $('drop-zone');
+    const fileList     = $('file-list');
+    const formError    = $('form-error');
+    const formErrorTxt = $('form-error-text');
+    const progressWrap = $('progress-wrap');
+    const progressFill = $('progress-fill');
+    const progressPct  = $('progress-pct');
+    const progressBar  = $('progress-bar');
+    const btnSubmit    = $('btn-submit');
+    const btnLogin     = $('btn-login');
+    const btnLogout    = $('btn-logout');
+    const btnUploadAnother = $('btn-upload-another');
+    const userAvatar   = $('user-avatar');
+    const userName     = $('user-name');
+    const successLink  = $('success-issue-link');
+    const successText  = $('success-issue-text');
+    const fallbackWrap = $('fallback-wrap');
+    const fallbackLink = $('fallback-link');
 
-    // ── Dynamic subject population ───────────────────────────────────
-    semesterSelect.addEventListener("change", () => {
-      const sem = semesterSelect.value;
-      subjectSelect.innerHTML = "";
+    // ── State ─────────────────────────────────────────────────────────────────
+    let currentUser  = null;
+    let selectedFiles = [];  // Array of File objects
 
-      if (sem && SUBJECTS[sem]) {
-        const placeholder = document.createElement("option");
-        placeholder.value = "";
-        placeholder.disabled = true;
-        placeholder.selected = true;
-        placeholder.textContent = "Select Subject";
-        subjectSelect.appendChild(placeholder);
-
-        SUBJECTS[sem].forEach(sub => {
-          const opt = document.createElement("option");
-          opt.value = sub;
-          opt.textContent = sub;
-          subjectSelect.appendChild(opt);
-        });
-
-        subjectSelect.disabled = false;
-      } else {
-        const placeholder = document.createElement("option");
-        placeholder.value = "";
-        placeholder.disabled = true;
-        placeholder.selected = true;
-        placeholder.textContent = "Select a semester first";
-        subjectSelect.appendChild(placeholder);
-        subjectSelect.disabled = true;
-      }
-
-      validateForm();
-    });
-
-    // ── Form validation ──────────────────────────────────────────────
-    function validateForm() {
-      const valid =
-        semesterSelect.value &&
-        subjectSelect.value &&
-        fileTypeSelect.value;
-      submitBtn.disabled = !valid;
+    // ── View management ───────────────────────────────────────────────────────
+    function showView(name) {
+      Object.entries(views).forEach(([key, el]) => {
+        el.hidden = key !== name;
+      });
+      // Announce view change for screen readers
+      document.title = name === 'auth'    ? 'Sign in — Plexi Upload'
+                      : name === 'form'   ? 'Upload Materials — Plexi'
+                      : name === 'success'? 'Submitted — Plexi Upload'
+                      :                    'Plexi Upload';
     }
 
-    semesterSelect.addEventListener("change", validateForm);
-    subjectSelect.addEventListener("change", validateForm);
-    fileTypeSelect.addEventListener("change", validateForm);
+    // ── Boot ──────────────────────────────────────────────────────────────────
+    async function init() {
+      showView('loading');
 
-    // ── Submit → redirect to GitHub ──────────────────────────────────
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const semester = semesterSelect.value;
-      const subject  = subjectSelect.value;
-      const fileType = fileTypeSelect.value;
-      const notes    = notesInput.value.trim();
-
-      const title = `[Upload] ${subject} — ${fileType}`;
-
-      let body = `### Semester\n\n${semester}\n\n`;
-      body += `### Subject\n\n${subject}\n\n`;
-      body += `### Material Type\n\n${fileType}\n\n`;
-      body += `### File\n\n_Drag and drop your file below:_\n\n\n\n`;
-
-      if (notes) {
-        body += `### Additional Notes (optional)\n\n${notes}\n`;
-      } else {
-        body += `### Additional Notes (optional)\n\n_No response_\n`;
+      // Handle OAuth callback params in URL
+      const params = new URLSearchParams(window.location.search);
+      const authResult = params.get('auth');
+      if (authResult) {
+        // Clean URL without triggering a reload
+        const clean = window.location.pathname;
+        window.history.replaceState({}, '', clean);
+        if (authResult === 'error') {
+          showView('auth');
+          showAuthError('GitHub sign-in failed. Please try again.');
+          return;
+        }
       }
 
-      const params = new URLSearchParams({
-        title,
-        body,
-        labels: "upload-material",
+      // Check existing session
+      try {
+        const user = await apiFetch('/api/me');
+        setUser(user);
+        showView('form');
+        setupForm();
+      } catch {
+        showView('auth');
+      }
+    }
+
+    // ── Auth helpers ──────────────────────────────────────────────────────────
+    function setUser(user) {
+      currentUser = user;
+      userAvatar.src    = user.avatar_url;
+      userAvatar.alt    = `${user.name}'s avatar`;
+      userName.textContent = user.name || user.login;
+    }
+
+    function showAuthError(msg) {
+      const err = document.createElement('p');
+      err.style.cssText = `
+        font-size:var(--font-size-xs);color:#fca5a5;
+        margin-top:var(--space-3);text-align:center;`;
+      err.textContent = msg;
+      err.setAttribute('role', 'alert');
+      const card = document.querySelector('.auth-card');
+      const existing = card.querySelector('.auth-err');
+      if (existing) existing.remove();
+      err.className = 'auth-err';
+      card.appendChild(err);
+    }
+
+    btnLogin.addEventListener('click', () => {
+      window.location.href = `${API_BASE}/api/auth/github`;
+    });
+
+    btnLogin.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btnLogin.click();
+      }
+    });
+
+    btnLogout.addEventListener('click', async () => {
+      try {
+        await apiFetch('/api/auth/logout', { method: 'POST' });
+      } catch { /* ignore */ }
+      currentUser = null;
+      selectedFiles = [];
+      showView('auth');
+    });
+
+    // ── Form setup ────────────────────────────────────────────────────────────
+    function setupForm() {
+      // Populate semesters
+      Object.keys(SUBJECTS).forEach(sem => {
+        const opt = new Option(sem, sem);
+        semesterSel.add(opt);
       });
 
-      const url = `https://github.com/${REPO}/issues/new?${params.toString()}`;
-      window.open(url, "_blank");
-    });
+      // Semester → subject cascade
+      semesterSel.addEventListener('change', () => {
+        const subs = SUBJECTS[semesterSel.value] || [];
+        subjectSel.innerHTML = '';
+        const placeholder = new Option('Select subject', '');
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        subjectSel.add(placeholder);
+        subs.forEach(s => subjectSel.add(new Option(s, s)));
+        subjectSel.disabled = false;
+        validateForm();
+      });
+
+      // Watch required fields
+      [semesterSel, subjectSel, typeSel].forEach(el =>
+        el.addEventListener('change', validateForm));
+
+      // Drop zone: click to open file picker
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          fileInput.click();
+        }
+      });
+
+      // Drop zone: drag events
+      dropZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropZone.classList.add('drag-active');
+      });
+      dropZone.addEventListener('dragleave', e => {
+        if (!dropZone.contains(e.relatedTarget)) {
+          dropZone.classList.remove('drag-active');
+        }
+      });
+      dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-active');
+        addFiles(e.dataTransfer.files);
+      });
+
+      // File input change
+      fileInput.addEventListener('change', () => {
+        addFiles(fileInput.files);
+        fileInput.value = ''; // reset so same file can be re-added
+      });
+
+      // Form submit
+      $('upload-form').addEventListener('submit', handleSubmit);
+
+      // Upload another
+      btnUploadAnother.addEventListener('click', () => {
+        resetForm();
+        showView('form');
+      });
+    }
+
+    // ── File handling ─────────────────────────────────────────────────────────
+    const FILE_ICONS = {
+      pdf: '📄',
+      ppt: '📊', pptx: '📊',
+      doc: '📝', docx: '📝',
+    };
+
+    function fileIcon(name) {
+      const ext = name.split('.').pop().toLowerCase();
+      return FILE_ICONS[ext] || '📎';
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024)       return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    function addFiles(fileListObj) {
+      const MAX = 25 * 1024 * 1024;
+      const ALLOWED = ['pdf','ppt','pptx','doc','docx'];
+      const existing = new Set(selectedFiles.map(f => f.name));
+
+      Array.from(fileListObj).forEach(file => {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!ALLOWED.includes(ext)) {
+          showError(`"${file.name}" is not a supported file type. Use PDF, PPT, PPTX, DOC, or DOCX.`);
+          return;
+        }
+        if (file.size > MAX) {
+          showError(`"${file.name}" exceeds the 25 MB limit.`);
+          return;
+        }
+        if (existing.has(file.name)) return; // skip duplicates
+        selectedFiles.push(file);
+        existing.add(file.name);
+      });
+
+      renderFileList();
+      validateForm();
+    }
+
+    function removeFile(index) {
+      selectedFiles.splice(index, 1);
+      renderFileList();
+      validateForm();
+    }
+
+    function renderFileList() {
+      fileList.innerHTML = '';
+      selectedFiles.forEach((file, i) => {
+        const chip = document.createElement('div');
+        chip.className = 'file-chip';
+        chip.setAttribute('role', 'listitem');
+        chip.innerHTML = `
+          <span class="file-chip-icon" aria-hidden="true">${fileIcon(file.name)}</span>
+          <div class="file-chip-info">
+            <div class="file-chip-name" title="${file.name}">${file.name}</div>
+            <div class="file-chip-size">${formatBytes(file.size)}</div>
+          </div>
+          <button
+            type="button"
+            class="file-chip-remove"
+            aria-label="Remove ${file.name}"
+            data-index="${i}"
+          >✕</button>`;
+        chip.querySelector('.file-chip-remove').addEventListener('click', () => removeFile(i));
+        fileList.appendChild(chip);
+      });
+    }
+
+    // ── Form validation ───────────────────────────────────────────────────────
+    function validateForm() {
+      const valid =
+        semesterSel.value &&
+        subjectSel.value  &&
+        typeSel.value     &&
+        selectedFiles.length > 0;
+
+      btnSubmit.disabled = !valid;
+      btnSubmit.setAttribute('aria-disabled', String(!valid));
+    }
+
+    // ── Error display ─────────────────────────────────────────────────────────
+    function showError(msg) {
+      formErrorTxt.textContent = msg;
+      formError.hidden = false;
+      formError.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+    function clearError() {
+      formError.hidden = true;
+      formErrorTxt.textContent = '';
+    }
+
+    // ── Upload handler ────────────────────────────────────────────────────────
+    async function handleSubmit(e) {
+      e.preventDefault();
+      clearError();
+
+      if (!semesterSel.value || !subjectSel.value || !typeSel.value || !selectedFiles.length) {
+        showError('Please fill in all required fields and select at least one file.');
+        return;
+      }
+
+      // Lock UI
+      setUploading(true);
+
+      const fd = new FormData();
+      fd.append('semester', semesterSel.value);
+      fd.append('subject', `[${semesterSel.value.replace('Semester ', 'Sem ')}] ${subjectSel.value}`);
+      fd.append('fileType', typeSel.value);
+      fd.append('notes', notesArea.value.trim());
+      selectedFiles.forEach(f => fd.append('files', f));
+
+      try {
+        const result = await uploadWithProgress(fd, setProgress);
+        showSuccess(result.issueNumber, result.issueUrl);
+      } catch (err) {
+        setUploading(false);
+        showError(err.message || 'Upload failed. Please try again.');
+      }
+    }
+
+    function setUploading(active) {
+      $('form-fields').disabled = active;
+      btnSubmit.disabled = active;
+      btnSubmit.classList.toggle('loading', active);
+      btnSubmit.textContent = active ? 'Uploading…' : 'Upload Materials';
+      if (active) {
+        progressWrap.hidden = false;
+        setProgress(0);
+      } else {
+        progressWrap.hidden = true;
+      }
+    }
+
+    function setProgress(pct) {
+      progressFill.style.width = `${pct}%`;
+      progressPct.textContent  = `${pct}%`;
+      progressBar.setAttribute('aria-valuenow', String(pct));
+    }
+
+    /**
+     * XHR upload with progress events.
+     * Returns a promise resolving to the parsed JSON response.
+     */
+    function uploadWithProgress(formData, onProgress) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${API_BASE}/api/upload`);
+        xhr.withCredentials = true;
+
+        xhr.upload.addEventListener('progress', e => {
+          if (e.lengthComputable) {
+            onProgress(Math.min(Math.round((e.loaded / e.total) * 95), 95));
+          }
+        });
+
+        xhr.addEventListener('load', () => {
+          onProgress(100);
+          try {
+            const data = JSON.parse(xhr.responseText);
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve(data);
+            } else {
+              reject(new Error(data.error || `Server error (${xhr.status})`));
+            }
+          } catch {
+            reject(new Error(`Unexpected response (${xhr.status})`));
+          }
+        });
+
+        xhr.addEventListener('error', () =>
+          reject(new Error('Network error. Check that the backend is running.')));
+
+        xhr.addEventListener('abort', () =>
+          reject(new Error('Upload was cancelled.')));
+
+        xhr.send(formData);
+      });
+    }
+
+    // ── Success state ─────────────────────────────────────────────────────────
+    function showSuccess(issueNumber, issueUrl) {
+      successLink.href    = issueUrl;
+      successText.textContent = `Issue #${issueNumber} has been opened`;
+      showView('success');
+      $('btn-upload-another').focus();
+    }
+
+    // ── Reset ─────────────────────────────────────────────────────────────────
+    function resetForm() {
+      $('upload-form').reset();
+      subjectSel.innerHTML = '<option value="" disabled selected>Select a semester first</option>';
+      subjectSel.disabled = true;
+      selectedFiles = [];
+      renderFileList();
+      clearError();
+      setUploading(false);
+      validateForm();
+    }
+
+    // ── Fallback: update legacy GitHub link from form values ──────────────────
+    function updateFallback() {
+      const semester = semesterSel.value;
+      const subject  = subjectSel.value;
+      const type     = typeSel.value;
+      const notes    = notesArea.value.trim();
+
+      if (!semester || !subject || !type) return;
+
+      const semLabel = `[${semester.replace('Semester ', 'Sem ')}] ${subject}`;
+      const title    = `[Upload] ${subject} — ${type}`;
+      let body       = `### Semester\n\n${semester}\n\n`;
+      body          += `### Subject\n\n${semLabel}\n\n`;
+      body          += `### Material Type\n\n${type}\n\n`;
+      body          += `### File\n\n_Drag and drop your file below:_\n\n\n\n`;
+      body          += `### Additional Notes (optional)\n\n${notes || '_No response_'}\n`;
+
+      const params = new URLSearchParams({ title, body, labels: 'upload-material' });
+      fallbackLink.href = `https://github.com/${REPO}/issues/new?${params}`;
+    }
+
+    [semesterSel, subjectSel, typeSel, notesArea].forEach(el =>
+      el.addEventListener('change', updateFallback));
+    notesArea.addEventListener('input', updateFallback);
+
+    // ── API helper ────────────────────────────────────────────────────────────
+    async function apiFetch(path, opts = {}) {
+      const res = await fetch(`${API_BASE}${path}`, {
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json', ...opts.headers },
+        ...opts,
+        body: opts.body && typeof opts.body === 'object' && !(opts.body instanceof FormData)
+          ? JSON.stringify(opts.body)
+          : opts.body,
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+      return res.json();
+    }
+
+    // ── Backend availability check ────────────────────────────────────────────
+    // If the backend is unreachable, reveal the GitHub fallback link in the form.
+    async function checkBackendAvailability() {
+      try {
+        await fetch(`${API_BASE}/api/health`, { signal: AbortSignal.timeout(3000) });
+      } catch {
+        fallbackWrap.hidden = false;
+      }
+    }
+
+    // ── Start ─────────────────────────────────────────────────────────────────
+    init();
+    checkBackendAvailability();
   </script>
 </body>
 </html>
