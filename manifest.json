@@ -924,5 +924,19 @@
         }
       ]
     }
+  },
+  "Semester 7": {
+    "Deep Learning with NLP": {
+      "Syllabus": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Syllabus_DLNLP_LAB.pdf",
+          "name": "DLNLP_LAB.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Syllabus_DLNLP_Theory.pdf",
+          "name": "DLNLP_Theory.pdf"
+        }
+      ]
+    }
   }
 }
