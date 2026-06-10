@@ -356,12 +356,12 @@
     <div id="v-manage" class="view" hidden>
       <div class="manage-header">
         <h1>Manage Materials</h1>
-        <p>Review, rename, or delete files in the staging area awaiting approval.</p>
+        <p>Browse, rename, move, or delete published study materials.</p>
       </div>
 
       <div class="manage-toolbar">
         <span id="manage-count" class="manage-count"></span>
-        <button id="btn-refresh-assets" class="btn-ghost" type="button">
+        <button id="btn-refresh-manage" class="btn-ghost" type="button">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M1.5 8a6.5 6.5 0 0111.07-4.64"/>
             <path d="M14.5 8a6.5 6.5 0 01-11.07 4.64"/>
@@ -372,26 +372,16 @@
         </button>
       </div>
 
-      <div class="assets-table-wrap">
-        <table class="assets-table" id="assets-table">
-          <thead>
-            <tr>
-              <th scope="col">Filename</th>
-              <th scope="col">Size</th>
-              <th scope="col">Uploaded</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="assets-tbody">
-            <tr>
-              <td colspan="4" class="manage-loading">
-                <div class="spinner" aria-hidden="true"></div>
-                Loading assets…
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div><!-- /assets-table-wrap -->
+      <!-- Breadcrumb nav -->
+      <div id="manage-breadcrumb" class="manage-breadcrumb"></div>
+
+      <!-- Tree browser: 3-level accordion or file list -->
+      <div id="manage-browser" class="manage-browser">
+        <div class="manage-loading" id="manage-loader">
+          <div class="spinner" aria-hidden="true"></div>
+          Loading materials…
+        </div>
+      </div>
     </div><!-- /v-manage -->
 
   </div><!-- /main-content -->
@@ -399,14 +389,48 @@
 </div><!-- /app-shell -->
 
 <!-- ══ Confirm delete dialog ═════════════════════════════════════════════════ -->
+<!-- Confirm delete dialog -->
 <dialog id="confirm-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-desc">
   <h2 class="dialog-title" id="dialog-title">Delete file?</h2>
   <p class="dialog-desc" id="dialog-desc">
-    This will permanently remove <span id="dialog-file-name" class="dialog-file-name"></span> from the staging area. This cannot be undone.
+    This will permanently remove <span id="dialog-file-name" class="dialog-file-name"></span> from the platform. The release asset will also be deleted. This cannot be undone.
   </p>
   <div class="dialog-actions">
     <button id="btn-dialog-cancel" class="btn-ghost" type="button">Cancel</button>
     <button id="btn-dialog-confirm" class="btn-danger" type="button">Delete</button>
+  </div>
+</dialog>
+
+<!-- Move file dialog -->
+<dialog id="move-dialog" aria-labelledby="move-dialog-title">
+  <h2 class="dialog-title" id="move-dialog-title">Move file</h2>
+  <p class="dialog-desc">
+    Move <span id="move-dialog-file" class="dialog-file-name"></span> to a different section.
+  </p>
+  <div class="field" style="margin-bottom:var(--space-4)">
+    <label class="field-label" for="move-semester">Semester</label>
+    <select id="move-semester"></select>
+  </div>
+  <div class="field" style="margin-bottom:var(--space-4)">
+    <label class="field-label" for="move-subject">Subject</label>
+    <select id="move-subject" disabled><option value="">Select semester first</option></select>
+  </div>
+  <div class="field" style="margin-bottom:var(--space-5)">
+    <label class="field-label" for="move-type">Material Type</label>
+    <select id="move-type">
+      <option value="PDFs">PDFs</option>
+      <option value="PPTs">PPTs</option>
+      <option value="Notes">Notes</option>
+      <option value="Question Papers">Question Papers</option>
+      <option value="Question banks">Question banks</option>
+      <option value="Assignments">Assignments</option>
+      <option value="Syllabus">Syllabus</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+  <div class="dialog-actions">
+    <button id="btn-move-cancel" class="btn-ghost" type="button">Cancel</button>
+    <button id="btn-move-confirm" class="btn-primary" type="button" style="width:auto;padding:8px 20px;">Move</button>
   </div>
 </dialog>
 
@@ -579,7 +603,7 @@ function switchToManage() {
     return;
   }
   showView('manage');
-  loadManageAssets();
+  loadManifest();
 }
 
 // Close mobile sidebar when any nav item is clicked
@@ -913,171 +937,387 @@ function updateFallback() {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// MANAGE PANEL
+// MANAGE PANEL — Browse published materials from manifest.json
 // ══════════════════════════════════════════════════════════════════════════════
-let assetsCache = [];
+let manifestCache = null;
+let managePath = [];          // [] = semesters, ['Sem 4'] = subjects, ['Sem 4','OS'] = types, ['Sem 4','OS','PPTs'] = files
+let pendingDelete = null;     // { semester, subject, type, name }
+let pendingMove   = null;     // { semester, subject, type, name }
 
-async function loadManageAssets() {
-  const tbody = $('assets-tbody');
-  tbody.innerHTML = `<tr><td colspan="4" class="manage-loading"><div class="spinner" aria-hidden="true"></div> Loading…</td></tr>`;
+async function loadManifest() {
+  const browser = $('manage-browser');
+  $('manage-loader').style.display = 'flex';
+  browser.querySelectorAll('.manage-list').forEach(el => el.remove());
   $('manage-count').textContent = '';
 
   try {
-    assetsCache = await apiFetch('/api/manage/assets');
-    renderAssetsTable(assetsCache);
+    manifestCache = await apiFetch('/api/manage/materials');
+    managePath = [];
+    renderManageBrowser();
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="4" class="manage-empty">Failed to load: ${err.message}</td></tr>`;
+    $('manage-loader').style.display = 'none';
+    browser.innerHTML = `<div class="manage-empty">Failed to load: ${err.message}</div>`;
   }
 }
 
-function renderAssetsTable(assets) {
-  const tbody = $('assets-tbody');
-  $('manage-count').textContent = `${assets.length} file${assets.length !== 1 ? 's' : ''} in staging`;
-
-  if (!assets.length) {
-    tbody.innerHTML = `<tr><td colspan="4" class="manage-empty">No files in the staging area.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = '';
-  assets.forEach(asset => {
-    const tr = document.createElement('tr');
-    tr.dataset.id   = asset.id;
-    tr.dataset.name = asset.name;
-    tr.innerHTML = `
-      <td>
-        <div class="asset-name-cell">
-          <span class="asset-name-text" title="${asset.name}">${asset.name}</span>
-          <input type="text" class="asset-name-input" style="display:none" value="${asset.name}" aria-label="Rename ${asset.name}" />
-        </div>
-      </td>
-      <td class="asset-size">${formatBytes(asset.size)}</td>
-      <td class="asset-date">${formatDate(asset.created_at)}</td>
-      <td>
-        <div class="asset-actions">
-          <button class="btn-icon btn-rename" title="Rename" aria-label="Rename ${asset.name}">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M11.5 2.5l2 2-8 8H3.5v-2l8-8z"/>
-              <line x1="9.5" y1="4.5" x2="11.5" y2="6.5"/>
-            </svg>
-          </button>
-          <button class="btn-icon btn-save-rename" title="Save rename" aria-label="Save rename" style="display:none">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="2 8 6 12 14 4"/>
-            </svg>
-          </button>
-          <button class="btn-icon btn-cancel-rename" title="Cancel rename" aria-label="Cancel rename" style="display:none">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/>
-            </svg>
-          </button>
-          <button class="btn-icon danger btn-delete" title="Delete" aria-label="Delete ${asset.name}">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="2 4 14 4"/>
-              <path d="M5 4V2.5h6V4"/>
-              <rect x="3" y="4" width="10" height="10" rx="1"/>
-              <line x1="6" y1="7" x2="6" y2="11"/><line x1="10" y1="7" x2="10" y2="11"/>
-            </svg>
-          </button>
-        </div>
-      </td>`;
-
-    // Rename flow
-    const nameText   = tr.querySelector('.asset-name-text');
-    const nameInput  = tr.querySelector('.asset-name-input');
-    const btnRename  = tr.querySelector('.btn-rename');
-    const btnSave    = tr.querySelector('.btn-save-rename');
-    const btnCancel  = tr.querySelector('.btn-cancel-rename');
-    const btnDelete  = tr.querySelector('.btn-delete');
-
-    btnRename.addEventListener('click', () => {
-      nameText.style.display  = 'none';
-      nameInput.style.display = '';
-      btnRename.style.display = 'none';
-      btnSave.style.display   = '';
-      btnCancel.style.display = '';
-      btnDelete.style.display = 'none';
-      nameInput.focus();
-      nameInput.select();
-    });
-
-    function cancelRename() {
-      nameInput.value         = tr.dataset.name;
-      nameText.style.display  = '';
-      nameInput.style.display = 'none';
-      btnRename.style.display = '';
-      btnSave.style.display   = 'none';
-      btnCancel.style.display = 'none';
-      btnDelete.style.display = '';
-    }
-
-    btnCancel.addEventListener('click', cancelRename);
-    nameInput.addEventListener('keydown', e => {
-      if (e.key === 'Escape') cancelRename();
-      if (e.key === 'Enter')  btnSave.click();
-    });
-
-    btnSave.addEventListener('click', async () => {
-      const newName = nameInput.value.trim();
-      if (!newName || newName === tr.dataset.name) { cancelRename(); return; }
-      btnSave.disabled = true;
-      try {
-        const res = await apiFetch(`/api/manage/asset/${asset.id}`, {
-          method: 'PATCH',
-          body:   { newName },
-        });
-        asset.name        = res.name;
-        tr.dataset.name   = res.name;
-        nameText.textContent = res.name;
-        nameText.title    = res.name;
-        nameInput.value   = res.name;
-        showToast(`Renamed to "${res.name}"`);
-      } catch (err) {
-        showToast(`Rename failed: ${err.message}`, true);
-      } finally {
-        cancelRename();
-        btnSave.disabled = false;
+function countAllFiles(manifest) {
+  let count = 0;
+  for (const sem of Object.values(manifest)) {
+    for (const subj of Object.values(sem)) {
+      for (const files of Object.values(subj)) {
+        count += files.length;
       }
-    });
+    }
+  }
+  return count;
+}
 
-    // Delete flow
-    btnDelete.addEventListener('click', () => {
-      $('dialog-file-name').textContent = asset.name;
-      pendingDeleteId = asset.id;
-      $('confirm-dialog').showModal();
-    });
+function renderBreadcrumb() {
+  const bc = $('manage-breadcrumb');
+  bc.innerHTML = '';
+  const items = [{ label: 'All Semesters', path: [] }];
+  if (managePath.length >= 1) items.push({ label: managePath[0], path: [managePath[0]] });
+  if (managePath.length >= 2) items.push({ label: managePath[1], path: [managePath[0], managePath[1]] });
+  if (managePath.length >= 3) items.push({ label: managePath[2], path: [...managePath] });
 
-    tbody.appendChild(tr);
+  items.forEach((item, i) => {
+    if (i > 0) {
+      const sep = document.createElement('span');
+      sep.className = 'bc-sep';
+      sep.textContent = '/';
+      sep.setAttribute('aria-hidden', 'true');
+      bc.appendChild(sep);
+    }
+    const isLast = i === items.length - 1;
+    const el = document.createElement(isLast ? 'span' : 'button');
+    el.className = isLast ? 'bc-current' : 'bc-link';
+    el.textContent = item.label;
+    if (!isLast) {
+      el.type = 'button';
+      el.addEventListener('click', () => { managePath = item.path; renderManageBrowser(); });
+    }
+    bc.appendChild(el);
   });
 }
 
-// Refresh button
-$('btn-refresh-assets').addEventListener('click', loadManageAssets);
+function renderManageBrowser() {
+  if (!manifestCache) return;
+  const browser = $('manage-browser');
+  $('manage-loader').style.display = 'none';
+  browser.querySelectorAll('.manage-list').forEach(el => el.remove());
+  renderBreadcrumb();
+
+  const depth = managePath.length;
+
+  if (depth === 0) {
+    // Show semesters
+    const total = countAllFiles(manifestCache);
+    $('manage-count').textContent = `${total} file${total !== 1 ? 's' : ''} published`;
+    const semesters = Object.keys(manifestCache).sort();
+    if (!semesters.length) {
+      browser.innerHTML += '<div class="manage-empty">No published materials yet.</div>';
+      return;
+    }
+    const list = document.createElement('div');
+    list.className = 'manage-list';
+    semesters.forEach(sem => {
+      const subjects = Object.keys(manifestCache[sem]);
+      const fileCount = Object.values(manifestCache[sem]).reduce((n, subj) =>
+        n + Object.values(subj).reduce((m, files) => m + files.length, 0), 0);
+      const row = createBrowserRow(sem, `${subjects.length} subject${subjects.length !== 1 ? 's' : ''} · ${fileCount} files`, 'folder');
+      row.addEventListener('click', () => { managePath = [sem]; renderManageBrowser(); });
+      list.appendChild(row);
+    });
+    browser.appendChild(list);
+
+  } else if (depth === 1) {
+    // Show subjects in semester
+    const semester = managePath[0];
+    const subjects = Object.keys(manifestCache[semester] || {}).sort();
+    $('manage-count').textContent = `${subjects.length} subject${subjects.length !== 1 ? 's' : ''}`;
+    if (!subjects.length) {
+      browser.innerHTML += '<div class="manage-empty">No subjects in this semester.</div>';
+      return;
+    }
+    const list = document.createElement('div');
+    list.className = 'manage-list';
+    subjects.forEach(subj => {
+      const types = Object.keys(manifestCache[semester][subj]);
+      const fileCount = types.reduce((n, t) => n + manifestCache[semester][subj][t].length, 0);
+      const row = createBrowserRow(subj, `${types.length} type${types.length !== 1 ? 's' : ''} · ${fileCount} files`, 'folder');
+      row.addEventListener('click', () => { managePath = [semester, subj]; renderManageBrowser(); });
+      list.appendChild(row);
+    });
+    browser.appendChild(list);
+
+  } else if (depth === 2) {
+    // Show types in subject
+    const [semester, subject] = managePath;
+    const types = Object.keys(manifestCache[semester]?.[subject] || {}).sort();
+    $('manage-count').textContent = `${types.length} type${types.length !== 1 ? 's' : ''}`;
+    if (!types.length) {
+      browser.innerHTML += '<div class="manage-empty">No material types.</div>';
+      return;
+    }
+    const list = document.createElement('div');
+    list.className = 'manage-list';
+    types.forEach(type => {
+      const files = manifestCache[semester][subject][type];
+      const row = createBrowserRow(type, `${files.length} file${files.length !== 1 ? 's' : ''}`, 'folder');
+      row.addEventListener('click', () => { managePath = [semester, subject, type]; renderManageBrowser(); });
+      list.appendChild(row);
+    });
+    browser.appendChild(list);
+
+  } else if (depth === 3) {
+    // Show files
+    const [semester, subject, type] = managePath;
+    const files = manifestCache[semester]?.[subject]?.[type] || [];
+    $('manage-count').textContent = `${files.length} file${files.length !== 1 ? 's' : ''}`;
+    if (!files.length) {
+      browser.innerHTML += '<div class="manage-empty">No files in this section.</div>';
+      return;
+    }
+    const list = document.createElement('div');
+    list.className = 'manage-list';
+    files.forEach(file => {
+      const row = createFileRow(semester, subject, type, file);
+      list.appendChild(row);
+    });
+    browser.appendChild(list);
+  }
+}
+
+function createBrowserRow(label, subtitle, icon) {
+  const row = document.createElement('button');
+  row.className = 'browser-row';
+  row.type = 'button';
+  row.innerHTML = `
+    <span class="browser-row-icon" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 4.5h3l1.5-2h5.5a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-7z"/>
+      </svg>
+    </span>
+    <span class="browser-row-info">
+      <span class="browser-row-label">${label}</span>
+      <span class="browser-row-sub">${subtitle}</span>
+    </span>
+    <span class="browser-row-chevron" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 4 10 8 6 12"/>
+      </svg>
+    </span>`;
+  return row;
+}
+
+function createFileRow(semester, subject, type, file) {
+  const row = document.createElement('div');
+  row.className = 'file-row';
+  row.innerHTML = `
+    <span class="file-row-icon" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 1H4a1 1 0 00-1 1v12a1 1 0 001 1h8a1 1 0 001-1V5L9 1z"/>
+        <polyline points="9 1 9 5 13 5"/>
+      </svg>
+    </span>
+    <span class="file-row-info">
+      <span class="file-row-name">${file.name}</span>
+    </span>
+    <span class="file-row-actions">
+      <button class="btn-icon btn-file-rename" title="Rename display name" aria-label="Rename ${file.name}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11.5 2.5l2 2-8 8H3.5v-2l8-8z"/>
+          <line x1="9.5" y1="4.5" x2="11.5" y2="6.5"/>
+        </svg>
+      </button>
+      <button class="btn-icon btn-file-move" title="Move to another section" aria-label="Move ${file.name}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="10 2 14 2 14 6"/>
+          <line x1="14" y1="2" x2="8" y2="8"/>
+          <path d="M14 9.5V13a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1h3.5"/>
+        </svg>
+      </button>
+      <button class="btn-icon danger btn-file-delete" title="Delete" aria-label="Delete ${file.name}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="2 4 14 4"/>
+          <path d="M5 4V2.5h6V4"/>
+          <rect x="3" y="4" width="10" height="10" rx="1"/>
+          <line x1="6" y1="7" x2="6" y2="11"/><line x1="10" y1="7" x2="10" y2="11"/>
+        </svg>
+      </button>
+    </span>`;
+
+  // Rename
+  const nameEl    = row.querySelector('.file-row-name');
+  const btnRename = row.querySelector('.btn-file-rename');
+  btnRename.addEventListener('click', () => {
+    const current = file.name;
+    nameEl.innerHTML = `<input type="text" class="asset-name-input" value="${current}" style="display:inline-block;width:100%" />`;
+    const input = nameEl.querySelector('input');
+    input.focus(); input.select();
+    const finish = async (save) => {
+      const newName = input.value.trim();
+      if (save && newName && newName !== current) {
+        try {
+          await apiFetch('/api/manage/material/rename', {
+            method: 'PATCH',
+            body: { semester, subject, type, oldName: current, newName },
+          });
+          file.name = newName;
+          showToast(`Renamed to "${newName}"`);
+        } catch (err) {
+          showToast(`Rename failed: ${err.message}`, true);
+        }
+      }
+      nameEl.textContent = file.name;
+    };
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); finish(true); }
+      if (e.key === 'Escape') finish(false);
+    });
+    input.addEventListener('blur', () => finish(false));
+  });
+
+  // Move
+  const btnMove = row.querySelector('.btn-file-move');
+  btnMove.addEventListener('click', () => {
+    pendingMove = { semester, subject, type, name: file.name };
+    openMoveDialog(semester, subject, type);
+  });
+
+  // Delete
+  const btnDelete = row.querySelector('.btn-file-delete');
+  btnDelete.addEventListener('click', () => {
+    pendingDelete = { semester, subject, type, name: file.name };
+    $('dialog-file-name').textContent = file.name;
+    $('confirm-dialog').showModal();
+  });
+
+  return row;
+}
+
+// ── Refresh ───────────────────────────────────────────────────────────────────
+$('btn-refresh-manage').addEventListener('click', loadManifest);
 
 // ── Delete dialog ─────────────────────────────────────────────────────────────
 $('btn-dialog-cancel').addEventListener('click', () => {
   $('confirm-dialog').close();
-  pendingDeleteId = null;
+  pendingDelete = null;
 });
 
 $('btn-dialog-confirm').addEventListener('click', async () => {
-  if (!pendingDeleteId) return;
-  const id = pendingDeleteId;
-  pendingDeleteId = null;
+  if (!pendingDelete) return;
+  const { semester, subject, type, name } = pendingDelete;
+  pendingDelete = null;
   $('confirm-dialog').close();
   try {
-    await apiFetch(`/api/manage/asset/${id}`, { method: 'DELETE' });
-    assetsCache = assetsCache.filter(a => a.id !== id);
-    renderAssetsTable(assetsCache);
+    await apiFetch('/api/manage/material', {
+      method: 'DELETE',
+      body: { semester, subject, type, name },
+    });
+    // Update local cache
+    const files = manifestCache?.[semester]?.[subject]?.[type];
+    if (files) {
+      const idx = files.findIndex(f => f.name === name);
+      if (idx !== -1) files.splice(idx, 1);
+      if (files.length === 0) delete manifestCache[semester][subject][type];
+      if (Object.keys(manifestCache[semester]?.[subject] || {}).length === 0) delete manifestCache[semester][subject];
+      if (Object.keys(manifestCache[semester] || {}).length === 0) delete manifestCache[semester];
+    }
+    // If we deleted the last file in this path, go up a level
+    if (managePath.length === 3) {
+      const [s, su, t] = managePath;
+      if (!manifestCache?.[s]?.[su]?.[t]?.length) managePath.pop();
+    }
+    renderManageBrowser();
     showToast('File deleted.');
   } catch (err) {
     showToast(`Delete failed: ${err.message}`, true);
   }
 });
 
-// Close dialog on backdrop click
 $('confirm-dialog').addEventListener('click', e => {
   if (e.target === $('confirm-dialog')) $('confirm-dialog').close();
+});
+
+// ── Move dialog ───────────────────────────────────────────────────────────────
+function openMoveDialog(currentSem, currentSubj, currentType) {
+  const moveSemSel  = $('move-semester');
+  const moveSubjSel = $('move-subject');
+  const moveTypeSel = $('move-type');
+
+  // Populate semesters from SUBJECTS (since that's our canonical list)
+  moveSemSel.innerHTML = '';
+  if (SUBJECTS) {
+    Object.keys(SUBJECTS).forEach(sem => {
+      const opt = document.createElement('option');
+      opt.value = sem; opt.textContent = sem;
+      if (sem === currentSem) opt.selected = true;
+      moveSemSel.appendChild(opt);
+    });
+  }
+
+  // Populate subjects for selected semester
+  function updateMoveSubjects() {
+    const sem = moveSemSel.value;
+    moveSubjSel.innerHTML = '';
+    moveSubjSel.disabled  = true;
+    if (sem && SUBJECTS && SUBJECTS[sem]) {
+      SUBJECTS[sem].forEach(subj => {
+        const opt = document.createElement('option');
+        opt.value = subj; opt.textContent = subj;
+        if (subj === currentSubj && sem === currentSem) opt.selected = true;
+        moveSubjSel.appendChild(opt);
+      });
+      moveSubjSel.disabled = false;
+    }
+  }
+  moveSemSel.onchange = updateMoveSubjects;
+  updateMoveSubjects();
+
+  // Set current type
+  moveTypeSel.value = currentType;
+
+  $('move-dialog-file').textContent = pendingMove.name;
+  $('move-dialog').showModal();
+}
+
+$('btn-move-cancel').addEventListener('click', () => {
+  $('move-dialog').close();
+  pendingMove = null;
+});
+
+$('btn-move-confirm').addEventListener('click', async () => {
+  if (!pendingMove) return;
+  const { semester, subject, type, name } = pendingMove;
+  const targetSemester = $('move-semester').value;
+  const targetSubject  = $('move-subject').value;
+  const targetType     = $('move-type').value;
+
+  if (!targetSemester || !targetSubject || !targetType) {
+    showToast('Please select all target fields.', true);
+    return;
+  }
+
+  pendingMove = null;
+  $('move-dialog').close();
+  showToast('Moving file… this may take a moment.');
+
+  try {
+    await apiFetch('/api/manage/material/move', {
+      method: 'POST',
+      body: { semester, subject, type, name, targetSemester, targetSubject, targetType },
+    });
+    // Reload manifest from server to get the canonical state
+    await loadManifest();
+    showToast(`Moved to ${targetSemester} / ${targetSubject} / ${targetType}`);
+  } catch (err) {
+    showToast(`Move failed: ${err.message}`, true);
+  }
+});
+
+$('move-dialog').addEventListener('click', e => {
+  if (e.target === $('move-dialog')) $('move-dialog').close();
 });
 
 // ── Start ─────────────────────────────────────────────────────────────────────

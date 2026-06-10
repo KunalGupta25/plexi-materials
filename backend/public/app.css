@@ -947,84 +947,146 @@ fieldset:disabled select, fieldset:disabled textarea { opacity: 0.35; pointer-ev
   color:      var(--color-text-secondary);
 }
 
-/* Asset table */
-.assets-table-wrap {
-  border:        1px solid var(--color-border-default);
+/* Manage Breadcrumb */
+.manage-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  font-size: var(--font-size-xs);
+  flex-wrap: wrap;
+}
+
+.bc-link {
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--motion-instant);
+}
+
+.bc-link:hover { color: var(--color-text-primary); }
+.bc-sep { color: var(--color-border-default); }
+.bc-current { color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
+
+/* Manage Browser List */
+.manage-browser {
+  border: 1px solid var(--color-border-default);
   border-radius: var(--radius-md);
-  overflow:      hidden;
+  overflow: hidden;
+  background: var(--color-surface-muted);
 }
 
-.assets-table {
-  width:           100%;
-  border-collapse: collapse;
-  font-size:       var(--font-size-xs);
+.manage-list {
+  display: flex;
+  flex-direction: column;
 }
 
-.assets-table thead {
-  background:  var(--color-surface-muted);
-  border-bottom: 1px solid var(--color-border-default);
-}
-
-.assets-table th {
-  text-align:     left;
-  padding:        var(--space-3) var(--space-4);
-  font-size:      11px;
-  font-weight:    var(--font-weight-semi);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color:          var(--color-text-secondary);
-  white-space:    nowrap;
-}
-
-.assets-table td {
-  padding:     var(--space-3) var(--space-4);
+/* Browser Row (Folder) */
+.browser-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: none;
   border-bottom: 1px solid var(--color-border-subtle);
-  vertical-align: middle;
-}
-
-.assets-table tbody tr:last-child td { border-bottom: none; }
-
-.assets-table tbody tr {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
   transition: background var(--motion-instant);
 }
-.assets-table tbody tr:hover { background: var(--color-nav-hover-bg); }
 
-.asset-name-cell {
-  display:     flex;
+.browser-row:last-child { border-bottom: none; }
+.browser-row:hover { background: var(--color-nav-hover-bg); }
+
+.browser-row-icon {
+  color: var(--color-text-secondary);
+  display: flex;
   align-items: center;
-  gap:         var(--space-2);
-  max-width:   360px;
+}
+.browser-row-icon svg { width: 16px; height: 16px; }
+
+.browser-row-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.asset-name-text {
-  overflow:      hidden;
-  text-overflow: ellipsis;
-  white-space:   nowrap;
-  font-weight:   var(--font-weight-medium);
+.browser-row-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
 }
 
-.asset-name-input {
-  flex:          1;
-  padding:       3px var(--space-2);
-  background:    var(--color-surface-base);
-  border:        1px solid var(--color-border-default);
-  border-radius: var(--radius-xs);
-  color:         var(--color-text-primary);
-  font-size:     var(--font-size-xs);
-  font-family:   inherit;
-  outline:       none;
-  min-width:     0;
+.browser-row-sub {
+  font-size: 11px;
+  color: var(--color-text-secondary);
 }
-.asset-name-input:focus { border-color: var(--color-text-secondary); box-shadow: 0 0 0 2px var(--color-focus-ring); }
 
-.asset-size { color: var(--color-text-secondary); white-space: nowrap; }
-.asset-date { color: var(--color-text-secondary); white-space: nowrap; }
-
-.asset-actions {
-  display:   flex;
-  gap:       var(--space-2);
+.browser-row-chevron {
+  color: var(--color-border-default);
+  display: flex;
   align-items: center;
+}
+.browser-row-chevron svg { width: 16px; height: 16px; }
+.browser-row:hover .browser-row-chevron { color: var(--color-text-secondary); }
+
+/* File Row */
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background var(--motion-instant);
+}
+
+.file-row:last-child { border-bottom: none; }
+.file-row:hover { background: var(--color-nav-hover-bg); }
+
+.file-row-icon {
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+}
+.file-row-icon svg { width: 16px; height: 16px; }
+
+.file-row-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.file-row-name {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.file-row-actions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--motion-fast);
+}
+
+.file-row:hover .file-row-actions { opacity: 1; }
+
+@media (max-width: 767px) {
+  .file-row-actions { opacity: 1; }
 }
 
 .btn-icon {
@@ -1065,7 +1127,7 @@ fieldset:disabled select, fieldset:disabled textarea { opacity: 0.35; pointer-ev
 }
 
 /* Confirm dialog */
-#confirm-dialog {
+#confirm-dialog, #move-dialog {
   border:        1px solid var(--color-border-default);
   border-radius: var(--radius-md);
   background:    var(--color-surface-raised);
@@ -1076,12 +1138,12 @@ fieldset:disabled select, fieldset:disabled textarea { opacity: 0.35; pointer-ev
   box-shadow:    var(--shadow-md);
 }
 
-#confirm-dialog::backdrop {
+#confirm-dialog::backdrop, #move-dialog::backdrop {
   background: rgba(0,0,0,0.7);
   backdrop-filter: blur(4px);
 }
 
-[data-theme="light"] #confirm-dialog::backdrop { background: rgba(0,0,0,0.4); }
+[data-theme="light"] #confirm-dialog::backdrop, [data-theme="light"] #move-dialog::backdrop { background: rgba(0,0,0,0.4); }
 
 .dialog-title {
   font-size:     var(--font-size-base);

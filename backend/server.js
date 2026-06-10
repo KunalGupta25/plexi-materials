@@ -283,6 +283,8 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
 });
 
 // ── Manage Routes (owner-only) ──────────────────────────────────────────────────
+// These operate on the LIVE manifest.json (published materials) and the semester
+// releases on GitHub — NOT the staging area.
 
 function requireOwner(req, res) {
   const user = getUser(req);
@@ -291,52 +293,234 @@ function requireOwner(req, res) {
   return user;
 }
 
-/** List all assets in the staging-uploads release. */
-app.get('/api/manage/assets', async (req, res) => {
+// ── Manifest helpers ────────────────────────────────────────────────────────────
+// manifest.json lives in the repo root. We read/write it via GitHub Contents API
+// so the change is committed and the main Plexi site picks it up automatically.
+
+async function readManifest() {
+  const data = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/manifest.json`);
+  const content = Buffer.from(data.content, 'base64').toString('utf-8');
+  return { manifest: JSON.parse(content), sha: data.sha };
+}
+
+async function writeManifest(manifest, sha, message) {
+  const content = Buffer.from(JSON.stringify(manifest, null, 2) + '\n').toString('base64');
+  await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/manifest.json`, {
+    method: 'PUT',
+    body: JSON.stringify({ message, content, sha }),
+  });
+}
+
+// Given a download_url, find the release asset ID so we can delete/rename it.
+async function findAssetByUrl(downloadUrl) {
+  // URL format: https://github.com/OWNER/REPO/releases/download/TAG/FILENAME
+  const parts = downloadUrl.split('/');
+  const tag      = parts[parts.length - 2];
+  const filename = decodeURIComponent(parts[parts.length - 1]);
+  try {
+    const release = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/${tag}`);
+    const assets  = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/${release.id}/assets?per_page=100`);
+    const asset   = assets.find(a => a.name === filename);
+    return asset ? { asset, release, tag } : null;
+  } catch {
+    return null;
+  }
+}
+
+/** GET /api/manage/materials — Return the full manifest. */
+app.get('/api/manage/materials', async (req, res) => {
   if (!requireOwner(req, res)) return;
   try {
-    const release = await ensureRelease('staging-uploads', 'Staging area for pending uploads.');
-    const assets  = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/${release.id}/assets?per_page=100`);
-    res.json(assets.map(a => ({
-      id:           a.id,
-      name:         a.name,
-      size:         a.size,
-      created_at:   a.created_at,
-      download_url: a.browser_download_url,
-    })));
+    const { manifest } = await readManifest();
+    res.json(manifest);
   } catch (err) {
-    console.error('[Manage] list assets error:', err.message);
+    console.error('[Manage] read manifest error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
 
-/** Delete a staging release asset by ID. */
-app.delete('/api/manage/asset/:id', async (req, res) => {
+/** PATCH /api/manage/material/rename — Rename display name only (manifest only). */
+app.patch('/api/manage/material/rename', async (req, res) => {
   if (!requireOwner(req, res)) return;
+  const { semester, subject, type, oldName, newName } = req.body;
+  if (!semester || !subject || !type || !oldName || !newName) {
+    return res.status(400).json({ error: 'semester, subject, type, oldName, and newName are required.' });
+  }
   try {
-    await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${req.params.id}`, { method: 'DELETE' });
+    const { manifest, sha } = await readManifest();
+    const files = manifest?.[semester]?.[subject]?.[type];
+    if (!files) return res.status(404).json({ error: 'Section not found in manifest.' });
+
+    const entry = files.find(f => f.name === oldName);
+    if (!entry) return res.status(404).json({ error: `File "${oldName}" not found.` });
+
+    entry.name = newName.trim();
+    await writeManifest(manifest, sha, `rename: ${oldName} → ${newName} in ${semester}/${subject}/${type}`);
+    res.json({ ok: true, name: entry.name });
+  } catch (err) {
+    console.error('[Manage] rename error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/** DELETE /api/manage/material — Delete file (manifest entry + release asset). */
+app.delete('/api/manage/material', async (req, res) => {
+  if (!requireOwner(req, res)) return;
+  const { semester, subject, type, name } = req.body;
+  if (!semester || !subject || !type || !name) {
+    return res.status(400).json({ error: 'semester, subject, type, and name are required.' });
+  }
+  try {
+    const { manifest, sha } = await readManifest();
+    const files = manifest?.[semester]?.[subject]?.[type];
+    if (!files) return res.status(404).json({ error: 'Section not found.' });
+
+    const idx = files.findIndex(f => f.name === name);
+    if (idx === -1) return res.status(404).json({ error: `File "${name}" not found.` });
+
+    const entry = files[idx];
+
+    // Delete the release asset (best-effort — don't fail if asset already gone)
+    try {
+      const found = await findAssetByUrl(entry.download_url);
+      if (found) {
+        await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${found.asset.id}`, { method: 'DELETE' });
+      }
+    } catch (assetErr) {
+      console.warn('[Manage] could not delete release asset:', assetErr.message);
+    }
+
+    // Remove from manifest
+    files.splice(idx, 1);
+    // Clean up empty containers
+    if (files.length === 0) delete manifest[semester][subject][type];
+    if (manifest[semester][subject] && Object.keys(manifest[semester][subject]).length === 0) delete manifest[semester][subject];
+    if (manifest[semester] && Object.keys(manifest[semester]).length === 0) delete manifest[semester];
+
+    await writeManifest(manifest, sha, `delete: ${name} from ${semester}/${subject}/${type}`);
     res.json({ ok: true });
   } catch (err) {
-    console.error('[Manage] delete asset error:', err.message);
+    console.error('[Manage] delete error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
 
-/** Rename a staging release asset by ID (GitHub supports PATCH on asset name). */
-app.patch('/api/manage/asset/:id', async (req, res) => {
+/** POST /api/manage/material/move — Move file to a different section.
+ *  This is a complex operation:
+ *    1. Download the file from the old release
+ *    2. Upload to the target release with new asset name
+ *    3. Delete the old asset
+ *    4. Update manifest (remove from old, add to new)
+ *    5. Commit manifest
+ */
+app.post('/api/manage/material/move', async (req, res) => {
   if (!requireOwner(req, res)) return;
-  const { newName } = req.body;
-  if (!newName || typeof newName !== 'string' || !newName.trim()) {
-    return res.status(400).json({ error: 'newName is required.' });
+  const { semester, subject, type, name, targetSemester, targetSubject, targetType } = req.body;
+  if (!semester || !subject || !type || !name || !targetSemester || !targetSubject || !targetType) {
+    return res.status(400).json({ error: 'All source and target fields are required.' });
   }
+
+  // No-op if same location
+  if (semester === targetSemester && subject === targetSubject && type === targetType) {
+    return res.json({ ok: true, message: 'Source and target are the same.' });
+  }
+
   try {
-    const updated = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${req.params.id}`, {
-      method: 'PATCH',
-      body:   JSON.stringify({ name: sanitize(newName.trim()) }),
+    const { manifest, sha } = await readManifest();
+    const srcFiles = manifest?.[semester]?.[subject]?.[type];
+    if (!srcFiles) return res.status(404).json({ error: 'Source section not found.' });
+
+    const idx = srcFiles.findIndex(f => f.name === name);
+    if (idx === -1) return res.status(404).json({ error: `File "${name}" not found in source.` });
+
+    const entry = srcFiles[idx];
+    const oldDownloadUrl = entry.download_url;
+
+    // Parse old URL to get tag and asset filename
+    const urlParts    = oldDownloadUrl.split('/');
+    const oldTag      = urlParts[urlParts.length - 2];
+    const oldAssetName = decodeURIComponent(urlParts[urlParts.length - 1]);
+
+    // Compute new release tag and asset name
+    const newTag       = targetSemester.toLowerCase().replace(/ /g, '-');
+    const newAssetName = `${sanitize(targetSubject)}_${sanitize(targetType)}_${sanitize(name)}`;
+    const newDownloadUrl = `https://github.com/${GITHUB_REPO}/releases/download/${newTag}/${newAssetName}`;
+
+    // 1. Download the file from the old asset
+    const found = await findAssetByUrl(oldDownloadUrl);
+    if (!found) {
+      return res.status(404).json({ error: 'Could not find the release asset to move.' });
+    }
+
+    // Download using the asset's API URL (not browser URL)
+    const downloadRes = await fetch(found.asset.url, {
+      headers: {
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+        Accept:        'application/octet-stream',
+      },
+      redirect: 'follow',
     });
-    res.json({ ok: true, name: updated.name });
+    if (!downloadRes.ok) throw new Error(`Failed to download asset: ${downloadRes.status}`);
+    const fileBuffer = Buffer.from(await downloadRes.arrayBuffer());
+
+    // 2. Ensure target release exists and upload
+    const targetRelease = await ensureRelease(newTag, `Study materials for ${targetSemester}`);
+
+    // Clobber any existing asset with the same name
+    try {
+      const targetAssets = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/${targetRelease.id}/assets?per_page=100`);
+      const existing = targetAssets.find(a => a.name === newAssetName);
+      if (existing) {
+        await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${existing.id}`, { method: 'DELETE' });
+      }
+    } catch { /* best-effort clobber */ }
+
+    const uploadUrl = `https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/${targetRelease.id}/assets?name=${encodeURIComponent(newAssetName)}`;
+    const uploadRes = await fetch(uploadUrl, {
+      method: 'POST',
+      headers: {
+        Authorization:  `Bearer ${GITHUB_TOKEN}`,
+        Accept:         'application/vnd.github+json',
+        'Content-Type': 'application/octet-stream',
+        'Content-Length': String(fileBuffer.length),
+      },
+      body: fileBuffer,
+    });
+    if (!uploadRes.ok) {
+      const err = await uploadRes.json().catch(() => ({}));
+      throw new Error(`Upload failed: ${err.message || uploadRes.statusText}`);
+    }
+
+    // 3. Delete old asset
+    try {
+      await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${found.asset.id}`, { method: 'DELETE' });
+    } catch (delErr) {
+      console.warn('[Manage] could not delete old asset:', delErr.message);
+    }
+
+    // 4. Update manifest: remove from source, add to target
+    srcFiles.splice(idx, 1);
+    if (srcFiles.length === 0) delete manifest[semester][subject][type];
+    if (manifest[semester][subject] && Object.keys(manifest[semester][subject]).length === 0) delete manifest[semester][subject];
+    if (manifest[semester] && Object.keys(manifest[semester]).length === 0) delete manifest[semester];
+
+    // Ensure target path exists
+    if (!manifest[targetSemester]) manifest[targetSemester] = {};
+    if (!manifest[targetSemester][targetSubject]) manifest[targetSemester][targetSubject] = {};
+    if (!manifest[targetSemester][targetSubject][targetType]) manifest[targetSemester][targetSubject][targetType] = [];
+
+    manifest[targetSemester][targetSubject][targetType].push({
+      name:         entry.name,
+      download_url: newDownloadUrl,
+    });
+
+    // 5. Commit
+    await writeManifest(manifest, sha,
+      `move: ${name} from ${semester}/${subject}/${type} → ${targetSemester}/${targetSubject}/${targetType}`);
+
+    res.json({ ok: true, newDownloadUrl });
   } catch (err) {
-    console.error('[Manage] rename asset error:', err.message);
+    console.error('[Manage] move error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
