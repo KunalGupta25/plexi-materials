@@ -7,211 +7,82 @@
   <meta name="description" content="Submit study materials to the Plexi platform. Files are reviewed by a maintainer before being published." />
   <meta name="robots" content="noindex" />
 
-  <!-- Geist font -->
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" />
+  <!-- Google Fonts (non-blocking) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@200;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
   <!-- App styles -->
   <link rel="stylesheet" href="/app.css" />
-</head>
-<body>
+</head><body>
 
-<!-- ══ Hamburger (mobile only) ══════════════════════════════════════════════ -->
-<button id="btn-hamburger" aria-label="Open navigation" aria-expanded="false">
-  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-    <line x1="2" y1="4" x2="14" y2="4"/>
-    <line x1="2" y1="8" x2="14" y2="8"/>
-    <line x1="2" y1="12" x2="14" y2="12"/>
-  </svg>
-</button>
+<!-- ══ Desktop Header ══════════════════════════════════════════════════ -->
+<header id="top-header" class="top-header" role="banner">
+  <nav class="top-nav" aria-label="Main navigation">
+    <!-- Brand -->
+    <a href="https://plexi.mexus.tech/" class="nav-brand" aria-label="Plexi home">
+      <img src="/icon-dark.svg" alt="" class="nav-brand-logo" aria-hidden="true" id="header-logo-img" />
+      <span class="nav-brand-name">Plexi</span>
+    </a>
 
-<!-- ══ Sidebar overlay (mobile) ═════════════════════════════════════════════ -->
-<div id="sidebar-overlay" role="presentation" aria-hidden="true"></div>
-
-<!-- ══ App Shell ════════════════════════════════════════════════════════════ -->
-<div id="app-shell">
-
-  <!-- ── Sidebar ──────────────────────────────────────────────────────────── -->
-  <nav id="sidebar" role="navigation" aria-label="Main navigation">
-
-    <!-- Header -->
-    <div class="sidebar-header">
-      <a href="https://plexi.mexus.tech/" class="sidebar-brand" aria-label="Plexi home">
-        <img src="/icon-dark.svg" alt="" class="sidebar-logo" aria-hidden="true" id="sidebar-logo-img" />
-        <span class="sidebar-brand-name">Plexi</span>
-      </a>
-      <button id="btn-sidebar-toggle" class="sidebar-toggle" aria-label="Collapse sidebar" aria-expanded="true">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="10 12 6 8 10 4"/>
-        </svg>
-      </button>
+    <!-- Desktop nav links -->
+    <div class="nav-links" role="menubar" aria-label="Site sections">
+      <a href="https://plexi.mexus.tech/" class="nav-link" role="menuitem" id="nav-home">Materials</a>
+      <a href="https://plexi.mexus.tech/ai" class="nav-link" role="menuitem" id="nav-ai">Chat</a>
     </div>
 
-    <!-- Nav -->
-    <div class="sidebar-nav" role="menubar" aria-label="Site navigation">
-
-      <!-- MAIN -->
-      <div class="nav-section" role="group" aria-label="Main">
-        <div class="nav-section-label" aria-hidden="true">Main</div>
-
-        <a href="https://plexi.mexus.tech/" class="nav-item" role="menuitem" id="nav-home">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"/>
-              <path d="M6 15V9h4v6"/>
-            </svg>
-          </span>
-          <span class="nav-item-label">Home</span>
-        </a>
-
-        <a href="https://plexi.mexus.tech/materials" class="nav-item" role="menuitem" id="nav-materials">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="12" height="12" rx="1.5"/>
-              <line x1="5" y1="6" x2="11" y2="6"/>
-              <line x1="5" y1="9" x2="11" y2="9"/>
-              <line x1="5" y1="12" x2="8" y2="12"/>
-            </svg>
-          </span>
-          <span class="nav-item-label">Materials</span>
-        </a>
-
-        <a href="https://plexi.mexus.tech/ai" class="nav-item" role="menuitem" id="nav-ai">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="8" cy="8" r="6"/>
-              <path d="M5.5 9.5c0-1.5 5-1.5 5 0"/>
-              <circle cx="6" cy="6.5" r="0.75" fill="currentColor" stroke="none"/>
-              <circle cx="10" cy="6.5" r="0.75" fill="currentColor" stroke="none"/>
-            </svg>
-          </span>
-          <span class="nav-item-label">Plexi AI</span>
-        </a>
-      </div>
-
-      <!-- MORE -->
-      <div class="nav-section" role="group" aria-label="More">
-        <div class="nav-section-label" aria-hidden="true">More</div>
-
-        <a href="https://plexi.mexus.tech/download" class="nav-item" role="menuitem" id="nav-download">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8 2v9"/>
-              <polyline points="4 8 8 12 12 8"/>
-              <line x1="2" y1="14" x2="14" y2="14"/>
-            </svg>
-          </span>
-          <span class="nav-item-label">Download</span>
-        </a>
-
-        <a href="https://plexi.mexus.tech/integrations" class="nav-item" role="menuitem" id="nav-integrations">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="4" cy="8" r="2"/>
-              <circle cx="12" cy="4" r="2"/>
-              <circle cx="12" cy="12" r="2"/>
-              <line x1="6" y1="7" x2="10" y2="5"/>
-              <line x1="6" y1="9" x2="10" y2="11"/>
-            </svg>
-          </span>
-          <span class="nav-item-label">Integrations</span>
-        </a>
-
-        <a href="https://plexi.mexus.tech/blogs" class="nav-item" role="menuitem" id="nav-blogs">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="1.5" width="12" height="13" rx="1.5"/>
-              <line x1="5" y1="5" x2="11" y2="5"/>
-              <line x1="5" y1="8" x2="11" y2="8"/>
-              <line x1="5" y1="11" x2="8.5" y2="11"/>
-            </svg>
-          </span>
-          <span class="nav-item-label">Blog &amp; Guides</span>
-        </a>
-      </div>
-
-      <!-- THIS APP -->
-      <div class="nav-section" role="group" aria-label="Contribute">
-        <div class="nav-section-label" aria-hidden="true">Contribute</div>
-
-        <button class="nav-item active" role="menuitem" id="nav-contribute" aria-current="page" onclick="switchToContribute()">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8 2v9"/>
-              <polyline points="5 8 8 11 11 8" transform="rotate(180,8,8)"/>
-              <line x1="2" y1="14" x2="14" y2="14"/>
-            </svg>
-          </span>
-          <span class="nav-item-label">Contribute Materials</span>
-        </button>
-
-        <button class="nav-item" role="menuitem" id="nav-manage" style="display:none" onclick="switchToManage()">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="5" height="5" rx="1"/>
-              <rect x="9" y="2" width="5" height="5" rx="1"/>
-              <rect x="2" y="9" width="5" height="5" rx="1"/>
-              <rect x="9" y="9" width="5" height="5" rx="1"/>
-            </svg>
-          </span>
-          <span class="nav-item-label">Manage Materials</span>
-        </button>
-      </div>
-
-    </div><!-- /sidebar-nav -->
-
-    <!-- Footer -->
-    <div class="sidebar-footer">
-
-      <!-- User (shown when logged in) -->
-      <div id="sidebar-user-section" style="display:none">
-        <div class="sidebar-user">
-          <img id="sidebar-avatar" class="sidebar-user-avatar" src="" alt="" width="24" height="24" />
-          <div class="sidebar-user-info">
-            <div id="sidebar-username" class="sidebar-user-name"></div>
-            <div class="sidebar-user-role">Contributor</div>
-          </div>
-        </div>
-        <button id="btn-signout" class="sidebar-signout" type="button">
-          <span class="nav-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 2H3a1 1 0 00-1 1v10a1 1 0 001 1h3"/>
-              <polyline points="10 11 14 8 10 5"/>
-              <line x1="14" y1="8" x2="6" y2="8"/>
-            </svg>
-          </span>
-          <span class="sidebar-signout-label">Sign out</span>
+    <!-- Actions -->
+    <div class="nav-actions">
+      <!-- User avatar (shown when logged in) -->
+      <div id="header-user-section" style="display:none" class="header-user">
+        <img id="header-avatar" class="header-avatar" src="" alt="" width="28" height="28" />
+        <span id="header-username" class="header-username"></span>
+        <button id="btn-signout" class="nav-icon-btn" type="button" aria-label="Sign out" title="Sign out">
+          <span class="material-symbols-outlined" style="font-size:18px">logout</span>
         </button>
       </div>
 
       <!-- Theme toggle -->
-      <button id="btn-theme-toggle" class="sidebar-theme-toggle" type="button" aria-label="Toggle theme">
-        <span class="nav-item-icon" aria-hidden="true" id="theme-icon">
-          <!-- Moon (dark mode) -->
-          <svg id="icon-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M13.5 10A6 6 0 016 2.5a6 6 0 100 11 6 6 0 007.5-3.5z"/>
-          </svg>
-          <!-- Sun (light mode, hidden by default) -->
-          <svg id="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-            <circle cx="8" cy="8" r="3"/>
-            <line x1="8" y1="1" x2="8" y2="3"/>
-            <line x1="8" y1="13" x2="8" y2="15"/>
-            <line x1="1" y1="8" x2="3" y2="8"/>
-            <line x1="13" y1="8" x2="15" y2="8"/>
-            <line x1="3.05" y1="3.05" x2="4.46" y2="4.46"/>
-            <line x1="11.54" y1="11.54" x2="12.95" y2="12.95"/>
-            <line x1="12.95" y1="3.05" x2="11.54" y2="4.46"/>
-            <line x1="4.46" y1="11.54" x2="3.05" y2="12.95"/>
-          </svg>
-        </span>
-        <span class="sidebar-theme-label" id="theme-label">Toggle Theme</span>
+      <button id="btn-theme-toggle" class="nav-icon-btn" type="button" aria-label="Toggle theme">
+        <span class="material-symbols-outlined" id="theme-icon-label" style="font-size:20px">dark_mode</span>
       </button>
 
-    </div><!-- /sidebar-footer -->
+      <!-- Contribute CTA -->
+      <button id="nav-contribute-btn" class="nav-cta" onclick="switchToContribute()">Contribute</button>
+    </div>
+  </nav>
+</header>
 
-  </nav><!-- /sidebar -->
+<!-- ══ Mobile floating bottom nav ═════════════════════════════════════ -->
+<nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
+  <div class="mobile-nav-items">
+    <a href="https://plexi.mexus.tech/" class="mobile-nav-item" id="mnav-home">
+      <span class="material-symbols-outlined" style="font-size:22px">home</span>
+      <span class="mobile-nav-label">Home</span>
+    </a>
+    <a href="https://plexi.mexus.tech/" class="mobile-nav-item" id="mnav-materials">
+      <span class="material-symbols-outlined" style="font-size:22px">menu_book</span>
+      <span class="mobile-nav-label">Materials</span>
+    </a>
+    <a href="https://plexi.mexus.tech/ai" class="mobile-nav-item" id="mnav-ai">
+      <span class="material-symbols-outlined" style="font-size:22px">forum</span>
+      <span class="mobile-nav-label">Chat</span>
+    </a>
+  </div>
+  <div class="mobile-nav-divider"></div>
+  <div class="mobile-nav-actions">
+    <button id="btn-theme-toggle-mobile" class="mobile-nav-item mobile-nav-action" type="button" aria-label="Toggle theme">
+      <span class="material-symbols-outlined" id="theme-icon-label-mobile" style="font-size:20px">dark_mode</span>
+      <span class="mobile-nav-label">Theme</span>
+    </button>
+  </div>
+</nav>
 
-  <!-- ── Main content ─────────────────────────────────────────────────────── -->
+<!-- ══ App Shell ════════════════════════════════════════════════════════ -->
+<div id="app-shell">
+
+  <!-- ── Main content ───────────────────────────────────────────────── -->
   <div id="main-content" role="main">
 
     <!-- View: Loading -->
@@ -521,11 +392,14 @@ function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem('plexi-theme', theme);
   const isDark = theme === 'dark';
-  $('icon-moon').style.display = isDark ? '' : 'none';
-  $('icon-sun').style.display  = isDark ? 'none' : '';
+  const iconText = isDark ? 'light_mode' : 'dark_mode';
+  const labelEl        = $('theme-icon-label');
+  const labelMobileEl  = $('theme-icon-label-mobile');
+  if (labelEl)       labelEl.textContent       = iconText;
+  if (labelMobileEl) labelMobileEl.textContent  = iconText;
   // Adjust logo for light theme (SVG is white path, invert in light mode)
   const logoFilter = isDark ? '' : 'invert(1)';
-  document.querySelectorAll('.sidebar-logo, .auth-logo-img').forEach(el => {
+  document.querySelectorAll('.nav-brand-logo, .auth-logo-img').forEach(el => {
     el.style.filter = logoFilter;
   });
 }
@@ -535,60 +409,14 @@ $('btn-theme-toggle').addEventListener('click', () => {
   applyTheme(next);
 });
 
-// ── Sidebar collapse ─────────────────────────────────────────────────────────
-function setSidebarCollapsed(collapsed) {
-  sidebarCollapsed = collapsed;
-  const sidebar = $('sidebar');
-  const toggleBtn = $('btn-sidebar-toggle');
-  sidebar.classList.toggle('collapsed', collapsed);
-  document.body.classList.toggle('sidebar-collapsed', collapsed);
-  toggleBtn.setAttribute('aria-expanded', String(!collapsed));
-  toggleBtn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
-  localStorage.setItem('plexi-sidebar-collapsed', String(collapsed));
-}
-
-$('btn-sidebar-toggle').addEventListener('click', () => {
-  // On medium screens, toggle mobile-open; on large screens, toggle collapsed
-  if (window.innerWidth > 1023) {
-    setSidebarCollapsed(!sidebarCollapsed);
-  } else {
-    closeMobileSidebar();
-  }
+$('btn-theme-toggle-mobile').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
 });
 
-// ── Mobile sidebar ───────────────────────────────────────────────────────────
-function openMobileSidebar() {
-  $('sidebar').classList.add('mobile-open');
-  $('sidebar-overlay').classList.add('visible');
-  $('btn-hamburger').setAttribute('aria-expanded', 'true');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMobileSidebar() {
-  $('sidebar').classList.remove('mobile-open');
-  $('sidebar-overlay').classList.remove('visible');
-  $('btn-hamburger').setAttribute('aria-expanded', 'false');
-  document.body.style.overflow = '';
-}
-
-$('btn-hamburger').addEventListener('click', () => {
-  if ($('sidebar').classList.contains('mobile-open')) {
-    closeMobileSidebar();
-  } else {
-    openMobileSidebar();
-  }
-});
-
-$('sidebar-overlay').addEventListener('click', closeMobileSidebar);
-
-// Close mobile sidebar on resize to large
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 767) closeMobileSidebar();
-});
 
 // ── Nav switching ─────────────────────────────────────────────────────────────
 function switchToContribute() {
-  closeMobileSidebar();
   if (!currentUser) {
     showView('auth');
   } else {
@@ -597,7 +425,6 @@ function switchToContribute() {
 }
 
 function switchToManage() {
-  closeMobileSidebar();
   if (!currentUser || currentUser.login !== OWNER_LOGIN) {
     showToast('Access restricted to owner account.', true);
     return;
@@ -605,13 +432,6 @@ function switchToManage() {
   showView('manage');
   loadManifest();
 }
-
-// Close mobile sidebar when any nav item is clicked
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    if (window.innerWidth <= 767) closeMobileSidebar();
-  });
-});
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 $('btn-login').addEventListener('click', () => {
@@ -629,19 +449,20 @@ $('btn-signout').addEventListener('click', async () => {
 });
 
 function updateUserUI(user) {
-  const userSection = $('sidebar-user-section');
-  const manageBtn   = $('nav-manage');
+  const headerUserSection = $('header-user-section');
+  const manageBtn         = $('nav-manage');
 
   if (user) {
-    $('sidebar-avatar').src = user.avatar_url || '';
-    $('sidebar-avatar').alt = user.login || '';
-    $('sidebar-username').textContent = user.name || user.login || '';
-    userSection.style.display = '';
+    const avatar   = $('header-avatar');
+    const username = $('header-username');
+    if (avatar)   { avatar.src = user.avatar_url || ''; avatar.alt = user.login || ''; }
+    if (username) { username.textContent = user.name || user.login || ''; }
+    if (headerUserSection) headerUserSection.style.display = '';
     if (manageBtn && user.login === OWNER_LOGIN) {
       manageBtn.style.display = '';
     }
   } else {
-    userSection.style.display = 'none';
+    if (headerUserSection) headerUserSection.style.display = 'none';
     if (manageBtn) manageBtn.style.display = 'none';
   }
 }
@@ -668,13 +489,8 @@ async function loadSubjects() {
 // ── Init ──────────────────────────────────────────────────────────────────────
 async function init() {
   // Restore preferences
-  const savedTheme     = localStorage.getItem('plexi-theme') || 'dark';
-  const savedCollapsed = localStorage.getItem('plexi-sidebar-collapsed') === 'true';
+  const savedTheme = localStorage.getItem('plexi-theme') || 'dark';
   applyTheme(savedTheme);
-
-  if (window.innerWidth > 1023) {
-    setSidebarCollapsed(savedCollapsed);
-  }
 
   // Parallel: auth check + subjects
   const [user] = await Promise.allSettled([
