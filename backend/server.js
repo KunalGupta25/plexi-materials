@@ -198,19 +198,12 @@ app.post('/api/auth/logout', (req, res) => {
 });
 
 // ── Upload Route ───────────────────────────────────────────────────────────────
-app.post('/api/upload', upload.array('files', 10), async (req, res) => {
+app.post('/api/upload/file', upload.single('file'), async (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: 'You must be signed in to upload.' });
 
-  const { semester, subject, fileType, notes } = req.body;
-  const files = req.files;
-
-  if (!semester || !subject || !fileType) {
-    return res.status(400).json({ error: 'Semester, subject, and material type are required.' });
-  }
-  if (!files?.length) {
-    return res.status(400).json({ error: 'At least one file is required.' });
-  }
+  const file = req.file;
+  if (!file) return res.status(400).json({ error: 'No file provided.' });
 
   try {
     // 1. Ensure staging release exists
@@ -219,47 +212,60 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
       'Temporary staging area for pending uploads awaiting maintainer approval.',
     );
 
-    // 2. Upload files to the staging release
-    const uploaded = [];
-    for (const file of files) {
-      const safeName = sanitize(file.originalname);
+    const safeName = sanitize(file.originalname);
 
-      // Clobber any existing asset with the same name
-      try {
-        const assets = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/${stagingRelease.id}/assets`);
-        const existing = assets.find(a => a.name === safeName);
-        if (existing) {
-          await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${existing.id}`, { method: 'DELETE' });
-        }
-      } catch { /* best-effort clobber */ }
-
-      const uploadUrl = `https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/${stagingRelease.id}/assets?name=${encodeURIComponent(safeName)}`;
-      const assetRes = await fetch(uploadUrl, {
-        method:  'POST',
-        headers: {
-          Authorization:    `Bearer ${GITHUB_TOKEN}`,
-          Accept:           'application/vnd.github+json',
-          'Content-Type':   file.mimetype || 'application/octet-stream',
-          'Content-Length': String(file.buffer.length),
-        },
-        body: file.buffer,
-      });
-
-      if (!assetRes.ok) {
-        const err = await assetRes.json().catch(() => ({}));
-        throw new Error(`Failed to upload "${file.originalname}": ${err.message || assetRes.statusText}`);
+    // Clobber any existing asset with the same name
+    try {
+      const assets = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/${stagingRelease.id}/assets`);
+      const existing = assets.find(a => a.name === safeName);
+      if (existing) {
+        await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${existing.id}`, { method: 'DELETE' });
       }
+    } catch { /* best-effort clobber */ }
 
-      const downloadUrl = `https://github.com/${GITHUB_REPO}/releases/download/staging-uploads/${safeName}`;
-      uploaded.push({ originalName: file.originalname, downloadUrl });
+    const uploadUrl = `https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/${stagingRelease.id}/assets?name=${encodeURIComponent(safeName)}`;
+    const assetRes = await fetch(uploadUrl, {
+      method:  'POST',
+      headers: {
+        Authorization:    `Bearer ${GITHUB_TOKEN}`,
+        Accept:           'application/vnd.github+json',
+        'Content-Type':   file.mimetype || 'application/octet-stream',
+        'Content-Length': String(file.buffer.length),
+      },
+      body: file.buffer,
+    });
+
+    if (!assetRes.ok) {
+      const err = await assetRes.json().catch(() => ({}));
+      throw new Error(`Failed to upload "${file.originalname}": ${err.message || assetRes.statusText}`);
     }
 
+    const downloadUrl = `https://github.com/${GITHUB_REPO}/releases/download/staging-uploads/${safeName}`;
+    res.json({ ok: true, originalName: file.originalname, downloadUrl });
+
+  } catch (err) {
+    console.error('[Upload File] Error:', err.message);
+    res.status(500).json({ error: err.message || 'Upload failed. Please try again.' });
+  }
+});
+
+app.post('/api/upload/submit', async (req, res) => {
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: 'You must be signed in to submit.' });
+
+  const { semester, subject, fileType, notes, uploadedFiles } = req.body;
+
+  if (!semester || !subject || !fileType || !uploadedFiles?.length) {
+    return res.status(400).json({ error: 'Missing required fields or uploaded files.' });
+  }
+
+  try {
     // 3. Build issue body (matches upload-material.yml template format)
     const cleanSubject = subject.replace(/^\[Sem \d+\]\s*/, '');
     let body = `### Semester\n\n${semester}\n\n`;
     body    += `### Subject\n\n${subject}\n\n`;
     body    += `### Material Type\n\n${fileType}\n\n`;
-    body    += `### File\n\n${uploaded.map(f => f.downloadUrl).join('\n')}\n\n`;
+    body    += `### File\n\n${uploadedFiles.map(f => f.downloadUrl).join('\n')}\n\n`;
     body    += `### Additional Notes (optional)\n\n${notes?.trim() || '_No response_'}\n`;
     body    += `\n---\n_Submitted by [@${user.login}](https://github.com/${user.login}) via [Plexi Upload Portal](${FRONTEND_URL})_`;
 
@@ -273,12 +279,12 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
       }),
     });
 
-    console.log(`[Upload] Issue #${issue.number} by @${user.login}`);
-    res.json({ ok: true, issueNumber: issue.number, issueUrl: issue.html_url, files: uploaded.map(f => f.originalName) });
+    console.log(`[Upload Submit] Issue #${issue.number} by @${user.login}`);
+    res.json({ ok: true, issueNumber: issue.number, issueUrl: issue.html_url });
 
   } catch (err) {
-    console.error('[Upload] Error:', err.message);
-    res.status(500).json({ error: err.message || 'Upload failed. Please try again.' });
+    console.error('[Upload Submit] Error:', err.message);
+    res.status(500).json({ error: err.message || 'Submit failed. Please try again.' });
   }
 });
 

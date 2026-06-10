@@ -837,16 +837,52 @@ async function handleSubmit(e) {
 
   setUploading(true);
 
-  const fd = new FormData();
-  fd.append('semester', semesterSel.value);
-  fd.append('subject', `[${semesterSel.value.replace('Semester ', 'Sem ')}] ${subjectSel.value}`);
-  fd.append('fileType', typeSel.value);
-  fd.append('notes', notesArea.value.trim());
-  selectedFiles.forEach(f => fd.append('files', f));
-
   try {
-    const result = await uploadWithProgress(fd, setProgress);
-    showSuccess(result.issueNumber, result.issueUrl);
+    const uploadedFiles = [];
+    let completedCount = 0;
+
+    // Upload each file sequentially
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const fd = new FormData();
+      fd.append('file', selectedFiles[i]);
+      
+      const onProgress = (filePct) => {
+        // Distribute 90% of progress across all file uploads
+        const fileWeight = 90 / selectedFiles.length;
+        const previousFilesPct = completedCount * fileWeight;
+        const currentFilePct = (filePct / 100) * fileWeight;
+        setProgress(Math.round(previousFilesPct + currentFilePct));
+      };
+
+      const result = await uploadWithProgress(`${API_BASE}/api/upload/file`, fd, onProgress);
+      uploadedFiles.push({ originalName: result.originalName, downloadUrl: result.downloadUrl });
+      completedCount++;
+    }
+
+    setProgress(95);
+
+    // Submit to create the issue
+    const submitRes = await fetch(`${API_BASE}/api/upload/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        semester: semesterSel.value,
+        subject: `[${semesterSel.value.replace('Semester ', 'Sem ')}] ${subjectSel.value}`,
+        fileType: typeSel.value,
+        notes: notesArea.value.trim(),
+        uploadedFiles
+      })
+    });
+
+    if (!submitRes.ok) {
+      const err = await submitRes.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to submit issue.');
+    }
+
+    setProgress(100);
+    const finalResult = await submitRes.json();
+    showSuccess(finalResult.issueNumber, finalResult.issueUrl);
+
   } catch (err) {
     setUploading(false);
     showFormError(err.message || 'Upload failed. Please try again.');
@@ -868,14 +904,14 @@ function setProgress(pct) {
   $('progress-bar').setAttribute('aria-valuenow', String(pct));
 }
 
-function uploadWithProgress(formData, onProgress) {
+function uploadWithProgress(url, formData, onProgress) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_BASE}/api/upload`);
+    xhr.open('POST', url);
     xhr.withCredentials = true;
 
     xhr.upload.addEventListener('progress', e => {
-      if (e.lengthComputable) onProgress(Math.min(Math.round((e.loaded / e.total) * 95), 95));
+      if (e.lengthComputable) onProgress(Math.min(Math.round((e.loaded / e.total) * 100), 100));
     });
 
     xhr.addEventListener('load', () => {
