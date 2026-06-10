@@ -16,7 +16,6 @@ body:
         - Semester 5
         - Semester 6
         - Semester 7
-        - Semester 8
     validations:
       required: true
 
@@ -72,7 +71,7 @@ body:
         - "[Sem 6] Cyber Security"
         - "[Sem 6] Other"
         - "[Sem 7] Deep Learning with NLP"
-        - "[Sem 7] Pattern Recognition"        
+        - "[Sem 7] Pattern Recognition"
         - "[Sem 7] Image Processing"
         - "[Sem 7] Software Testing and Quality Assurance"
         - "[Sem 7] Cyber Physical Systems"
@@ -104,7 +103,7 @@ body:
       label: File
       description: |
         Drag and drop (or paste) your file here. GitHub supports up to 25 MB per attachment.
-        Accepted formats: (Topic name or Chaper number)PDF, PPT, PPTX, DOCX.
+        Accepted formats: (Topic name or Chapter number) PDF, PPT, PPTX, DOCX.
       placeholder: "Drag and drop your file here..."
     validations:
       required: true

@@ -499,7 +499,10 @@
   const REPO = 'KunalGupta25/plexi-materials';
 
   // ── Subjects ──────────────────────────────────────────────────────────────
-  const SUBJECTS = {
+  // Subjects are loaded at runtime from /subjects.json (the single source of
+  // truth shared with the GitHub Issue template).  A compact fallback is kept
+  // here so the portal still works if the fetch fails for any reason.
+  const SUBJECTS_FALLBACK = {
     'Semester 1': ['OSS','Maths-1','CTSD-1','EEE','Other'],
     'Semester 2': ['CTSD-2','Maths-2','E-Physics','GCF','DT','ICT','Other'],
     'Semester 3': ['Object Oriented Programming with Java','Design of Data Structures','Database Management Systems','Discrete Mathematics','Digital Electronics','Other'],
@@ -508,6 +511,19 @@
     'Semester 6': ['Quant and Reasoning','Compiler Design','Mobile App Development','MEAN Stack Web Development','Machine Learning','High Performance Computing','Employability Skills','Cyber Security','Other'],
     'Semester 7': ['Deep Learning with NLP','Pattern Recognition','Image Processing','Software Testing and Quality Assurance','Cyber Physical Systems','Data Science','Other'],
   };
+
+  let SUBJECTS = null; // populated by loadSubjects()
+
+  async function loadSubjects() {
+    try {
+      const res = await fetch('/subjects.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      SUBJECTS = await res.json();
+    } catch (err) {
+      console.warn('[Plexi] Could not load /subjects.json — using built-in fallback.', err);
+      SUBJECTS = SUBJECTS_FALLBACK;
+    }
+  }
 
   // ── DOM ───────────────────────────────────────────────────────────────────
   const $ = id => document.getElementById(id);
@@ -540,16 +556,23 @@
   // ── Init ──────────────────────────────────────────────────────────────────
   async function init() {
     showView('loading');
+
+    // Load subjects first (needed by setupForm). Auth check runs in parallel.
+    const subjectsReady = loadSubjects();
+
     const params = new URLSearchParams(window.location.search);
     const authResult = params.get('auth');
     if (authResult) {
       window.history.replaceState({}, '', window.location.pathname);
-      if (authResult === 'error') { showView('auth'); showAuthError('GitHub sign-in failed. Please try again.'); return; }
+      if (authResult === 'error') {
+        await subjectsReady;
+        showView('auth'); showAuthError('GitHub sign-in failed. Please try again.'); return;
+      }
     }
     try {
-      const user = await apiFetch('/api/me');
+      const [user] = await Promise.all([apiFetch('/api/me'), subjectsReady]);
       setUser(user); showView('form'); setupForm();
-    } catch { showView('auth'); }
+    } catch { await subjectsReady; showView('auth'); }
   }
 
   // ── Auth ──────────────────────────────────────────────────────────────────

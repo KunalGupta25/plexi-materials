@@ -21,3 +21,4 @@ Thumbs.db
 .vercel/
 dist/
 build/
+backend/node_modules

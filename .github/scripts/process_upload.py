@@ -105,19 +105,14 @@ def main():
     tag = semester.lower().replace(" ", "-")
     ensure_release(tag, repo)
 
-    # Load manifest
     manifest_path = "manifest.json"
-    if os.path.exists(manifest_path):
-        with open(manifest_path, "r", encoding="utf-8") as f:
-            manifest = json.load(f)
-    else:
-        manifest = {}
-
-    manifest.setdefault(semester, {})
-    manifest[semester].setdefault(subject, {})
-    manifest[semester][subject].setdefault(file_type, [])
-
     uploaded_files = []
+
+    # Collect (original_name, download_url) pairs as we process each file.
+    # We do NOT read or write manifest.json inside this loop — writing inside
+    # a loop that can run concurrently with another workflow run would cause
+    # one run's writes to clobber the other's.
+    new_entries = []
 
     for attachment_url in attachment_urls:
         # Derive the original filename from the attachment URL
@@ -141,21 +136,49 @@ def main():
             f.write(file_bytes)
 
         print(f"Uploading {asset_name} to release {tag}...")
-        gh("release", "upload", tag, local_path,
-           "--repo", repo, "--clobber")
+        gh("release", "upload", tag, local_path, "--repo", repo, "--clobber")
 
         # Build download URL
         download_url = f"https://github.com/{repo}/releases/download/{tag}/{asset_name}"
+        new_entries.append((original_name, download_url))
+        uploaded_files.append(original_name)
 
-        # Add to manifest if not already present
-        existing_names = [e["name"] for e in manifest[semester][subject][file_type]]
+        # Best-effort: delete the staging asset now that it lives in the
+        # semester release.  We use subprocess directly (not gh()) so a
+        # failure here is logged but does NOT abort the whole workflow.
+        cleanup = subprocess.run(
+            ["gh", "release", "delete-asset", "staging-uploads", asset_name,
+             "--repo", repo, "--yes"],
+            capture_output=True, text=True,
+        )
+        if cleanup.returncode == 0:
+            print(f"  Cleaned up staging asset: {asset_name}")
+        else:
+            print(f"  Warning: could not delete staging asset '{asset_name}': "
+                  f"{cleanup.stderr.strip()}")
+
+    # Re-read manifest.json right before writing so we see any changes made by
+    # concurrent workflow runs that started around the same time as this one.
+    # Only our new_entries are merged in — everything else already on disk is
+    # preserved exactly as-is.
+    if os.path.exists(manifest_path):
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+    else:
+        manifest = {}
+
+    manifest.setdefault(semester, {})
+    manifest[semester].setdefault(subject, {})
+    manifest[semester][subject].setdefault(file_type, [])
+
+    existing_names = {e["name"] for e in manifest[semester][subject][file_type]}
+    for original_name, download_url in new_entries:
         if original_name not in existing_names:
             manifest[semester][subject][file_type].append({
                 "name": original_name,
                 "download_url": download_url,
             })
-
-        uploaded_files.append(original_name)
+            existing_names.add(original_name)
 
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2, sort_keys=True)

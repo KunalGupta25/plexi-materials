@@ -1,0 +1,54 @@
+{
+  "Semester 1": ["OSS", "Maths-1", "CTSD-1", "EEE", "Other"],
+  "Semester 2": ["CTSD-2", "Maths-2", "E-Physics", "GCF", "DT", "ICT", "Other"],
+  "Semester 3": [
+    "Object Oriented Programming with Java",
+    "Design of Data Structures",
+    "Database Management Systems",
+    "Discrete Mathematics",
+    "Digital Electronics",
+    "Other"
+  ],
+  "Semester 4": [
+    "Operating System",
+    "Computer Organization and Microprocessor",
+    "Computer Network",
+    "Programming in Python with Full Stack",
+    "Probability, Statistics and Numerical Methods",
+    "Competitive Coding",
+    "Software Engineering",
+    "Other"
+  ],
+  "Semester 5": [
+    "Enterprise Programming",
+    "Data Analytics and Data Visualization",
+    "Theory of Computation",
+    "Design and Analysis of Algorithms",
+    "Software Engineering",
+    "AWS Fundamentals",
+    "Professionalism and Corporate Ethics",
+    "Artificial Intelligence",
+    "Circulars and Time tables",
+    "Other"
+  ],
+  "Semester 6": [
+    "Quant and Reasoning",
+    "Compiler Design",
+    "Mobile App Development",
+    "MEAN Stack Web Development",
+    "Machine Learning",
+    "High Performance Computing",
+    "Employability Skills",
+    "Cyber Security",
+    "Other"
+  ],
+  "Semester 7": [
+    "Deep Learning with NLP",
+    "Pattern Recognition",
+    "Image Processing",
+    "Software Testing and Quality Assurance",
+    "Cyber Physical Systems",
+    "Data Science",
+    "Other"
+  ]
+}
