@@ -32,6 +32,9 @@ const {
   PORT            = '3001',
 } = process.env;
 
+// The only GitHub login that may access manage endpoints
+const OWNER_LOGIN = 'KunalGupta25';
+
 const [REPO_OWNER, REPO_NAME] = GITHUB_REPO.split('/');
 
 // ── App ────────────────────────────────────────────────────────────────────────
@@ -276,6 +279,65 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
   } catch (err) {
     console.error('[Upload] Error:', err.message);
     res.status(500).json({ error: err.message || 'Upload failed. Please try again.' });
+  }
+});
+
+// ── Manage Routes (owner-only) ──────────────────────────────────────────────────
+
+function requireOwner(req, res) {
+  const user = getUser(req);
+  if (!user) { res.status(401).json({ error: 'Authentication required.' }); return null; }
+  if (user.login !== OWNER_LOGIN) { res.status(403).json({ error: 'Forbidden.' }); return null; }
+  return user;
+}
+
+/** List all assets in the staging-uploads release. */
+app.get('/api/manage/assets', async (req, res) => {
+  if (!requireOwner(req, res)) return;
+  try {
+    const release = await ensureRelease('staging-uploads', 'Staging area for pending uploads.');
+    const assets  = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/${release.id}/assets?per_page=100`);
+    res.json(assets.map(a => ({
+      id:           a.id,
+      name:         a.name,
+      size:         a.size,
+      created_at:   a.created_at,
+      download_url: a.browser_download_url,
+    })));
+  } catch (err) {
+    console.error('[Manage] list assets error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/** Delete a staging release asset by ID. */
+app.delete('/api/manage/asset/:id', async (req, res) => {
+  if (!requireOwner(req, res)) return;
+  try {
+    await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${req.params.id}`, { method: 'DELETE' });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[Manage] delete asset error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/** Rename a staging release asset by ID (GitHub supports PATCH on asset name). */
+app.patch('/api/manage/asset/:id', async (req, res) => {
+  if (!requireOwner(req, res)) return;
+  const { newName } = req.body;
+  if (!newName || typeof newName !== 'string' || !newName.trim()) {
+    return res.status(400).json({ error: 'newName is required.' });
+  }
+  try {
+    const updated = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${req.params.id}`, {
+      method: 'PATCH',
+      body:   JSON.stringify({ name: sanitize(newName.trim()) }),
+    });
+    res.json({ ok: true, name: updated.name });
+  } catch (err) {
+    console.error('[Manage] rename asset error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
