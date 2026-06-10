@@ -937,10 +937,10 @@
           "name": "DLNLP_Theory.pdf"
         }
       ],
-      "PDFs": [
+      "PPTs": [
         {
           "name": "Unit-1_introduction_to_natural_language_processing.pdf",
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_PDFs_Unit-1_introduction_to_natural_language_processing.pdf"
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_PPTs_Unit-1_introduction_to_natural_language_processing.pdf"
         }
       ]
     }
