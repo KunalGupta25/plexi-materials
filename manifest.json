@@ -927,12 +927,6 @@
   },
   "Semester 7": {
     "Deep Learning with NLP": {
-      "PPTs": [
-        {
-          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_PPTs_Unit-1_introduction_to_natural_language_processing.pdf",
-          "name": "Unit-1_introduction_to_natural_language_processing.pdf"
-        }
-      ],
       "Syllabus": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Syllabus_DLNLP_LAB.pdf",
@@ -941,6 +935,12 @@
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Syllabus_DLNLP_Theory.pdf",
           "name": "DLNLP_Theory.pdf"
+        }
+      ],
+      "PPTs": [
+        {
+          "name": "Unit-1_introduction_to_natural_language_processing.pdf",
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_PPTs_Unit-1_introduction_to_natural_language_processing.pdf"
         }
       ]
     }
