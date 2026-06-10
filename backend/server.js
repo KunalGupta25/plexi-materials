@@ -47,9 +47,7 @@ app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Serve the bundled frontend from public/
-// express.static handles GET / → public/index.html automatically.
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 // 25 MB per file, up to 10 files per request
 const upload = multer({
@@ -155,7 +153,7 @@ app.get('/api/auth/github', (req, res) => {
 /** Step 2 — GitHub redirects here with ?code. */
 app.get('/api/auth/callback', async (req, res) => {
   const { code } = req.query;
-  if (!code) return res.redirect('/?auth=error&reason=no_code');
+  if (!code) return res.redirect(`${FRONTEND_URL}/?auth=error&reason=no_code`);
 
   try {
     // Exchange code for access token
@@ -176,11 +174,11 @@ app.get('/api/auth/callback', async (req, res) => {
     // Issue a JWT and set it as an httpOnly cookie
     const token = signToken({ login: user.login, name: user.name || user.login, avatar_url: user.avatar_url });
     res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
-    res.redirect('/?auth=success');
+    res.redirect(`${FRONTEND_URL}/?auth=success`);
 
   } catch (err) {
     console.error('[OAuth] Error:', err.message);
-    res.redirect('/?auth=error');
+    res.redirect(`${FRONTEND_URL}/?auth=error`);
   }
 });
 
@@ -534,12 +532,9 @@ app.post('/api/manage/material/move', async (req, res) => {
 // ── Health ─────────────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
-// ── SPA fallback ───────────────────────────────────────────────────────────────
-// Unmatched /api/* routes return a JSON 404.
-// Everything else (deep links, unknown paths) serves index.html so the
-// frontend can handle routing client-side.
-app.use('/api', (_req, res) => res.status(404).json({ error: 'API route not found' }));
-app.get('*', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+// ── Fallbacks ──────────────────────────────────────────────────────────────────
+app.get('/', (_req, res) => res.json({ service: 'Plexi API', status: 'online' }));
+app.use('*', (_req, res) => res.status(404).json({ error: 'API route not found' }));
 
 // ── Local dev server ───────────────────────────────────────────────────────────
 // When run directly (npm start / npm run dev), start a real HTTP server.
