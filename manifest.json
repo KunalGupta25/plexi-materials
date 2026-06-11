@@ -933,6 +933,32 @@
           "name": "Unit-1_introduction_to_natural_language_processing.pdf"
         }
       ],
+      "Presentations": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Presentations_Unit-1_introduction_to_NLP.pdf",
+          "name": "Unit-1_introduction_to_NLP.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Presentations_Unit-2_Introduction_to_Deep_Learning.pdf",
+          "name": "Unit-2_Introduction_to_Deep_Learning.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Presentations_Unit-3_Word_Vector_Representations.pdf",
+          "name": "Unit-3_Word_Vector_Representations.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Presentations_Unit-4_Recurrent_Neural_Network_for_NLP.pdf",
+          "name": "Unit-4_Recurrent_Neural_Network_for_NLP.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Presentations_Unit-6_Deep_Learning_in_Sentiment_Analysis.pdf",
+          "name": "Unit-6_Deep_Learning_in_Sentiment_Analysis.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Presentations_Unit-5_Chatbot_Developement.pdf",
+          "name": "Unit-5_Chatbot_Developement.pdf"
+        }
+      ],
       "Syllabus": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Syllabus_DLNLP_LAB.pdf",
