@@ -927,6 +927,12 @@
   },
   "Semester 7": {
     "Deep Learning with NLP": {
+      "Lab Manual": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Lab_Manual_DL-NLP_Lab_Maunual.pdf",
+          "name": "DL-NLP_Lab_Maunual.pdf"
+        }
+      ],
       "Presentations": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Deep_Learning_with_NLP_Presentations_Unit-1_introduction_to_NLP.pdf",
