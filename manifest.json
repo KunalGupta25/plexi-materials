@@ -980,6 +980,38 @@
         }
       ]
     },
+    "Image Processing": {
+      "Presentations": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-1_Digital_Image_Fundamentals.pdf",
+          "name": "Unit-1_Digital_Image_Fundamentals.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-3_Image_filtering_in_the_frequency_domain.pdf",
+          "name": "Unit-3_Image_filtering_in_the_frequency_domain.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-4_Image_Restoration.pdf",
+          "name": "Unit-4_Image_Restoration.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-5_Image_Compression.pdf",
+          "name": "Unit-5_Image_Compression.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-6_Morphological_image_processing.pdf",
+          "name": "Unit-6_Morphological_image_processing.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-7_Image_Segmentation.pdf",
+          "name": "Unit-7_Image_Segmentation.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-8_Object_Recognition.pdf",
+          "name": "Unit-8_Object_Recognition.pdf"
+        }
+      ]
+    },
     "Software Testing and Quality Assurance": {
       "Lab Manual": [
         {
