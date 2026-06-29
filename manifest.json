@@ -981,6 +981,12 @@
       ]
     },
     "Image Processing": {
+      "Lab Manual": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Lab_Manual_IP_Lab_Manual.pdf",
+          "name": "IP_Lab_Manual.pdf"
+        }
+      ],
       "Presentations": [
         {
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-1_Digital_Image_Fundamentals.pdf",
