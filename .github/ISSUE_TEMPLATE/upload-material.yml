@@ -93,6 +93,7 @@ body:
         - Question banks
         - Assignments
         - Syllabus
+        - Presentations
         - Other
     validations:
       required: true
