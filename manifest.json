@@ -1020,6 +1020,16 @@
           "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Presentations_Unit-2_Image_Enhancement.pdf",
           "name": "Unit-2_Image_Enhancement.pdf"
         }
+      ],
+      "Previous Year Papers": [
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Previous_Year_Papers_PYQ_Summer_2025-26.pdf",
+          "name": "PYQ_Summer_2025-26.pdf"
+        },
+        {
+          "download_url": "https://github.com/KunalGupta25/plexi-materials/releases/download/semester-7/Image_Processing_Previous_Year_Papers_PYQ_Winter_2025-26.pdf",
+          "name": "PYQ_Winter_2025-26.pdf"
+        }
       ]
     },
     "Pattern Recognition": {
